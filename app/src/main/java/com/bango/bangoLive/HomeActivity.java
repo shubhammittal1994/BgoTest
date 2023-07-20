@@ -6,9 +6,17 @@ import androidx.navigation.Navigation;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
+import com.bango.bangoLive.application.App;
 import com.bango.bangoLive.databinding.ActivityHomeBinding;
+
+import im.zego.zim.callback.ZIMLoggedInCallback;
+import im.zego.zim.entity.ZIMError;
+import im.zego.zim.entity.ZIMUserInfo;
 
 public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
@@ -31,8 +39,23 @@ public class HomeActivity extends AppCompatActivity {
 
         /************************** SET VISIBLITY OF BOTTOM NAVIGATION **************************/
         binding.bottomNavigation.getRoot().setVisibility(View.VISIBLE);
+        createZimUserInfo( App.getSharedpref().getString("id"),"shubham");
     }
+    private void createZimUserInfo(String id, String name) {
+        ZIMUserInfo zimUserInfo = new ZIMUserInfo();
+        zimUserInfo.userID = id;
+        zimUserInfo.userName = name;
 
+        App.showToast(HomeActivity.this,"Zim Logged In !!"+id +"&&"+name);
+        Log.e("--->>>",""+id +"&&"+name);
+        ChatSDKManager.getChatSDKManager().login(zimUserInfo, new ZIMLoggedInCallback() {
+            @Override
+            public void onLoggedIn(ZIMError error) {
+                Log.e("--->>>","Zim Logged In !!");
+              App.showToast(HomeActivity.this,"Zim Logged In !!"+error.getMessage());
+            }
+        });
+    }
     private void bottomNavigationClicks() {
 
         binding.bottomNavigation.hotspotHomeIcon.setOnClickListener(view -> {

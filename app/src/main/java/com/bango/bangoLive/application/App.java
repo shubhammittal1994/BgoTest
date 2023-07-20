@@ -5,12 +5,20 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.bango.bangoLive.ZegoServices.ExpressService;
+import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
 import com.bango.bangoLive.utils.SharedPref;
 import com.bango.bangoLive.utils.Singleton;
 
+import java.util.ArrayList;
+
 import im.zego.zegoexpress.ZegoExpressEngine;
+import im.zego.zim.ZIM;
+import im.zego.zim.callback.ZIMEventHandler;
+import im.zego.zim.entity.ZIMMessage;
 
 public class App extends Application {
 
@@ -57,6 +65,13 @@ public class App extends Application {
 
         singleton = new Singleton();
         sharedpref = new SharedPref(context);
+        ChatSDKManager.getChatSDKManager();
+        ChatSDKManager.getChatSDKManager().setEventHandler(new ZIMEventHandler() {
+            @Override
+            public void onReceivePeerMessage(ZIM zim, ArrayList<ZIMMessage> messageList, String fromUserID) {
+                Log.e("---->>>",messageList.get(0).);
+            }
+        });
 //        CaocConfig.Builder.create()
 //                .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT) //default: CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM
 //                .enabled(false) //default: true
@@ -123,5 +138,9 @@ public class App extends Application {
             expressService = new ExpressService(this, appId, appSign);
         }
         return expressService;
+    }
+
+   public static void showToast(Context context,String message){
+        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
     }
 }

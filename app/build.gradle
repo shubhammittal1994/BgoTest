@@ -92,7 +92,7 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
     implementation 'com.github.ZEGOCLOUD:zego_uikit_prebuilt_live_audio_room_android:+'
-
+    implementation 'im.zego:zim:2.7.0'
     implementation 'com.google.firebase:firebase-database:20.0.1'
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'
 

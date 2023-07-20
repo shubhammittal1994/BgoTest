@@ -59,6 +59,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import im.zego.zim.entity.ZIMUserInfo;
+
 public class Login_Fragment extends Fragment {
 
     FragmentLoginBinding fragmentLoginBinding;
@@ -231,7 +233,9 @@ public class Login_Fragment extends Fragment {
                 @Override
                 public void onChanged(LoginResponse loginResponse) {
                     if (loginResponse.getSuccess()!=null) {
+
                         if (loginResponse.getSuccess().equalsIgnoreCase("1")) {
+
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString("id",loginResponse.getDetails().getId());
                             editor.putString("userUniqueId",loginResponse.getDetails().getUsername());
@@ -261,6 +265,8 @@ public class Login_Fragment extends Fragment {
             }
         }
     }
+
+
 
     /************************** GET COMPLETE ADDRESS **************************/
     private void getCompleteAddressString() {

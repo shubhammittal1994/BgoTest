@@ -23,5 +23,6 @@ dependencyResolutionManagement {
         jcenter()
     }
 }
+
 rootProject.name = "BgoTest"
 include ':app'

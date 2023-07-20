@@ -922,7 +922,6 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
             isMute = true;
            // rtcEngine.muteLocalAudioStream(true);
             zegoExpressEngine.mutePublishStreamAudio(true);
-            zegoExpressEngine.mute
             data.put("mute", "0");
         } else {
             isMute = false;

@@ -21,3 +21,4 @@
 #-renamesourcefileattribute SourceFile
 -keep class com.squareup.wire.* { }
 -keep class com.opensource.svgaplayer.proto.* {  }
+-keep class **.zego.**{*;}
