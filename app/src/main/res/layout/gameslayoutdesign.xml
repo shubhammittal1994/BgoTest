@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:gravity="center"
+        android:elevation="8dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/menuDialogTopRawLinealyotut"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/greedyBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/coverInfoImg"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/treasuregame"
+                        android:contentDescription="@string/description"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:layout_marginTop="5dp"
+                        android:text="Greedy Box"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/greedy"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/saladpizzagame"
+                        android:contentDescription="@string/description"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Greedy"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/card"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/neonfruitgame"
+                        android:contentDescription="@string/description"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:layout_marginTop="5dp"
+                        android:text="Neon"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lucky"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/bulletinImg"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/luckygame"
+                        android:contentDescription="@string/description"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Lucky 77"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/neon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/card"
+                        android:contentDescription="@string/description"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:layout_marginTop="5dp"
+                        android:text="dragon-tiger"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

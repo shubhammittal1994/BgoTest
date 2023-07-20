@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:drawableLeft="@drawable/ic_ban"
+        android:drawablePadding="10dp"
+        android:id="@+id/tv_bantext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Apply for Host To Go Live"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+
+    <RelativeLayout
+        android:layout_gravity="center"
+        android:id="@+id/bt_sentRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/button_image"
+        android:paddingHorizontal="45dp"
+        android:textSize="14sp" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Send Request"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_marginTop="10dp"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

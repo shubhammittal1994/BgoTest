@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">Bango</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="by_using_bango_you_agree_to_the_bango_live_terms_of_services_and_privacy_policies">By using Bango, you agree to the </string>
+    <string name="bango_live_terms_of_services_and_privacy_policies"><font fgcolor='#8E0AAD'><u>Bango Live Terms Of Services</u></font> and <font fgcolor='#8E0AAD'><u>Privacy Policy</u></font></string>
+    <string name="find_friend">Find Friend</string>
+    <string name="talent_level">Talent Level</string>
+    <string name="transaction_s">Transaction’s</string>
+    <string name="logout">Logout</string>
+    <string name="search">Search</string>
+    <string name="janvi_kapoor">janvi_kapoor</string>
+    <string name="government_address_id_proof">government address id proof</string>
+    <string name="i_want_to_join_bango_agency">I want to join Bango agency</string>
+    <string name="i_have_an_agency_id"><u>I have an Agency ID</u></string>
+    <string name="click_to_upload_national_id_image"><u>Click to upload national ID image</u></string>
+    <string name="description">description</string>
+    <string name="enter_your_mobile_whatsapp_number">*Enter your mobile/Whatsapp number</string>
+    <string name="bango_store">Bango Store</string>
+    <string name="my_subscription">My Subscription</string>
+    <string name="monthly_earning_records"><u>monthly Earning Records</u></string>
+    <string name="sure_to_buy_this_if_use_this_frame_you_ll_get_more_attention_in_the_live_room">Not enough coins, want to recharge.</string>
+    <string name="name">name</string>
+    <string name="dance">dance</string>
+    <string name="my_room">My Room</string>
+    <string name="followings">Followings</string>
+    <string name="send">Send</string>
+    <string name="received">Received</string>
+    <string name="friend">Friend</string>
+    <string name="followers">Followers</string>
+    <string name="politically_sensitive">Politically sensitive</string>
+    <string name="my_wallet">My Wallet</string>
+    <string name="checkout">Checkout</string>
+    <string name="add_card">" Add Card"</string>
+    <string name="credit_card">Credit Card</string>
+    <string name="clear_all">clear all</string>
+    <string name="card_number">Card Number</string>
+    <string name="john_phillipe">card holder name</string>
+    <string name="_27_05">05/27</string>
+    <string name="_345">888</string>
+    <string name="save_credit_card_info">Save</string>
+    <string name="address">Address</string>
+    <string name="_04_04am">04:04AM</string>
+    <string name="if_you_want_to_go_live_create_a_profile_first">If you want to go Live , Create a profile first</string>
+    <string name="create_profile">Create Profile</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+
+    <integer-array name="gift_values">
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+    </integer-array>
+    <string-array name="spinnercombo">
+        <item>1</item>
+        <item>10</item>
+        <item>30</item>
+        <item>50</item>
+        <item>100</item>
+    </string-array>
+    <string-array name="spinnerLucky">
+        <item>1</item>
+        <item>11</item>
+        <item>77</item>
+        <item>177</item>
+        <item>777</item>
+        <item>999</item>
+    </string-array>
+</resources>

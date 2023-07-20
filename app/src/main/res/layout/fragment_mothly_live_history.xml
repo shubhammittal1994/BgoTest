@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/toplay"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:elevation="3dp">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/backarrow"
+            android:tint="?android:textColorPrimary"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Earning"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyMothly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/monthly_live_data" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/noPastLive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="20dp"
+            android:text="No Past Live"
+            android:visibility="gone"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor = "?android:textColorPrimary"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

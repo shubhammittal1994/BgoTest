@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/musicPlayRL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/black"
+        android:padding="10dp"
+        android:layout_marginBottom="100dp"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/layiout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/switcch"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/powert"
+                    app:tint="@color/white" />
+
+                <ImageView
+                    android:id="@+id/minimize"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_alignParentEnd="true"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/minimizeee"
+                    app:tint="@color/white" />
+
+            </RelativeLayout>
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/volumelayout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/black"-->
+<!--                android:visibility="gone"-->
+<!--                android:layout_marginTop="@dimen/dp_10"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <androidx.appcompat.widget.AppCompatSeekBar-->
+<!--                    android:id="@+id/seekbarDialogvolume"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="@dimen/dp_20"-->
+<!--                    android:layout_weight="1" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/volumetext"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:layout_gravity="center_horizontal"/>-->
+<!--            </LinearLayout>-->
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/playMusicDialogImg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/layiout"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/description"
+            android:src="@drawable/ic_baseline_pause_circle_24"
+            app:tint="@color/white" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/layiout"
+            android:layout_toRightOf="@+id/playMusicDialogImg"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/musicNameRL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/musicSongName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_toLeftOf="@+id/volumeMusicImg"
+                    android:fontFamily="sans-serif-medium"
+                    android:maxLines="3"
+                    android:text="jhanhar aa tere pair di"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/volumeMusicImg"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/volume_up_24"
+                    android:visibility="gone"
+                    app:tint="@color/white" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/volumelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatSeekBar
+                        android:id="@+id/seekbarDialogvolume"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toLeftOf="@+id/speaker" />
+
+                    <ImageView
+                        android:id="@+id/speaker"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="60dp"
+                        android:layout_toLeftOf="@+id/nextMusic"
+                        android:contentDescription="@string/description"
+                        android:src="@drawable/ic_baseline_volume_up_24"
+                        app:tint="@color/white" />
+
+                    <ImageView
+                        android:id="@+id/nextMusic"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="30dp"
+                        android:layout_toLeftOf="@+id/musicplaylist"
+                        android:contentDescription="@string/description"
+                        android:src="@drawable/arrowhead"
+                        app:tint="@color/white" />
+
+                    <ImageView
+                        android:id="@+id/musicplaylist"
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_alignParentEnd="true"
+                        android:contentDescription="@string/description"
+                        android:src="@drawable/playlist"
+                        app:tint="@color/white" />
+
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/volumetext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="100dp"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/seekbarDialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_weight="1" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/startMusicTimeTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:singleLine="true"
+                    android:text="00:00"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/endMusicTimeTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="12:34"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

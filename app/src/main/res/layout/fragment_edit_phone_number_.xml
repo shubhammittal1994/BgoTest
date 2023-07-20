@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/editphonebackground"
+    tools:context="com.bango.bangoLive.loginCredentials.activities.fragments.EditPhoneNumber_Fragment">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backArrow"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="20dp"
+                android:elevation="10dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/backarrow"/>
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginStart="20dp"
+            android:elevation="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/hello"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="15dp"
+            android:background="@drawable/lighteditbackground">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp">
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/country_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:ccp_autoDetectCountry="true"
+                    app:ccp_showFlag="true"
+                    app:ccp_textSize="14sp"
+                    app:ccp_showNameCode="false">
+                </com.hbb20.CountryCodePicker>
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="1.5dp"
+                    android:layout_height="30dp"
+                    android:layout_toRightOf="@+id/country_code"
+                    android:layout_centerVertical="true"
+                    android:elevation="5dp"
+                    android:background="@color/black"/>
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/phoneNumberEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/view"
+                    android:singleLine="true"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_color"
+                    android:inputType="number"
+                    android:hint="Enter your phone num..."
+                    android:fontFamily="@font/poppins_regular"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@null"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/nextButton"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_image">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/poppins_regular"
+                android:shadowColor="#1E1E1E"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="3"
+                android:text="Next"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/checkBox"
+            android:fontFamily="@font/poppins_regular"
+            android:shadowColor="#1E1E1E"
+            android:shadowDx="0.2"
+            android:shadowDy="0.2"
+            android:shadowRadius="0.2"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/by_using_bango_you_agree_to_the_bango_live_terms_of_services_and_privacy_policies"
+            android:textColor="@color/black" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_toRightOf="@id/checkBox"
+            android:fontFamily="@font/poppins_regular"
+            android:shadowColor="#1E1E1E"
+            android:shadowDx="0.2"
+            android:shadowDy="0.2"
+            android:gravity="center"
+            android:shadowRadius="0.2"
+            android:text="@string/bango_live_terms_of_services_and_privacy_policies"
+            android:textColor="@color/black"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</RelativeLayout>

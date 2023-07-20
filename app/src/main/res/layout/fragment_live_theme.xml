@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/liveThemeGalleryImg"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="15dp" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/themeTablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toLeftOf="@+id/liveThemeGalleryImg"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="#58CA5D"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="1dp"
+            app:tabMinWidth="10dp"
+            app:tabSelectedTextColor="#58CA5D"
+            app:tabTextColor="@color/dark_grey_color">
+        </com.google.android.material.tabs.TabLayout>
+
+        <View
+            android:id="@+id/themeView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/themeTablayout"
+            android:background="@color/grey_color" />
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/themeViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/themeView" />
+    </RelativeLayout>
+</FrameLayout>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background_image"
+    tools:context="com.bango.bangoLive.loginCredentials.activities.fragments.Login_Fragment">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="80dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/googleIcon"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_image">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/google_icon" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="18dp"
+                android:fontFamily="@font/poppins_regular"
+                android:shadowColor="#1E1E1E"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="3"
+                android:text="Connect With Google"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/lineFirst"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/text"
+                android:src="@drawable/whiteline" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="10dp"
+                android:fontFamily="@font/poppins_regular"
+                android:shadowColor="#1E1E1E"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="3"
+                android:text="More Login Methods"
+                android:textColor="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/lineSecond"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/text"
+                android:src="@drawable/whiteline" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="35dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/connectWithPhoneButton"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@drawable/phone_icon" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="40dp"
+                android:layout_toRightOf="@id/connectWithPhoneButton"
+                android:src="@drawable/facebookicon" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:button="@drawable/custom_checkbox"
+                android:elevation="10dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/checkBox"
+                android:fontFamily="@font/poppins_regular"
+                android:shadowColor="#1E1E1E"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="3"
+                android:text="@string/by_using_bango_you_agree_to_the_bango_live_terms_of_services_and_privacy_policies"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:shadowColor="#1E1E1E"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:text="@string/bango_live_terms_of_services_and_privacy_policies"
+            android:textColor="@color/white" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</RelativeLayout>

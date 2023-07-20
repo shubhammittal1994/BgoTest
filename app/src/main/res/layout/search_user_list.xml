@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp">
+    <RelativeLayout
+        android:id="@+id/user_layout"
+        android:layout_width="match_parent"
+        android:layout_height="90dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_profile"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/profilemaleicon"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:orientation="vertical"
+            android:layout_toEndOf="@+id/user_profile">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="userName"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor = "?android:textColorPrimary"
+                android:textSize="16sp"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/user_Id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="userName"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor = "?android:textColorPrimary"
+                android:textSize="13sp"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/user_profile"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"
+            android:background="#818080"/>
+
+    </RelativeLayout>
+</RelativeLayout>

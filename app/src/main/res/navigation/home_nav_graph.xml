@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/home_HotspotIcon_Fragment">
+
+    <fragment
+        android:id="@+id/home_HotspotIcon_Fragment"
+        android:name="com.bango.bangoLive.fragments.Home_HotspotIcon_Fragment"
+        android:label="fragment_home__hotspot_icon_"
+        tools:layout="@layout/fragment_home__hotspot_icon_" >
+        <action
+            android:id="@+id/action_home_HotspotIcon_Fragment_to_searchUserFragment"
+            app:destination="@id/searchUserFragment" />
+        <action
+            android:id="@+id/action_home_HotspotIcon_Fragment_to_leadtherboardFragment"
+            app:destination="@id/leadtherboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reels_Fragment"
+        android:name="com.bango.bangoLive.fragments.reels.Reels_Fragment"
+        android:label="fragment_reels_"
+        tools:layout="@layout/fragment_reels_" />
+    <fragment
+        android:id="@+id/message_Fragment"
+        android:name="com.bango.bangoLive.fragments.chat.Message_Fragment"
+        android:label="fragment_message_"
+        tools:layout="@layout/fragment_message_" />
+    <fragment
+        android:id="@+id/profile_Fragment"
+        android:name="com.bango.bangoLive.fragments.profile.Profile_Fragment"
+        android:label="fragment_profile_"
+        tools:layout="@layout/fragment_profile_" >
+        <action
+            android:id="@+id/action_profile_Fragment_to_editProfile_Fragment"
+            app:destination="@id/editProfile_Fragment" />
+        <action
+            android:id="@+id/action_profile_Fragment_to_applyForHostFragment"
+            app:destination="@id/applyForHostFragment" />
+        <action
+            android:id="@+id/action_profile_Fragment_to_mallFragment"
+            app:destination="@id/mallFragment" />
+        <action
+            android:id="@+id/action_profile_Fragment_to_mallFragment2"
+            app:destination="@id/mallFragment" />
+        <action
+            android:id="@+id/action_profile_Fragment_to_myLiveStreamFragment"
+            app:destination="@id/myLiveStreamFragment" />
+        <action
+            android:id="@+id/action_profile_Fragment_to_topGiftersFragment"
+            app:destination="@id/topGiftersFragment" />
+        <action
+            android:id="@+id/action_profile_Fragment_to_myWalletFragment"
+            app:destination="@id/myWalletFragment" />
+        <action
+            android:id="@+id/action_profile_Fragment_to_trasectionHistoryFragment"
+            app:destination="@id/trasectionHistoryFragment" />
+        <action
+            android:id="@+id/action_profile_Fragment_to_fragment_MySubscription"
+            app:destination="@id/fragment_MySubscription" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfile_Fragment"
+        android:name="com.bango.bangoLive.fragments.profile.EditProfile_Fragment"
+        android:label="fragment_edit_profile_"
+        tools:layout="@layout/fragment_edit_profile_" />
+    <fragment
+        android:id="@+id/applyForHostFragment"
+        android:name="com.bango.bangoLive.fragments.ApplyForHostFragment"
+        android:label="fragment_apply_for_host"
+        tools:layout="@layout/fragment_apply_for_host" />
+    <fragment
+        android:id="@+id/mallFragment"
+        android:name="com.bango.bangoLive.fragments.Mall.MallFragment"
+        android:label="fragment_mall"
+        tools:layout="@layout/fragment_mall" />
+    <fragment
+        android:id="@+id/myLiveStreamFragment"
+        android:name="com.bango.bangoLive.fragments.MyLiveStream.MyLiveStreamFragment"
+        android:label="fragment_my_live_stream"
+        tools:layout="@layout/fragment_my_live_stream" >
+        <action
+            android:id="@+id/action_myLiveStreamFragment_to_mothlyLiveHistoryFragment"
+            app:destination="@id/mothlyLiveHistoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mothlyLiveHistoryFragment"
+        android:name="com.bango.bangoLive.fragments.MyLiveStream.MothlyLiveHistoryFragment"
+        android:label="MothlyLiveHistoryFragment"
+        tools:layout="@layout/fragment_mothly_live_history"/>
+    <fragment
+        android:id="@+id/searchUserFragment"
+        android:name="com.bango.bangoLive.fragments.Search.SearchUserFragment"
+        android:label="SearchUserFragment" />
+    <fragment
+        android:id="@+id/leadtherboardFragment"
+        android:name="com.bango.bangoLive.fragments.LeaderBoard.LeadtherboardFragment"
+        android:label="LeadtherboardFragment" />
+    <fragment
+        android:id="@+id/topGiftersFragment"
+        android:name="com.bango.bangoLive.fragments.TopGifters.TopGiftersFragment"
+        android:label="TopGiftersFragment" />
+    <fragment
+        android:id="@+id/myWalletFragment"
+        android:name="com.bango.bangoLive.fragments.Wallet.MyWalletFragment"
+        android:label="MyWalletFragment" />
+    <fragment
+        android:id="@+id/liveMainFragment"
+        android:name="com.bango.bangoLive.AudioRoom.LiveMainFragment"
+        android:label="LiveMainFragment" />
+    <fragment
+        android:id="@+id/trasectionHistoryFragment"
+        android:name="com.bango.bangoLive.fragments.TransactionHistory.TrasectionHistoryFragment"
+        android:label="TrasectionHistoryFragment" />
+    <fragment
+        android:id="@+id/fragment_MySubscription"
+        android:name="com.bango.bangoLive.subscription.Fragment_MySubscription"
+        android:label="Fragment_MySubscription" />
+</navigation>

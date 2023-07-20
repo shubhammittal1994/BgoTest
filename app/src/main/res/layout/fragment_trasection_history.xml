@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/backarrow"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            app:tint="?android:textColorPrimary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="History"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/txtNoSendMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:background="@drawable/button_bg"
+            android:fontFamily="sans-serif-thin"
+            android:padding="10dp"
+            android:text="No Transaction"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/history_holder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/coin_history_list"
+            android:layout_marginTop="10dp" />
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

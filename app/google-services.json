@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "915956768833",
+    "project_id": "bango-1a945",
+    "storage_bucket": "bango-1a945.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:915956768833:android:03919a144b8f9d398a26c0",
+        "android_client_info": {
+          "package_name": "com.bango.bangoLive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "915956768833-e1ms95l6892tlj0ugsoivn3q07bdps7h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bango.bangoLive",
+            "certificate_hash": "ecb10605c7d75fb0fe819fd4577fb4cac9330a55"
+          }
+        },
+        {
+          "client_id": "915956768833-0ucullek6ddmb2m9hb9dp6tfes9ifoa6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDn-r3oQc_dnKLnuc4SZOLb7eDzCNKU4t8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "915956768833-0ucullek6ddmb2m9hb9dp6tfes9ifoa6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

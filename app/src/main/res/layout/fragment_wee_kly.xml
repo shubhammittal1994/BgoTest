@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/pink_simple_design">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:id="@+id/head_friendship_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:elevation="4dp"
+            android:paddingBottom="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/layout2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imageViewWeekly2"
+                                android:layout_width="85dp"
+                                android:layout_height="85dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/white_crown_img"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <com.opensource.svgaplayer.SVGAImageView
+                                android:id="@+id/profieFrame2"
+                                android:layout_width="110dp"
+                                android:layout_height="110dp"
+                                android:layout_centerInParent="true"
+                                android:elevation="100dp"
+                                android:visibility="gone"
+                                app:antiAlias="true" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/name2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="Martie Clarke"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/userId1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="ID : 3762372"
+                            android:textColor="@color/white"
+                            android:textSize="10dp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/dollar" />
+
+                            <TextView
+                                android:id="@+id/coin2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="5dp"
+                                android:text="26234560"
+                                android:textColor="@color/white"
+                                android:textSize="8dp" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imageView1"
+                                android:layout_width="110dp"
+                                android:layout_height="110dp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginBottom="2dp"
+                                android:src="@drawable/gold_crown_img"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <com.opensource.svgaplayer.SVGAImageView
+                                android:id="@+id/profieFrame"
+                                android:layout_width="130dp"
+                                android:layout_height="130dp"
+                                android:layout_centerInParent="true"
+                                android:elevation="100dp"
+                                android:visibility="gone"
+                                app:antiAlias="true" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/name1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="Jass kaur"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/userId2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="ID : 3762372"
+                            android:textColor="@color/white"
+                            android:textSize="10dp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/dollar" />
+
+                            <TextView
+                                android:id="@+id/coin1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="5dp"
+                                android:text="26234560"
+                                android:textColor="@color/white"
+                                android:textSize="8dp" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/ImageView3"
+
+                                android:layout_width="85dp"
+                                android:layout_height="85dp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginBottom="2dp"
+                                android:src="@drawable/orage_crown_img"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <com.opensource.svgaplayer.SVGAImageView
+                                android:id="@+id/profieFrame3"
+                                android:layout_width="110dp"
+                                android:layout_height="110dp"
+                                android:layout_centerInParent="true"
+                                android:elevation="100dp"
+                                android:visibility="gone"
+                                app:antiAlias="true" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/name3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="Idda Palamr"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/userId3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="ID : 3762372"
+                            android:textColor="@color/white"
+                            android:textSize="10dp"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/llCoin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/dollar" />
+
+                            <TextView
+                                android:id="@+id/coin3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="5dp"
+                                android:text="26234560"
+                                android:textColor="@color/white"
+                                android:textSize="8dp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/head_friendship_fragment"
+            android:background="@drawable/upper_curve_design"
+            android:elevation="3dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/weeklyRV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_leadboard" />
+
+
+            <TextView
+                android:id="@+id/txtNoUsers_"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="No Gift"
+                android:visibility="gone" />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</FrameLayout>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/localsongNameLlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="150dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/localsongNameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="02 Jee Le -Remix"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/localsongTimeAndWebsiteTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="04:05 | MyMp3.com"
+                android:textColor="@color/light_grey_color"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/locallocalAddedBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rect_round_corners"
+            android:backgroundTint="@color/app_dark_color"
+            android:fontFamily="sans-serif-medium"
+            android:text="Add"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/localplayMusicImg"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="sans-serif-medium"
+            android:src="@drawable/ic_baseline_play_circle_filled_24"
+            android:text="Add"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_below="@+id/localsongNameLlayout"
+            android:layout_marginVertical="10dp"
+            android:background="@color/light_grey_color" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

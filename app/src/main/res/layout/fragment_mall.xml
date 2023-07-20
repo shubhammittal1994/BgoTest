@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.bango.bangoLive.fragments.Mall.MallFragment">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/rectangllee"
+        android:elevation="5dp">
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="15dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/backarrow"
+            app:tint="@color/white" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/bango_store"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/white"
+            android:textSize="17sp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/tab_lay"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:elevation="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/tab_back">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_mall"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@null"
+            android:layout_marginBottom="10dp"
+            app:tabGravity="fill"
+            app:tabIndicator="@color/app_dark_color"
+            app:tabIndicatorColor="@color/app_dark_color"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="0dp"
+            app:tabSelectedTextColor="@color/app_dark_color"
+            app:tabTextAppearance="@style/CustomTextAppearanceTab"
+            app:tabTextColor="@color/dark_grey_color" />
+    </RelativeLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager_mall"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tab_lay">
+    </androidx.viewpager.widget.ViewPager>
+
+</LinearLayout>

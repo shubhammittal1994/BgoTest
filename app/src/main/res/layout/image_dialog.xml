@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/close_BTN"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/audioroom_icon_close" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="100dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_profile"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="33dp"
+            android:src="@drawable/profilemaleicon" />
+
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/frames"
+            android:layout_width="153dp"
+            android:layout_height="140dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:elevation="12dp"
+            android:scaleType="fitCenter"
+            app:antiAlias="true" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

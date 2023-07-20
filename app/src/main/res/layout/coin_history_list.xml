@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        >
+        <androidx.cardview.widget.CardView
+            android:id="@+id/profile_card3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="10dp">
+
+            <ImageView
+                android:id="@+id/profile_image3"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="10dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/down" />
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toStartOf="@+id/llCoins"
+            android:layout_marginEnd="5dp"
+            android:layout_toEndOf="@+id/profile_card3"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:text=""
+                android:maxLines="2"
+                android:textColor = "?android:textColorPrimary"
+                android:textSize="13sp" />
+
+
+            <TextView
+                android:id="@+id/source"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:text="usernamew"
+                android:textColor="@color/app_dark_color"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/llCoins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgcoin"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/coinsicon" />
+
+        <TextView
+            android:id="@+id/amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="0"
+            android:textColor = "?android:textColorPrimary"
+            android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/profile_card3"
+            android:layout_alignStart="@+id/profile_card3"
+            android:layout_alignEnd="@+id/llCoins"
+            android:layout_marginTop="25dp"
+            android:background="@color/dark_grey_color" />
+
+    </RelativeLayout>
+
+</LinearLayout>

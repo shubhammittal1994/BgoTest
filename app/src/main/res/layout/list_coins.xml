@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:id="@+id/ll_giftview"
+    android:layout_margin="5dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="5dp"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_giftImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/gift" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:src="@drawable/coinsicon" />
+
+            <TextView
+                android:id="@+id/tv_giftCoin"
+                android:drawablePadding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_giftname"
+            android:drawablePadding="10dp"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="name"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="9sp" />
+
+    </LinearLayout>
+
+    <View
+        android:visibility="gone"
+        android:id="@+id/viewgift"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:background="@drawable/bg_bottomradius_gift" />
+
+
+</LinearLayout>

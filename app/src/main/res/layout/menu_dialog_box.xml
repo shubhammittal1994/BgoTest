@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:ndroid="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.androidx.com/tools"
+    android:background="@color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:gravity="center"
+        android:elevation="8dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/menuDialogTopRawLinealyotut"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/themeIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/coverInfoImg"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:src="@drawable/color_theme"
+                        android:contentDescription="@string/description"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:layout_marginTop="5dp"
+                            android:text="Theme"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/musicIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/bulletinImg"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:src="@drawable/musicicon"
+                        android:contentDescription="@string/description"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="Music"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lockIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/adminImg"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/lock_icon65"
+                        android:contentDescription="@string/description"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="12sp"
+                        android:text="Lock"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/lockImg"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/lock_icon65"
+                        android:contentDescription="@string/description"/>
+                    <TextView
+                        android:id="@+id/liveLocktv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:text="Lock"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/cleanChatImg"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/description"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:text="Clean Chat"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/menuDialogThemeLineayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/themeImg"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/description"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:text="Theme"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/menuDialogHiddenLineayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/hiddenImg"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/description"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:text="Hidden"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/menuDialogScoreBoardLineayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/scoreBoardImg"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/description"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:text="Scoreboard"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menuDialogMusicLineayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/musicImg"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/musicicon"
+                        android:contentDescription="@string/description"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:text="Music"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menuDialogRoomModeLineayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/roomModeImg"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/description"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:text="Room Mode"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

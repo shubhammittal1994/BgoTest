@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_nav_graph"
+    app:startDestination="@id/login_Fragment">
+
+    <fragment
+        android:id="@+id/login_Fragment"
+        android:name="com.bango.bangoLive.loginCredentials.activities.fragments.Login_Fragment"
+        android:label="fragment_login_"
+        tools:layout="@layout/fragment_login_" >
+        <action
+            android:id="@+id/action_login_Fragment_to_editPhoneNumber_Fragment"
+            app:destination="@id/editPhoneNumber_Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editPhoneNumber_Fragment"
+        android:name="com.bango.bangoLive.loginCredentials.activities.fragments.EditPhoneNumber_Fragment"
+        android:label="fragment_edit_phone_number_"
+        tools:layout="@layout/fragment_edit_phone_number_" >
+        <action
+            android:id="@+id/action_editPhoneNumber_Fragment_to_verification_Otp_Fragment"
+            app:destination="@id/verification_Otp_Fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/verification_Otp_Fragment"
+        android:name="com.bango.bangoLive.loginCredentials.activities.fragments.Verification_Otp_Fragment"
+        android:label="fragment_verification__otp_"
+        tools:layout="@layout/fragment_verification__otp_" />
+
+</navigation>

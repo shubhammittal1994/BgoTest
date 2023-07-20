@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="400dp">
+
+    <ImageView
+        android:id="@+id/blockUserImg"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/ic_baseline_block_24"
+        app:tint="@color/dark_grey_color" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/otherUserDialogOpenProfileRL"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp">
+
+            <com.opensource.svgaplayer.SVGAImageView
+                android:id="@+id/liveBottomProfieFrame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:elevation="12dp"
+                android:scaleType="fitCenter"
+                app:antiAlias="true" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgProfile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dp" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/adminStatusTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="sans-serif-medium"
+            android:singleLine="true"
+            android:text="(Admin)"
+            android:visibility="gone"
+            android:textColor="@color/dark_grey_color"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="sans-serif-medium"
+            android:singleLine="true"
+            android:text="Narinder Singh"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/userIdAndCountry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID: 123456789 | India"
+                android:textColor="@color/dark_grey_color"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/anchorimg"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"
+                android:src="@drawable/host_icon"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/adminIconImg"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/description"
+                android:src="@drawable/live_admin_icon"
+                android:visibility="gone"
+                app:tint="@color/green" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/round_shape_corners_8dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="5dp">
+                <ImageView
+                    android:id="@+id/bottomProfileGenderImg"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/male"
+                    app:tint="@color/white" />
+                <TextView
+                    android:id="@+id/bottomProfileAgeTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="35"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/vipImage"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/layout"
+                android:layout_marginBottom="-5dp"
+                android:visibility="gone"
+                android:src="@drawable/vip1img"/>
+        </LinearLayout>
+
+        <!--        <androidx.appcompat.widget.AppCompatTextView-->
+        <!--            android:id="@+id/txtUserName"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center_horizontal"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:textColor="@color/black"-->
+        <!--            android:textSize="14sp" />-->
+
+        <LinearLayout
+            android:id="@+id/liveProfileAdminLyout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:id="@+id/liveProfileBottomAdminLlyout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/admin_img"
+                    app:tint="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-medium"
+                    android:singleLine="true"
+                    android:text="Admin.."
+                    android:textColor="@color/dark_grey_color"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llMute1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/invitation" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-medium"
+                    android:singleLine="true"
+                    android:text="Invite"
+                    android:textColor="@color/dark_grey_color"
+
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/liveProfileChatLyout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/bubble_message_color_full_img"
+                    app:tint="@color/black" />
+
+                <TextView
+                    android:id="@+id/banChatTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-medium"
+                    android:singleLine="true"
+                    android:text="Chat"
+                    android:textColor="@color/dark_grey_color"
+
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/liveProfileKickOuttLyout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/ic_baseline_logout_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-medium"
+                    android:singleLine="true"
+                    android:text="Kick out"
+                    android:textColor="@color/dark_grey_color"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/inviteUserLineayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/admin_img"
+                    app:tint="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-medium"
+                    android:singleLine="true"
+                    android:text="Invite Audience"
+                    android:textColor="@color/dark_grey_color"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/llProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_pink_small_corner_bg"
+            android:visibility="gone">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="10dp"
+                android:layout_marginLeft="15dp"
+                android:paddingHorizontal="30dp"
+                android:text="Profile"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/dark_grey_color"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:id="@+id/profileBottomReminderLLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/at_the_rate_icon"
+                    app:tint="@color/app_dark_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginVertical="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Reminder"
+                    android:textColor="@color/dark_grey_color"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sendGiftsBottomSheetLl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/gift_wall_image" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginVertical="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Send Gifts"
+                    android:textColor="@color/dark_grey_color"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/profileBottomFollowingRL"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!--                <ImageView-->
+                <!--                    android:id="@+id/followUnfollowImg"-->
+                <!--                    android:layout_width="24dp"-->
+                <!--                    android:layout_height="24dp"-->
+                <!--                    android:layout_gravity="center"-->
+                <!--                    android:contentDescription="@string/description"-->
+                <!--                    android:src="@drawable/check__4_" /> -->
+                <ImageView
+                    android:id="@+id/followUnfollowImg"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/description"
+                    android:src="@drawable/ic_plus__6_"
+                    app:tint="@color/black" />
+
+                <TextView
+                    android:id="@+id/liveIdProfileFollowTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginVertical="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Following"
+                    android:textColor="@color/dark_grey_color"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="20dp"
+            android:visibility="gone"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:id="@+id/llMute"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_pink_small_corner_bg"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtMute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginVertical="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="17sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llBan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_pink_small_corner_bg"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtBan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginVertical="10dp"
+                    android:text="Ban"
+                    android:textColor="@color/white"
+                    android:textSize="17sp" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llBlock"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/btn_pink_small_corner_bg"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtBlock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginVertical="10dp"
+                    android:text="Block"
+                    android:textColor="@color/white"
+                    android:textSize="17sp" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

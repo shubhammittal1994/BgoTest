@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="2.5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="200dp"
+        android:layout_height="240dp"
+        app:cardCornerRadius="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/purchaseThemeRL"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="35dp">
+
+                <ImageView
+                    android:id="@+id/livePurchseThemeImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/maduridixit" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:id="@+id/purchaseThemeClcokImg"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:scaleType="centerCrop"
+                        android:layout_marginStart="5dp"
+                        android:layout_centerVertical="true"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:id="@+id/liveValidityTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_toRightOf="@+id/purchaseThemeClcokImg"
+                        android:fontFamily="sans-serif-medium"
+                        android:singleLine="true"
+                        android:text="7 days"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/purchaseThemeTestDriveImg"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:scaleType="centerCrop"
+                        android:layout_marginStart="5dp"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/scan"
+                        app:tint="@color/white"
+                        android:layout_marginEnd="5dp"
+                      />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/liveThemePriceTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:singleLine="true"
+                    android:text="6099 Coins"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/liveThemeBuyRl"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_alignParentBottom="true"
+                android:weightSum="2"
+                android:gravity="center"
+                android:background="@color/app_dark_color">
+
+                <TextView
+                    android:id="@+id/liveThemeBuyTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Buy"
+
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/liveSendThemeTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Send"
+
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

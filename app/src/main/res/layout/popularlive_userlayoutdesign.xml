@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="170dp"
+    android:elevation="20dp"
+    android:layout_marginBottom="20dp"
+    android:layout_marginHorizontal="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <com.google.android.material.imageview.ShapeableImageView
+      android:id="@+id/image_view"
+      android:layout_height="match_parent"
+      android:layout_width="match_parent"
+      android:scaleType="centerCrop"
+      android:src="@drawable/maduridixit"
+      android:adjustViewBounds="true"
+      app:shapeAppearance="@style/CornerCut"/>
+
+  <RelativeLayout
+      android:layout_width="40dp"
+      android:layout_height="18dp"
+      android:layout_alignParentEnd="true"
+      android:background="@drawable/trasparentlayout"
+      android:elevation="10dp"
+      android:layout_margin="10dp">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+      <androidx.appcompat.widget.AppCompatTextView
+          android:id="@+id/fireText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="22"
+          android:layout_marginTop="2dp"
+          android:fontFamily="@font/poppins_medium"
+          android:textSize="8sp"
+          android:textColor="@color/white"/>
+      <androidx.appcompat.widget.AppCompatImageView
+          android:layout_width="12dp"
+          android:layout_height="12dp"
+          android:layout_toRightOf="@id/fireText"
+          android:layout_marginStart="5dp"
+          android:layout_centerVertical="true"
+          android:src="@drawable/fireicon"/>
+    </RelativeLayout>
+  </RelativeLayout>
+  
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_marginHorizontal="15dp"
+      android:layout_marginBottom="10dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/nameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Himanshi Khurana"
+        android:textColor="@color/white"
+        android:layout_centerVertical="true"
+        android:textSize="12sp"
+        android:singleLine="true"
+        android:layout_marginEnd="30dp"
+        android:layout_toStartOf="@+id/layout"
+        android:fontFamily="@font/poppins_regular"/>
+      <RelativeLayout
+          android:id="@+id/layout"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentEnd="true"
+         android:paddingHorizontal="5dp"
+          android:paddingVertical="4dp"
+          android:background="@drawable/cornerradiusdesign">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/starIcon"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/staricon"/>
+         <androidx.appcompat.widget.AppCompatTextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="50"
+             android:textSize="8sp"
+             android:layout_marginStart="5dp"
+             android:layout_marginTop="2dp"
+             android:layout_toRightOf="@+id/starIcon"
+             android:fontFamily="@font/poppins_medium"
+             android:textColor="@color/white"/>
+      </RelativeLayout>
+  </RelativeLayout>
+
+</RelativeLayout>
