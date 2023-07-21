@@ -62,6 +62,7 @@ import com.bango.bangoLive.AudioRoom.MODEL.AdminFirebaseRoot;
 import com.bango.bangoLive.AudioRoom.MODEL.ChatMessageModel;
 import com.bango.bangoLive.AudioRoom.MODEL.OtherUserDataModel;
 import com.bango.bangoLive.ViewModel.ApiViewModel;
+import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatFunctions;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.model.MessageModel;
 import com.bango.bangoLive.adapters.LocalAddedAdapter;
 import com.bango.bangoLive.adapters.MusicRVAdapter;
@@ -116,9 +117,6 @@ import com.tapadoo.alerter.Alerter;
 import com.zegocloud.uikit.prebuilt.liveaudioroom.ZegoUIKitPrebuiltLiveAudioRoomConfig;
 import com.zegocloud.uikit.service.defines.ZegoScenario;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
@@ -151,8 +149,12 @@ import im.zego.zegoexpress.entity.ZegoPlayerConfig;
 import im.zego.zegoexpress.entity.ZegoRoomConfig;
 import im.zego.zegoexpress.entity.ZegoStream;
 import im.zego.zegoexpress.entity.ZegoUser;
+import im.zego.zim.entity.ZIMMessageSendConfig;
+import im.zego.zim.entity.ZIMPushConfig;
+import im.zego.zim.entity.ZIMTextMessage;
+import im.zego.zim.enums.ZIMMessagePriority;
 
-public class CallActivity extends AppCompatActivity  implements GiftBottomSheetFragment.GetLuckyGift {
+public class CallActivity extends AppCompatActivity implements GiftBottomSheetFragment.GetLuckyGift {
 
     ActivityCallBinding binding;
 
@@ -162,7 +164,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
     private AdvancedWebView mWebView;
     private Dialog loading_box;
     public static String gameLink = "";
-     public  boolean isHostStatus = false;
+    public boolean isHostStatus = false;
 
 
     private RecyclerView musicRv;
@@ -200,12 +202,12 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
     private String mutevalueOfUSer = "1";
     private String liveHostBackImg = "";
     private Long currentTimeStamp;
-    static String authToken,other;
+    static String authToken, other;
 
-  //  UserJoinedAdapter userJoinedAdapter;
+    //  UserJoinedAdapter userJoinedAdapter;
 
-    String status="";
-    String musictime,profileUniqueId,liveTitle,liveId,profileName,profileId,profileImageSave,profileImage,roomID,otherUserId,liveStatus,coverImage,coverName;
+    String status = "";
+    String musictime, profileUniqueId, liveTitle, liveId, profileName, profileId, profileImageSave, profileImage, roomID, otherUserId, liveStatus, coverImage, coverName;
     String adminId = "", adminIdThroughCallback = "";
     Boolean host = false;
     ImageView playMusicDialogImg;
@@ -236,22 +238,21 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivityCallBinding.inflate(getLayoutInflater());
-        View view=binding.getRoot();
+        binding = ActivityCallBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
         setContentView(view);
 
         //Set Full Screen Background Window
         CallActivity.this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        String[] permissionNeeded = {
-                "android.permission.RECORD_AUDIO"};
+        String[] permissionNeeded = {"android.permission.RECORD_AUDIO"};
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, "android.permission.RECORD_AUDIO") != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(permissionNeeded, 101);
             }
         }
-        zegoExpressEngine = ((App)getApplication()).getExpressService().getEngine();
-       // startListenEvent();
+        zegoExpressEngine = ((App) getApplication()).getExpressService().getEngine();
+        // startListenEvent();
 
         /************************** APP DATABASE **************************/
         appDatabase = AppDatabase.getInstance(CallActivity.this);
@@ -260,18 +261,18 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         sharedpreferences = this.getSharedPreferences("Bango", Context.MODE_PRIVATE);
 
         /************************** GET DATA THROUGH INTENT **************************/
-        host = getIntent().getBooleanExtra("host",false);
+        host = getIntent().getBooleanExtra("host", false);
 
         if (host) {
             roomID = getIntent().getStringExtra("roomID");
             liveTitle = getIntent().getStringExtra("liveTitle");
-            liveId=getIntent().getStringExtra("liveId");
+            liveId = getIntent().getStringExtra("liveId");
 
-            profileName = sharedpreferences.getString("name","");
-            profileId = sharedpreferences.getString("id","");
-            profileImageSave=sharedpreferences.getString("profileImage","");
+            profileName = sharedpreferences.getString("name", "");
+            profileId = sharedpreferences.getString("id", "");
+            profileImageSave = sharedpreferences.getString("profileImage", "");
             profileImage = getIntent().getStringExtra("profileImage");
-          //  profileName = getIntent().getStringExtra("profileName");
+            //  profileName = getIntent().getStringExtra("profileName");
             profileUniqueId = getIntent().getStringExtra("profileUniqueId");
             status = getIntent().getStringExtra("status");
             liveType = getIntent().getStringExtra("liveType");
@@ -295,14 +296,13 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
             binding.hostName.setText(profileName);
             Picasso.with(this).load(coverImage).error(R.drawable.actress).into(binding.imgProfileuser);
             Picasso.with(this).load(profileImage).error(R.drawable.actress).into(binding.imgHostProfile);
-        }
-        else {
+        } else {
             roomID = getIntent().getStringExtra("roomID");
             liveTitle = getIntent().getStringExtra("liveTitle");
-            liveId=getIntent().getStringExtra("liveId");
-           other=getIntent().getStringExtra("otherUserId");
-            profileName = sharedpreferences.getString("name","");
-            profileId = sharedpreferences.getString("id","");
+            liveId = getIntent().getStringExtra("liveId");
+            other = getIntent().getStringExtra("otherUserId");
+            profileName = sharedpreferences.getString("name", "");
+            profileId = sharedpreferences.getString("id", "");
             profileImage = getIntent().getStringExtra("profileImage");
             profileName = getIntent().getStringExtra("profileName");
             profileUniqueId = getIntent().getStringExtra("profileUniqueId");
@@ -321,7 +321,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
             FirebaseHelper.giftsListener(roomID, giftsEventListener);
             getMultiLiveRequest();
 
-            loginRoom(profileId,profileName,roomID, host);
+            loginRoom(profileId, profileName, roomID, host);
 
             binding.txtUserName.setText(liveTitle);
             binding.txtId.setText(profileUniqueId);
@@ -333,8 +333,8 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         }
 
         if (profileId.equalsIgnoreCase(roomID)) {
-            loginRoom(profileId,profileName,roomID,false);
-        }else {
+            loginRoom(profileId, profileName, roomID, false);
+        } else {
 
         }
         liveHostBackImg = getIntent().getStringExtra("roomID");
@@ -350,9 +350,9 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         data.put("otherUserId", profileId);
         new ApiViewModel().someFunctionality(this, data).observe(this, otherUserDataModel -> {
             if (otherUserDataModel.getStatus().equalsIgnoreCase("1")) {
-                if (otherUserDataModel.getDetails()!=null) {
+                if (otherUserDataModel.getDetails() != null) {
                     authToken = otherUserDataModel.getDetails().getAuthToken();
-                    Log.d("Authtoken","authhhh: "+authToken);
+                    Log.d("Authtoken", "authhhh: " + authToken);
                 }
             }
 
@@ -369,25 +369,24 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         });
 
 
-
         /************************** SET AUDIO EFFECT PLAYER **************************/
-            audioEffectPlayer = ((App)getApplication()).getExpressService().getEngine().createAudioEffectPlayer();
-            /************************** GIFT ICON CLICK OPEN A GIFT FRAGMENT **************************/
-            binding.giftIcon.setOnClickListener(v -> {
-                 GiftBottomSheetFragment giftBottomSheetFragment = new GiftBottomSheetFragment(roomID);
-                 giftBottomSheetFragment.show(getSupportFragmentManager(), giftBottomSheetFragment.getTag());
-            });
+        audioEffectPlayer = ((App) getApplication()).getExpressService().getEngine().createAudioEffectPlayer();
+        /************************** GIFT ICON CLICK OPEN A GIFT FRAGMENT **************************/
+        binding.giftIcon.setOnClickListener(v -> {
+            GiftBottomSheetFragment giftBottomSheetFragment = new GiftBottomSheetFragment(roomID);
+            giftBottomSheetFragment.show(getSupportFragmentManager(), giftBottomSheetFragment.getTag());
+        });
 
         /************************** OPEN A LIVE LEADERBOARD FRAGMENT **************************/
         binding.leaderBoardTropy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CallActivity.this, "liveId :- "+liveId, Toast.LENGTH_SHORT).show();
+                Toast.makeText(CallActivity.this, "liveId :- " + liveId, Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("liveId", liveId);
                 AudioRoomLeaderBoardFragment audioRoomLeaderBoardFragment = new AudioRoomLeaderBoardFragment();
                 audioRoomLeaderBoardFragment.setArguments(bundle);
-                audioRoomLeaderBoardFragment.show(getSupportFragmentManager(),audioRoomLeaderBoardFragment.getTag());
+                audioRoomLeaderBoardFragment.show(getSupportFragmentManager(), audioRoomLeaderBoardFragment.getTag());
             }
         });
 
@@ -395,19 +394,27 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         binding.musicPlayCirImg.setOnClickListener(v -> playMusicDialogBox());
 
         /************************** MENU ICON CLICK ROOM **************************/
-        binding.moreIcon.setOnClickListener(v -> { menuDialogBox();});
+        binding.moreIcon.setOnClickListener(v -> {
+            menuDialogBox();
+        });
 
         /************************** BROAD SWITCH ICON **************************/
-        binding.switchIcon.setOnClickListener(v -> {onBackPressed();});
+        binding.switchIcon.setOnClickListener(v -> {
+            onBackPressed();
+        });
 
         /************************** EMOJI LISTENER ICON **************************/
-        binding.callEmojiLinearLayout.setOnClickListener(v -> {emojiBottomSheet();});
+        binding.callEmojiLinearLayout.setOnClickListener(v -> {
+            emojiBottomSheet();
+        });
 
         /************************** GAMES LISTENER ICON **************************/
-        binding.gamesIcon.setOnClickListener(v -> {gamesDialogBox();});
+        binding.gamesIcon.setOnClickListener(v -> {
+            gamesDialogBox();
+        });
 
 
-        if (roomID.equalsIgnoreCase(profileId)){
+        if (roomID.equalsIgnoreCase(profileId)) {
             HashMap<String, String> liveUserHs = new HashMap<>();
             liveUserHs.put("liveId", liveId);
             liveUserHs.put("hostId", profileId);
@@ -440,6 +447,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -455,11 +463,12 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                         goLiveModelClass.setUserID(snapshot1.child("adminId").getValue().toString());
                         goLiveModelClass.setAdminStatus(true);
                         goLiveModelClass.setName(snapshot1.child("adminName").getValue().toString());
-                       // inviteAudienceList.add(goLiveModelClass);
+                        // inviteAudienceList.add(goLiveModelClass);
                     }
                 } else {
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -479,17 +488,17 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                         String emojiSenderImg = snapshot.child("emojiSenderImg").getValue().toString();
                         String status = snapshot.child("status").getValue().toString();
                         String giftStatus;
-                        if (!snapshot.child("giftStatus").getValue().toString().isEmpty()){
-                            giftStatus=snapshot.child("giftStatus").getValue().toString();
-                        }else {
-                            giftStatus="2";
+                        if (!snapshot.child("giftStatus").getValue().toString().isEmpty()) {
+                            giftStatus = snapshot.child("giftStatus").getValue().toString();
+                        } else {
+                            giftStatus = "2";
                         }
 
 //                        binding.giftSendUserId.setText(emojiSenderId);
 //                        binding.giftSendUserName.setText(emojiSenderName);
                         if (emojiSenderId.equalsIgnoreCase(roomID) && status.equalsIgnoreCase("0")) {
 
-                            if (giftStatus.equalsIgnoreCase("1")){
+                            if (giftStatus.equalsIgnoreCase("1")) {
 //                                binding.globaGiftAnimation.startAnimation(animation2);
 //                                binding.globaGiftAnimation.setVisibility(View.VISIBLE);
                                 try { // new URL needs try catch.
@@ -509,7 +518,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                                                     binding.muCarsRVImagee.stopAnimation();
                                                     binding.muCarsRVImagee.setVisibility(View.GONE);
                                                 }
-                                            },14000);
+                                            }, 14000);
                                         }
 
                                         @Override
@@ -520,7 +529,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                                 } catch (MalformedURLException e) {
                                     e.printStackTrace();
                                 }
-                            }else {
+                            } else {
                                 Glide.with(getApplicationContext()).load(emojiImg).into(binding.emojiShowImg);
                                 binding.emojiShowImg.setVisibility(View.VISIBLE);
                                 new Handler().postDelayed(() -> binding.emojiShowImg.setVisibility(View.GONE), 5000);
@@ -532,9 +541,9 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                             MultiLiveAudioAdapter.userId = emojiSenderId;
                             MultiLiveAudioAdapter.emoji = emojiImg;
                             MultiLiveAudioAdapter.hostId = roomID;
-                             multiLiveAudioAdapter.notifyDataSetChanged();
+                            multiLiveAudioAdapter.notifyDataSetChanged();
                         } else {
-                            if (giftStatus.equalsIgnoreCase("1")){
+                            if (giftStatus.equalsIgnoreCase("1")) {
 //                                binding.globaGiftAnimation.startAnimation(animation2);
 //                                binding.globaGiftAnimation.setVisibility(View.VISIBLE);
                                 try { // new URL needs try catch.
@@ -554,7 +563,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                                                     binding.muCarsRVImagee.stopAnimation();
                                                     binding.muCarsRVImagee.setVisibility(View.GONE);
                                                 }
-                                            },14000);
+                                            }, 14000);
                                         }
 
                                         @Override
@@ -565,7 +574,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                                 } catch (MalformedURLException e) {
                                     e.printStackTrace();
                                 }
-                            }else {
+                            } else {
                                 binding.liveShowEmojiImg.setVisibility(View.VISIBLE);
                                 Glide.with(getApplicationContext()).load(emojiImg).into(binding.liveShowEmojiImg);
                                 new Handler().postDelayed(() -> binding.liveShowEmojiImg.setVisibility(View.GONE), 2000);
@@ -577,6 +586,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                 } else {
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -617,6 +627,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                     onVoiceMuteClicked(binding.imgMuteMic, "");
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -624,7 +635,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 
         currentTimeStamp = getCurrentTimeStamp();
 
-        loginRoom(profileId,profileName,roomID,false);
+        loginRoom(profileId, profileName, roomID, false);
 
     }
 
@@ -669,62 +680,62 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         LinearLayout dragonCard = dialog_share.findViewById(R.id.card);
 
         greddyBox.setOnClickListener(v -> {
-            Log.d("AuthToken","AuthToken"+authToken);
-            StringBuffer buffer=new StringBuffer("https://d1irpl18x20qhe.cloudfront.net/bango/greedy-box/index.html");
-            buffer.append("?token="+ URLEncoder.encode(authToken.substring(1,authToken.length()-1)));
-            buffer.append("&lang="+URLEncoder.encode("en"));
+            Log.d("AuthToken", "AuthToken" + authToken);
+            StringBuffer buffer = new StringBuffer("https://d1irpl18x20qhe.cloudfront.net/bango/greedy-box/index.html");
+            buffer.append("?token=" + URLEncoder.encode(authToken.substring(1, authToken.length() - 1)));
+            buffer.append("&lang=" + URLEncoder.encode("en"));
             gameLink = buffer.toString();
             dialog_share.dismiss();
             openDialog();
-         //   startActivity(new Intent(this, GameScreenActivity.class));
+            //   startActivity(new Intent(this, GameScreenActivity.class));
         });
 
         greedy.setOnClickListener(v -> {
-            StringBuffer buffer=new StringBuffer("https://d1irpl18x20qhe.cloudfront.net/bango/kitty-cat-half/index.html");
-            buffer.append("?token="+ URLEncoder.encode(authToken.substring(1,authToken.length()-1)));
-            buffer.append("&lang="+URLEncoder.encode("en"));
+            StringBuffer buffer = new StringBuffer("https://d1irpl18x20qhe.cloudfront.net/bango/kitty-cat-half/index.html");
+            buffer.append("?token=" + URLEncoder.encode(authToken.substring(1, authToken.length() - 1)));
+            buffer.append("&lang=" + URLEncoder.encode("en"));
             GameScreenActivity.gameLink = buffer.toString();
-            Log.d("TAG", "onClick: "+GameScreenActivity.gameLink);
+            Log.d("TAG", "onClick: " + GameScreenActivity.gameLink);
             dialog_share.dismiss();
             openDialog();
 
         });
 
         neon.setOnClickListener(v -> {
-            StringBuffer buffer=new StringBuffer("https://d1irpl18x20qhe.cloudfront.net/bango/bar7-half/index.html");
-            buffer.append("?token="+ URLEncoder.encode(authToken.substring(1,authToken.length()-1)));
-            buffer.append("&lang="+URLEncoder.encode("en"));
+            StringBuffer buffer = new StringBuffer("https://d1irpl18x20qhe.cloudfront.net/bango/bar7-half/index.html");
+            buffer.append("?token=" + URLEncoder.encode(authToken.substring(1, authToken.length() - 1)));
+            buffer.append("&lang=" + URLEncoder.encode("en"));
             GameScreenActivity.gameLink = buffer.toString();
-            Log.d("TAG", "onClick: "+GameScreenActivity.gameLink);
+            Log.d("TAG", "onClick: " + GameScreenActivity.gameLink);
             dialog_share.dismiss();
             openDialog();
         });
 
         lucky.setOnClickListener(v -> {
 
-            StringBuffer buffer=new StringBuffer("https://d1irpl18x20qhe.cloudfront.net/bango/luck77-half/index.html");
-            buffer.append("?token="+ URLEncoder.encode(authToken.substring(1,authToken.length()-1)));
-            buffer.append("&lang="+URLEncoder.encode("en"));
+            StringBuffer buffer = new StringBuffer("https://d1irpl18x20qhe.cloudfront.net/bango/luck77-half/index.html");
+            buffer.append("?token=" + URLEncoder.encode(authToken.substring(1, authToken.length() - 1)));
+            buffer.append("&lang=" + URLEncoder.encode("en"));
             GameScreenActivity.gameLink = buffer.toString();
-            Log.d("TAG", "onClick: "+GameScreenActivity.gameLink);
+            Log.d("TAG", "onClick: " + GameScreenActivity.gameLink);
             dialog_share.dismiss();
             openDialog();
 
         });
 
         dragonCard.setOnClickListener(v -> {
-            StringBuffer buffer=new StringBuffer("https://d1irpl18x20qhe.cloudfront.net/bango/dragon-tiger/index.html");
-            buffer.append("?token="+ URLEncoder.encode(authToken.substring(1,authToken.length()-1)));
-            buffer.append("&lang="+URLEncoder.encode("en"));
+            StringBuffer buffer = new StringBuffer("https://d1irpl18x20qhe.cloudfront.net/bango/dragon-tiger/index.html");
+            buffer.append("?token=" + URLEncoder.encode(authToken.substring(1, authToken.length() - 1)));
+            buffer.append("&lang=" + URLEncoder.encode("en"));
             GameScreenActivity.gameLink = buffer.toString();
-            Log.d("TAG", "onClick: "+GameScreenActivity.gameLink);
+            Log.d("TAG", "onClick: " + GameScreenActivity.gameLink);
             dialog_share.dismiss();
             openDialog();
         });
 
     }
 
-    void openDialog(){
+    void openDialog() {
 
         Dialog gamesShow = new Dialog(this);
         gamesShow.setContentView(R.layout.gamesshowdesign);
@@ -734,7 +745,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         window2.setGravity(Gravity.BOTTOM);
         gamesShow.show();
         window2.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        mWebView =gamesShow.findViewById(R.id.webview);
+        mWebView = gamesShow.findViewById(R.id.webview);
         mWebView.setListener(this, new AdvancedWebView.Listener() {
             @Override
             public void onPageStarted(String url, Bitmap favicon) {
@@ -779,15 +790,15 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 
     }
 
-        private void openLoadingBox() {
-            loading_box = new Dialog(this);
-            loading_box.setContentView(R.layout.loading_box);
-            loading_box.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            loading_box.setCanceledOnTouchOutside(false);
-            loading_box.setCancelable(false);
-            Window window = loading_box.getWindow();
-            window.setGravity(Gravity.CENTER);
-            loading_box.show();
+    private void openLoadingBox() {
+        loading_box = new Dialog(this);
+        loading_box.setContentView(R.layout.loading_box);
+        loading_box.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        loading_box.setCanceledOnTouchOutside(false);
+        loading_box.setCancelable(false);
+        Window window = loading_box.getWindow();
+        window.setGravity(Gravity.CENTER);
+        loading_box.show();
 
     }
 
@@ -799,13 +810,14 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                     if (snapshot.exists()) {
                         binding.progressImg.cancelAnimation();
                         binding.progressImg.setVisibility(View.GONE);
-                        App.getSharedpref().saveString("theme",snapshot.getValue().toString());
+                        App.getSharedpref().saveString("theme", snapshot.getValue().toString());
                         Picasso.with(getApplicationContext()).load(snapshot.getValue().toString()).error(R.drawable.themeblack).into(binding.imgBackground);
 //                        Glide.with(getApplicationContext()).load(snapshot.getValue().toString()).error(R.drawable.themeblack).into(binding.imgBackground);
                     } else {
                         binding.imgBackground.setImageResource(R.drawable.themeblack);
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
@@ -856,11 +868,11 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
     private void sendCustomeMessage(String mess, String s) {
         ChatMessageModel chatMessageModel = new ChatMessageModel();
         //sumit
-       // chatMessageModel.setGift(gift);
+        // chatMessageModel.setGift(gift);
         chatMessageModel.setImage(profileImageSave);
         chatMessageModel.setKey(ref.push().getKey());
         chatMessageModel.setMessage(mess);
-        chatMessageModel.setName(sharedpreferences.getString("name","") );
+        chatMessageModel.setName(sharedpreferences.getString("name", ""));
         chatMessageModel.setUserId(profileId);
         chatMessageModel.setAnnouncement("0");
         chatMessageModel.setTimeStamp(getCurrentTimeStamp());
@@ -873,7 +885,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         chatMessageModel.setImage(profileImageSave);
         chatMessageModel.setKey(ref.push().getKey());
         chatMessageModel.setMessage("joined Stream");
-        chatMessageModel.setName(sharedpreferences.getString("name",""));
+        chatMessageModel.setName(sharedpreferences.getString("name", ""));
         chatMessageModel.setUserId(profileId);
         chatMessageModel.setTimeStamp(getCurrentTimeStamp());
         sendMessage(chatMessageModel, chatMessageModel.getKey());
@@ -881,6 +893,21 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 
     private void sendMessage(ChatMessageModel chatMessageModel, String key) {
         ref.child(otherUserId).child(liveType).child(otherUserId).child("chat comments").child(key).setValue(chatMessageModel);
+
+        ZIMTextMessage zimMessage = new ZIMTextMessage();
+        zimMessage.message = "Message content";
+
+        ZIMMessageSendConfig config = new ZIMMessageSendConfig();
+// Set priority for the message. 1: Low (by default). 2: Medium. 3: High.
+        config.priority = ZIMMessagePriority.LOW;
+// Set the offline push notificaition config.
+        ZIMPushConfig pushConfig = new ZIMPushConfig();
+        pushConfig.title = "Title of the offline push";
+        pushConfig.content = "Content of the offline push";
+        // pushConfig.extendedData = "Extended info of the offline push";
+        config.pushConfig = pushConfig;
+
+        ChatFunctions.sendMessage("hgjjh", zimMessage, pushConfig, config);
     }
 
 
@@ -890,7 +917,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                   // chatMessages.clear();
+                    // chatMessages.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         ChatMessageModel chatMessageModel = dataSnapshot.getValue(ChatMessageModel.class);
                         if (chatMessageModel.getTimeStamp() != null) {
@@ -903,15 +930,14 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                             chatMessageModels.setImage(profileImageSave);
                             chatMessageModels.setKey(ref.push().getKey());
                             chatMessageModels.setMessage("Welcome To Bango Live Stream");
-                            chatMessageModels.setName(sharedpreferences.getString("name",""));
+                            chatMessageModels.setName(sharedpreferences.getString("name", ""));
                             chatMessageModels.setUserId(profileId);
 //                          sendMessage(chatMessageModel, chatMessageModel.getKey());
                             chatMessages.add(chatMessageModels);
                         }
                     }
 
-                    if (chatMessages!=null)
-                    {
+                    if (chatMessages != null) {
                         binding.recyclerAllMessage.scrollToPosition(chatMessages.size() - 1);
                     }
                     commentAdapter.notifyDataSetChanged();
@@ -930,7 +956,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         chatMessageModel.setImage(profileImageSave);
         chatMessageModel.setKey(ref.push().getKey());
         chatMessageModel.setMessage("Welcome To Bango Live Stream");
-        chatMessageModel.setName(sharedpreferences.getString("name",""));
+        chatMessageModel.setName(sharedpreferences.getString("name", ""));
         chatMessageModel.setUserId(profileId);
 
         sendMessage(chatMessageModel, chatMessageModel.getKey());
@@ -941,13 +967,13 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         HashMap<String, Object> data = new HashMap<>();
         if (!isMute) {
             isMute = true;
-           // rtcEngine.muteLocalAudioStream(true);
+            // rtcEngine.muteLocalAudioStream(true);
             zegoExpressEngine.mutePublishStreamAudio(true);
             data.put("mute", "0");
         } else {
             isMute = false;
             data.put("mute", "1");
-         //   rtcEngine.muteLocalAudioStream(false);
+            //   rtcEngine.muteLocalAudioStream(false);
             zegoExpressEngine.mutePublishStreamAudio(false);
             ref.child(otherUserId).child(liveType).child(otherUserId).child("multiLiveRequest").child(profileId).updateChildren(data);
         }
@@ -959,6 +985,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
             iv.setImageResource(R.drawable.ic_baseline_mic_24);
         }
     }
+
     private Long getCurrentTimeStamp() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         System.out.println(timestamp.getTime());
@@ -980,7 +1007,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                 binding.llOption.setVisibility(View.GONE);
                 binding.rlGiftHeart.setVisibility(View.VISIBLE);
                 binding.rlGift.setVisibility(View.GONE);
-              //  getMultiLiveRequestStatus();
+                //  getMultiLiveRequestStatus();
             }
         } else {
             binding.rlMultiLiveRequest.setVisibility(View.GONE);
@@ -991,22 +1018,22 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
             }
             GoLiveModelClass goLiveModelClass = new GoLiveModelClass();
             goLiveModelClass.setUserID(profileId);
-            goLiveModelClass.setImage(sharedpreferences.getString("name",""));
+            goLiveModelClass.setImage(sharedpreferences.getString("name", ""));
             goLiveModelClass.setLiveStatus(liveStatus);
-            goLiveModelClass.setName(sharedpreferences.getString("name",""));
+            goLiveModelClass.setName(sharedpreferences.getString("name", ""));
             goLiveModelClass.setLiveType(liveType);
             goLiveModelClass.setLive(true);
             ref.child(profileId).child(liveType).child(profileId).child("hostLiveInfo").setValue(goLiveModelClass);
 //          binding.llOption.setVisibility(View.VISIBLE); this is for all requst this will show for host only
             binding.rlGiftHeart.setVisibility(View.GONE);
             sendWelcomeMessageFirebase();
-           // inviteAudienceList.add(goLiveModelClass);
+            // inviteAudienceList.add(goLiveModelClass);
         }
         if (liveStatus == "host") {
-          //  exitLiveStream();
+            //  exitLiveStream();
         }
         //sumit
- //       getViewerListFirebase();
+        //       getViewerListFirebase();
 //        getHeart();
 //        getGift();
         commentAdapter = new CommentAdapter(this, chatMessages);
@@ -1049,7 +1076,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 //        joinChannel(getChannelName, config().mUid, getAccessToken);
 //        optional();
         binding.rlHeart.setOnClickListener(view -> {
-           // sendFlyingHeartInFirebase();
+            // sendFlyingHeartInFirebase();
         });
 
         binding.edtMessage.setOnClickListener(view -> {
@@ -1057,15 +1084,15 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         });
 
         binding.rlGift.setOnClickListener(view -> {
-          //  openGiftDialog();
+            //  openGiftDialog();
         });
 
         binding.rlEmojiGift.setOnClickListener(v -> {
-           // setEmojiGifts();
+            // setEmojiGifts();
         });
 
         binding.rlMultiLiveRequest.setOnClickListener(view -> {
-           // openRequestMultiLiveDialog();
+            // openRequestMultiLiveDialog();
         });
 
         binding.rlSendMessage.setOnClickListener(view -> {
@@ -1118,7 +1145,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                                 }
                                 if (!isSlotAvailable) {
                                     //sumit
-                                   // openRequestDialogForMultiLive(goLiveModelClass);
+                                    // openRequestDialogForMultiLive(goLiveModelClass);
                                 }
                             }
                             requestMultiLiveList.add(goLiveModelClass);
@@ -1126,7 +1153,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 
                             liveJoinedUserList.add(goLiveModelClass);
 
-                            Toast.makeText(CallActivity.this, "sumitsumit ;-"+ goLiveModelClass.getRequestStatus(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CallActivity.this, "sumitsumit ;-" + goLiveModelClass.getRequestStatus(), Toast.LENGTH_SHORT).show();
 
                             //empty postion method on the seat
                             if (goLiveModelClass.getSeatPosition() != null) {
@@ -1141,7 +1168,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                                 //for mute host to another users
                                 if (goLiveModelClass.getMute().equalsIgnoreCase("0")) {
                                     zegoExpressEngine.muteLocalAudioMixing(true);
-                                  //  rtcEngine().muteLocalAudioStream(true);
+                                    //  rtcEngine().muteLocalAudioStream(true);
 //                                    muteMicRef.child(liveHostBackImg).child(goLiveModelClass.getUserID()).child("status").setValue("0");
                                     muteMicRef.child(roomID).child(goLiveModelClass.getUserID()).setValue("0");
                                     binding.imgMuteMic.setImageResource(R.drawable.ic_baseline_mic_off_24);
@@ -1149,7 +1176,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 
                                 } else {
                                     zegoExpressEngine.muteLocalAudioMixing(false);
-                                   // rtcEngine().muteLocalAudioStream(false);
+                                    // rtcEngine().muteLocalAudioStream(false);
 //                                  muteMicRef.child(liveHostBackImg).child(goLiveModelClass.getUserID()).child("status").setValue("1");
                                     muteMicRef.child(roomID).child(goLiveModelClass.getUserID()).setValue("1");
                                     binding.imgMuteMic.setImageResource(R.drawable.ic_baseline_mic_24);
@@ -1163,7 +1190,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 //                        userJoinedAdapter.notifyDataSetChanged();
 //                    }
                     if (multiLiveAudioAdapter != null) {
-                         multiLiveAudioAdapter.notifyDataSetChanged();
+                        multiLiveAudioAdapter.notifyDataSetChanged();
                     }
 //                    if (!liveStatus.equalsIgnoreCase("host")) {
 //                        setRequestListAdapter(requestMultiLiveList);
@@ -1196,7 +1223,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
             public void setOnUserKickListener(GoLiveModelClass goLiveModelClass, String admin) {
                 checkAdmin();
                 if (profileId.equalsIgnoreCase(otherUserId) || admin.equalsIgnoreCase(profileId)) {
-                   // openKickDialog(goLiveModelClass);
+                    // openKickDialog(goLiveModelClass);
                 } else if (profileId.equalsIgnoreCase(goLiveModelClass.getUserID())) {
                 }
             }
@@ -1233,8 +1260,8 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 //                    sendRequestForMultiLive(position,position);
                 } else {
                     isHostStatus = true;
-                    Toast.makeText(CallActivity.this, ""+isHostStatus, Toast.LENGTH_SHORT).show();
-                    sendRequestForMultiLive(position, "",goLiveModelClass.getName());
+                    Toast.makeText(CallActivity.this, "" + isHostStatus, Toast.LENGTH_SHORT).show();
+                    sendRequestForMultiLive(position, "", goLiveModelClass.getName());
                 }
 
             }
@@ -1247,7 +1274,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
             @Override
             public void inviteForSeat(String position) {
 
-              //  inviteAudienceDialogBox(position);
+                //  inviteAudienceDialogBox(position);
 
             }
         });
@@ -1264,9 +1291,9 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         bottomSheetDialog.setContentView(profileBottomSheetBinding.getRoot());
         bottomSheetDialog.show();
 //sumit
-    //    profileBottomSheetBinding.sendGiftsBottomSheetLl.setOnClickListener(view -> openGiftDialog());
+        //    profileBottomSheetBinding.sendGiftsBottomSheetLl.setOnClickListener(view -> openGiftDialog());
 
-     //   profileBottomSheetBinding.inviteUserLineayout.setOnClickListener(view -> inviteAudienceRef.child(roomID).child(goLiveModelClass.getUserID()).setValue("0"));
+        //   profileBottomSheetBinding.inviteUserLineayout.setOnClickListener(view -> inviteAudienceRef.child(roomID).child(goLiveModelClass.getUserID()).setValue("0"));
 
         profileBottomSheetBinding.otherUserDialogOpenProfileRL.setOnClickListener(view -> {
             App.getSharedpref().saveString("userCheck", goLiveModelClass.getUserID());
@@ -1361,6 +1388,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                                 profileBottomSheetBinding.liveProfileAdminLyout.setVisibility(View.GONE);
                             }
                         }
+
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
                         }
@@ -1508,17 +1536,16 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 //        });
 
         //sumit
-     //   profileBottomSheetBinding.blockUserImg.setOnClickListener(view -> blockUserAlertBox(goLiveModelClass));
+        //   profileBottomSheetBinding.blockUserImg.setOnClickListener(view -> blockUserAlertBox(goLiveModelClass));
         profileBottomSheetBinding.txtName.setText(goLiveModelClass.getName());
 //        profileBottomSheetBinding.txtUserName.setText(goLiveModelClass.getUserName());
 
         //Sumit
-        getUserDetailApi(goLiveModelClass.getUserID(), profileBottomSheetBinding.liveIdProfileFollowTv,
-                profileBottomSheetBinding.userIdAndCountry, profileBottomSheetBinding.followUnfollowImg, profileBottomSheetBinding.bottomProfileAgeTv, profileBottomSheetBinding.bottomProfileGenderImg,profileBottomSheetBinding.anchorimg,profileBottomSheetBinding.vipImage);
+        getUserDetailApi(goLiveModelClass.getUserID(), profileBottomSheetBinding.liveIdProfileFollowTv, profileBottomSheetBinding.userIdAndCountry, profileBottomSheetBinding.followUnfollowImg, profileBottomSheetBinding.bottomProfileAgeTv, profileBottomSheetBinding.bottomProfileGenderImg, profileBottomSheetBinding.anchorimg, profileBottomSheetBinding.vipImage);
 
-     //   getAppliedFrameApi(goLiveModelClass.getUserID(), profileBottomSheetBinding.liveBottomProfieFrame);
+        //   getAppliedFrameApi(goLiveModelClass.getUserID(), profileBottomSheetBinding.liveBottomProfieFrame);
 
-    //    profileBottomSheetBinding.liveProfileKickOuttLyout.setOnClickListener(view -> openKickDialog(goLiveModelClass));
+        //    profileBottomSheetBinding.liveProfileKickOuttLyout.setOnClickListener(view -> openKickDialog(goLiveModelClass));
 
         if (muteUsers.contains(goLiveModelClass.getUserID())) {
             profileBottomSheetBinding.txtMute.setText("UnMute");
@@ -1530,14 +1557,13 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                 Toast.makeText(CallActivity.this, "You can't follow yourself", Toast.LENGTH_SHORT).show();
             } else {
                 //sumit
-               // followUnfollowUser(goLiveModelClass.getUserID(), profileBottomSheetBinding.followUnfollowImg, profileBottomSheetBinding.liveIdProfileFollowTv);
+                // followUnfollowUser(goLiveModelClass.getUserID(), profileBottomSheetBinding.followUnfollowImg, profileBottomSheetBinding.liveIdProfileFollowTv);
             }
 
         });
         profileBottomSheetBinding.liveProfileBottomAdminLlyout.setOnClickListener(view -> {
 
-            AdminFirebaseRoot adminFirebaseRoot = new AdminFirebaseRoot("1", goLiveModelClass.getName(),
-                    goLiveModelClass.getImage(), goLiveModelClass.getUserID());
+            AdminFirebaseRoot adminFirebaseRoot = new AdminFirebaseRoot("1", goLiveModelClass.getName(), goLiveModelClass.getImage(), goLiveModelClass.getUserID());
 
             if (adminList == null || adminList.size() == 0) {
 
@@ -1588,7 +1614,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 
         profileBottomSheetBinding.llBan.setOnClickListener(view -> {
             //sumit
-           // setBannedUser(goLiveModelClass);
+            // setBannedUser(goLiveModelClass);
             bottomSheetDialog.dismiss();
         });
 
@@ -1605,34 +1631,33 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 
     }
 
-    private void getUserDetailApi(String otherUserId, TextView othrUsrFollowingTV, TextView countryTv, ImageView followingImg, TextView age, ImageView gender,ImageView anchorimg,ImageView vipImage) {
+    private void getUserDetailApi(String otherUserId, TextView othrUsrFollowingTV, TextView countryTv, ImageView followingImg, TextView age, ImageView gender, ImageView anchorimg, ImageView vipImage) {
 
         HashMap<String, String> data = new HashMap<>();
         data.put("userId", profileId);
         data.put("otherUserId", otherUserId);
 
-        new ApiViewModel().someFunctionality(CallActivity.this,data).observe(CallActivity.this,
-                new Observer<OtherUserDataModel>() {
-                    @Override
-                    public void onChanged(OtherUserDataModel otherUserDataModel) {
-                        if (otherUserDataModel != null) {
-                            if (otherUserDataModel.getStatus().equalsIgnoreCase("1")) {
-                                countryTv.setText("ID:" + otherUserDataModel.getDetails().getUsername().toString() + " | " + otherUserDataModel.getDetails().getCountry());
-                              //  age.setText(CommonUtils.ageCalcualte(otherUserDataModel.getDetails().getDob()));
-                                if (otherUserDataModel.getDetails().getGender().equalsIgnoreCase("male")) {
-                                  //  gender.setImageResource(R.drawable.ic_male_gender__2_);
-                                } else {
-                                  //  gender.setImageResource(R.drawable.femenine);
-                                }
+        new ApiViewModel().someFunctionality(CallActivity.this, data).observe(CallActivity.this, new Observer<OtherUserDataModel>() {
+            @Override
+            public void onChanged(OtherUserDataModel otherUserDataModel) {
+                if (otherUserDataModel != null) {
+                    if (otherUserDataModel.getStatus().equalsIgnoreCase("1")) {
+                        countryTv.setText("ID:" + otherUserDataModel.getDetails().getUsername().toString() + " | " + otherUserDataModel.getDetails().getCountry());
+                        //  age.setText(CommonUtils.ageCalcualte(otherUserDataModel.getDetails().getDob()));
+                        if (otherUserDataModel.getDetails().getGender().equalsIgnoreCase("male")) {
+                            //  gender.setImageResource(R.drawable.ic_male_gender__2_);
+                        } else {
+                            //  gender.setImageResource(R.drawable.femenine);
+                        }
 
-                                // anchor status
-                                if (otherUserDataModel.getDetails().getHostStatus().equalsIgnoreCase("2")){
-                                    anchorimg.setVisibility(View.VISIBLE);
-                                }else {
-                                    anchorimg.setVisibility(View.GONE);
-                                }
+                        // anchor status
+                        if (otherUserDataModel.getDetails().getHostStatus().equalsIgnoreCase("2")) {
+                            anchorimg.setVisibility(View.VISIBLE);
+                        } else {
+                            anchorimg.setVisibility(View.GONE);
+                        }
 
-                                // vip livel
+                        // vip livel
 //                                if(otherUserDataModel.getDetails().getVipLevel().equalsIgnoreCase("0")){
 //                                    // binding.editProfileVipLvlTv.setText("Viplvl.0");
 //                                    vipImage.setVisibility(View.INVISIBLE);
@@ -1675,8 +1700,8 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 //                                    followingImg.setImageResource(R.drawable.ic_plus__6_);
 //                                    othrUsrFollowingTV.setText("Follow");
 //                                }
-                            } else {
-                            }
+                    } else {
+                    }
 
 //                            Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left);
 //                            binding.animationRL.startAnimation(animation);
@@ -1694,11 +1719,11 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 //                                }
 //                            }, 5000);
 //                            binding.animationRL.setVisibility(View.VISIBLE);
-                        } else {
-                            Toast.makeText(CallActivity.this, "Technical issue", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                } else {
+                    Toast.makeText(CallActivity.this, "Technical issue", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 
@@ -1737,14 +1762,14 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         GoLiveModelClass goLiveModelClass = new GoLiveModelClass();
         goLiveModelClass.setUserID(profileId);
         String image = profileImage;
-        goLiveModelClass.setImage(sharedpreferences.getString("profileImage",""));
-        goLiveModelClass.setName(sharedpreferences.getString("name",""));
+        goLiveModelClass.setImage(sharedpreferences.getString("profileImage", ""));
+        goLiveModelClass.setName(sharedpreferences.getString("name", ""));
         goLiveModelClass.setUserName(profileUniqueId);
         goLiveModelClass.setRequestStatus("0");
         goLiveModelClass.setRequestStatus("1");
-        isHostStatus=true;
+        isHostStatus = true;
 
-        loginRoom(profileId,profileName,roomID,isHostStatus);
+        loginRoom(profileId, profileName, roomID, isHostStatus);
 
 
 //      goLiveModelClass.setSvga(profileFrame);
@@ -1769,12 +1794,12 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         viewDetails_box.show();
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         RecyclerView emojiRV = viewDetails_box.findViewById(R.id.emojiRV);
-        new ApiViewModel().sendLiveGift(this,profileId,"14").observe(this, new Observer<GiftModel>() {
+        new ApiViewModel().sendLiveGift(this, profileId, "14").observe(this, new Observer<GiftModel>() {
             @Override
             public void onChanged(GiftModel giftModel) {
-                if (giftModel!=null){
-                    if (giftModel.getStatus()==1){
-                        EmojiRVAdpter emojiRVAdpter= new EmojiRVAdpter(giftModel.getDetails().getGifts(), CallActivity.this, new EmojiRVAdpter.Callback() {
+                if (giftModel != null) {
+                    if (giftModel.getStatus() == 1) {
+                        EmojiRVAdpter emojiRVAdpter = new EmojiRVAdpter(giftModel.getDetails().getGifts(), CallActivity.this, new EmojiRVAdpter.Callback() {
                             @Override
                             public void callback(GiftModel.Gift detail) {
                                 HashMap<String, String> sendEmojiHs = new HashMap<>();
@@ -1783,7 +1808,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                                 sendEmojiHs.put("emojiSenderName", App.getSharedpref().getString("name"));
                                 sendEmojiHs.put("emojiSenderImg", App.getSharedpref().getString("image"));
                                 sendEmojiHs.put("status", "0");
-                                sendEmojiHs.put("giftStatus","2");
+                                sendEmojiHs.put("giftStatus", "2");
                                 emojiRef.child(roomID).setValue(sendEmojiHs).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -1831,7 +1856,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 
         /************************** MUSIC LISTENER **************************/
         musicIcon.setOnClickListener(v -> {
-              requestPermissions();
+            requestPermissions();
         });
 
         lockIcon.setOnClickListener(v -> {
@@ -1853,6 +1878,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
     TextView startMusicTimeTv;
     TextView endMusicTimeTv;
     SeekBar seekbarDialog12;
+
     private void playMusicDialogBox() {
         outSideBoxMusicCheck = 1;
         musicOnOffStatus = 1;
@@ -1894,7 +1920,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                     ZegoAudioEffectPlayConfig config = new ZegoAudioEffectPlayConfig();
                     config.playCount = 10;
                     config.isPublishOut = true;
-                    audioEffectPlayer.start(musicList.get(possss).getId(),musicList.get(possss).getPath(),config);
+                    audioEffectPlayer.start(musicList.get(possss).getId(), musicList.get(possss).getPath(), config);
                     musicSongName.setText(musicList.get(possss).getTitle());
                 } else {
                     possss = 0;
@@ -1912,9 +1938,11 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                 volumetext.setText(progress + "" + "/" + "" + "100");
                 int vol = progress;
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
@@ -1966,13 +1994,14 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
     ModelSendGift modelSendGiftLucky;
     String dataGiftLucky;
     List<AlgorithmItem> gift;
+
     @Override
     public void getGift(ModelSendGift modelSendGift, List<AlgorithmItem> gift, String dataGift) {
         modelSendGiftLucky = modelSendGift;
         dataGiftLucky = dataGift;
         this.gift = gift;
         //sumit
-       // binding.rlHit.setVisibility(View.VISIBLE);
+        // binding.rlHit.setVisibility(View.VISIBLE);
         //  luckyCountNumber = Integer.parseInt(modelSendGift.getGiftCount());
         startTimerLucky();
     }
@@ -2013,7 +2042,6 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
     };
 
 
-
     @SuppressLint("SetTextI18n")
     private void setcoins(ModelSendGift modelSendGift) {
         String tvTotalCoinsUSer;
@@ -2050,7 +2078,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         if (modelSendGift.getGiftType() != null) {
             if (modelSendGift.getGiftType().equalsIgnoreCase("lucky")) {
                 binding.luckyGift.setVisibility(View.VISIBLE);
-                FirebaseHelper.deleteGiftAfterRecevingFromFireBase(key,sharedpreferences.getString("id",""));
+                FirebaseHelper.deleteGiftAfterRecevingFromFireBase(key, sharedpreferences.getString("id", ""));
                 binding.imgHostProfile.setVisibility(View.VISIBLE);
                 binding.luckyGift.animate().x(binding.imgHostProfile.getX()).y(binding.imgHostProfile.getY()).setDuration(4000).withEndAction(new Runnable() {
                     @Override
@@ -2082,13 +2110,13 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                 final long[] time = {8000l};
 
                 try { // new URL needs try catch.
-                    Log.d("animation","animationn"+modelSendGift.getGiftImage());
+                    Log.d("animation", "animationn" + modelSendGift.getGiftImage());
                     SVGAParser parser = new SVGAParser(CallActivity.this);
                     parser.decodeFromURL(new URL(modelSendGift.getGiftImage()), new SVGAParser.ParseCompletion() {
                         @Override
                         public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                             SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
-                            Log.d("animation","animationn"+modelSendGift.getGiftImage());
+                            Log.d("animation", "animationn" + modelSendGift.getGiftImage());
                             dynamicEntity.setDynamicImage(modelSendGift.getGiftImage(), "99"); // Here is the KEY implementation.
                             SVGADrawable drawable = new SVGADrawable(videoItem, dynamicEntity);
                             binding.lottieGift.setVisibility(View.VISIBLE);
@@ -2100,7 +2128,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                                     binding.lottieGift.stopAnimation();
                                     binding.lottieGift.setVisibility(View.GONE);
                                 }
-                            },4000);
+                            }, 4000);
                         }
 
                         @Override
@@ -2173,13 +2201,14 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 
             }
         }
-        FirebaseHelper.deleteGiftAfterRecevingFromFireBase(key,getIntent().getStringExtra("roomID"));
+        FirebaseHelper.deleteGiftAfterRecevingFromFireBase(key, getIntent().getStringExtra("roomID"));
 
     }
 
     /************************** COUNT DOWN TIMER **************************/
     CountDownTimer countDownTimerTwo;
     int secLucky;
+
     private void startTimerLucky() {
         if (countDownTimerTwo != null) {
             countDownTimerTwo = null;
@@ -2188,17 +2217,18 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
             @Override
             public void onTick(long l) {
                 secLucky = (int) (l / 1000);
-            //    binding.count.setText(String.valueOf(secLucky));
+                //    binding.count.setText(String.valueOf(secLucky));
                 if (secLucky == 0) {
-                  //  binding.rlHit.clearAnimation();
-                  //  binding.rlHit.setVisibility(View.GONE);
+                    //  binding.rlHit.clearAnimation();
+                    //  binding.rlHit.setVisibility(View.GONE);
                     countDownTimerTwo = null;
                 }
             }
+
             @Override
             public void onFinish() {
-             //   binding.rlHit.clearAnimation();
-             //   binding.rlHit.setVisibility(View.GONE);
+                //   binding.rlHit.clearAnimation();
+                //   binding.rlHit.setVisibility(View.GONE);
                 countDownTimerTwo = null;
             }
         }.start();
@@ -2211,6 +2241,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
     TextView musicEndTimeTv;
     long duration1;
     String title1;
+
     private void addMusicDialogBox() {
         Dialog dialog_share = new Dialog(CallActivity.this);
         dialog_share.setContentView(R.layout.play_music_dialog_box);
@@ -2292,18 +2323,18 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                             int pos = posin;
                             musicStartTimeTv.setText(formatDuration((long) (duration - (valueTime * 1000))));
                             musictime = musicStartTimeTv.getText().toString();
-                            if (musictime.equals("00:01")||musictime.equals("00:00")) {
+                            if (musictime.equals("00:01") || musictime.equals("00:00")) {
                                 pos++;
-                                Log.d("musicStartTimeTv","musicStartTimeTv "+musicStartTimeTv);
-                                 binding.musicPlayCirImg.setVisibility(View.VISIBLE);
-                                 binding.musicPlayCirImg.playAnimation();
+                                Log.d("musicStartTimeTv", "musicStartTimeTv " + musicStartTimeTv);
+                                binding.musicPlayCirImg.setVisibility(View.VISIBLE);
+                                binding.musicPlayCirImg.playAnimation();
                                 ZegoAudioEffectPlayConfig config = new ZegoAudioEffectPlayConfig();
                                 config.playCount = 10;
                                 config.isPublishOut = true;
-                                audioEffectPlayer.start(musicList.get(pos).getId(),musicList.get(pos).getPath(),config);
+                                audioEffectPlayer.start(musicList.get(pos).getId(), musicList.get(pos).getPath(), config);
                                 musicFragSongName.setText(title);
                             } else {
-                                pos=0;
+                                pos = 0;
                             }
                             Log.d("music", "music =" + " " + formatDuration((long) (duration - (valueTime * 1000))));
                             seekbar1.setProgress((int) ((++valueTime) / dureationSeekbar));
@@ -2312,9 +2343,10 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                                 startMusicTimeTv.setText(formatDuration((long) (duration - (valueTime * 1000))));
                                 seekbarDialog12.setProgress((int) ((++valueTime) / dureationSeekbar));
                                 String text = startMusicTimeTv.getText().toString();
-                                Log.d("text","musicTime = "+text);
+                                Log.d("text", "musicTime = " + text);
                             }
                         }
+
                         public void onFinish() {
                             musicCountDownTimer.cancel();
                             binding.musicPlayCirImg.setVisibility(View.GONE);
@@ -2326,7 +2358,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                 /************************** PLAY MUSIC DIALOG **************************/
                 private void play_music(MusicTable musicDetail, int i) {
 
-                   // musicOnOffStatus = 1;
+                    // musicOnOffStatus = 1;
                     binding.musicPlayCirImg.setVisibility(View.VISIBLE);
 
                     binding.musicPlayCirImg.playAnimation();
@@ -2334,7 +2366,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                     ZegoAudioEffectPlayConfig config = new ZegoAudioEffectPlayConfig();
                     config.playCount = 10;
                     config.isPublishOut = true;
-                    audioEffectPlayer.start(audioEffectID,musicDetail.getPath(),config);
+                    audioEffectPlayer.start(audioEffectID, musicDetail.getPath(), config);
 
                     //this is for outside dialog box
                     if (outSideBoxMusicCheck == 1) {
@@ -2348,12 +2380,11 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                 public void deleteMusic(MusicTable musicDetail, int posn) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CallActivity.this);
                     alertDialogBuilder.setMessage("Are you sure, You wanted to make decision");
-                    alertDialogBuilder.setPositiveButton("yes",
-                            (arg0, arg1) -> {
-                                appDatabase.userDao().deleteById(musicDetail.getId());
-                                musicRv.setAdapter(musicRVAdapter);
-                                musicRVAdapter.notifyDataSetChanged();
-                            });
+                    alertDialogBuilder.setPositiveButton("yes", (arg0, arg1) -> {
+                        appDatabase.userDao().deleteById(musicDetail.getId());
+                        musicRv.setAdapter(musicRVAdapter);
+                        musicRVAdapter.notifyDataSetChanged();
+                    });
                     alertDialogBuilder.setNegativeButton("No", (dialog, which) -> finish());
 
                     AlertDialog alertDialog = alertDialogBuilder.create();
@@ -2468,8 +2499,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
     //this method duration of song covert into mintues
     private String formatDuration(long duration) {
         long minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS);
-        long seconds = TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS)
-                - minutes * TimeUnit.SECONDS.convert(1, TimeUnit.MINUTES);
+        long seconds = TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS) - minutes * TimeUnit.SECONDS.convert(1, TimeUnit.MINUTES);
         return String.format("%02d:%02d", minutes, seconds);
     }
 
@@ -2481,8 +2511,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                 // below line is use to request the number of permissions which are required in our app.
                 .withPermissions(android.Manifest.permission.CAMERA,
                         // below is the list of permissions
-                        android.Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                        android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE)
                 // after adding permissions we are calling an with listener method.
                 .withListener(new MultiplePermissionsListener() {
                     @Override
@@ -2541,9 +2570,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 
     /************************** GET MUSIC **************************/
     private void getMusic() {
-        String[] proj = {MediaStore.Audio.Media._ID, MediaStore.Audio.Media.TITLE,
-                MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.DURATION,
-                MediaStore.Audio.Media.DATE_ADDED, MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID};// Can include more data for more details and check it.
+        String[] proj = {MediaStore.Audio.Media._ID, MediaStore.Audio.Media.TITLE, MediaStore.Audio.Media.ALBUM, MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.DATE_ADDED, MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.ALBUM_ID};// Can include more data for more details and check it.
 
         Cursor audioCursor = getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, proj, null, null, null);
         if (audioCursor != null) {
@@ -2599,7 +2626,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 
         minimize.setOnClickListener(v -> {
             dialog.dismiss();
-           // setPIPScreen();
+            // setPIPScreen();
         });
 
         exit.setOnClickListener(v -> {
@@ -2609,27 +2636,24 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
             lockSeat.child(liveHostBackImg).removeValue();
             liveUsersRef.child(profileId).removeValue();
             ChatMessageModel chatMessageModel = new ChatMessageModel();
-            liveUsersRef.child(otherUserId).removeValue().
-                    addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+            liveUsersRef.child(otherUserId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
 
-                        }
-                    });
-            ref.child(otherUserId).removeValue().
-                    addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                }
+            });
+            ref.child(otherUserId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
 
-                        }
-                    });
-            muteMicRef.child(otherUserId).removeValue().
-                    addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                }
+            });
+            muteMicRef.child(otherUserId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
 
-                        }
-                    });
+                }
+            });
 
             logoutRoom();
 //              zegoExpressEngine.stopPlayingStream(roomID);
@@ -2665,30 +2689,30 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
             playerConfig.resourceMode = ZegoStreamResourceMode.ONLY_RTC;
             // Room login result. This callback is sufficient if you only need to
             // check the login result.
-            Toast.makeText(this, "eerror"+error, Toast.LENGTH_SHORT).show();
-            Log.d("error","errorrrrr :"+error);
-                // Login successful.
-                // Start the preview and stream publishing.
-                Toast.makeText(this, "roomiiid"+roomID, Toast.LENGTH_SHORT).show();
-                //zegoExpressEngine.startPlayingStream(roomID);
-                Toast.makeText(this, "Login successful.", Toast.LENGTH_LONG).show();
-                Toast.makeText(this, "host Status"+isHost, Toast.LENGTH_SHORT).show();
-                if(isHost){
-                    startPreview();
-                    zegoExpressEngine.startPublishingStream(roomID);
-                 //   zegoExpressEngine.startPlayingStream(roomID,playerConfig);
+            Toast.makeText(this, "eerror" + error, Toast.LENGTH_SHORT).show();
+            Log.d("error", "errorrrrr :" + error);
+            // Login successful.
+            // Start the preview and stream publishing.
+            Toast.makeText(this, "roomiiid" + roomID, Toast.LENGTH_SHORT).show();
+            //zegoExpressEngine.startPlayingStream(roomID);
+            Toast.makeText(this, "Login successful.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "host Status" + isHost, Toast.LENGTH_SHORT).show();
+            if (isHost) {
+                startPreview();
+                zegoExpressEngine.startPublishingStream(roomID);
+                //   zegoExpressEngine.startPlayingStream(roomID,playerConfig);
 
 //                    playerConfig.cdnConfig(true);  // Enable audio
 //                    playerConfig.setVolume(80);  // Set the volume to 80%
 //                    playerConfig.setAudioOutput(ZegoAudioOutputMode.AUDIO_OUTPUT_SPEAKER);
 //                    startPublish(userID,roomID);
 //                    playingStream(userID,roomID);
-                }else {
-                    zegoExpressEngine.startPlayingStream(roomID);
+            } else {
+                zegoExpressEngine.startPlayingStream(roomID);
 //                    playingStream(userID,roomID);
 //                    startPublish(userID,roomID);
-                 //   zegoExpressEngine.startPlayingStream(roomID);
-                }
+                //   zegoExpressEngine.startPlayingStream(roomID);
+            }
         });
     }
 
@@ -2698,11 +2722,11 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
     }
 
 
-    void startPublish(String userID,String roomID) {
+    void startPublish(String userID, String roomID) {
         // After calling the `loginRoom` method, call this method to publish streams.
         // The StreamID must be unique in the room.
-       // ZegoCanvas previewCanvas = new ZegoCanvas(findViewById(R.id.preview));
-       // ZegoExpressEngine.getEngine().startPreview(previewCanvas);
+        // ZegoCanvas previewCanvas = new ZegoCanvas(findViewById(R.id.preview));
+        // ZegoExpressEngine.getEngine().startPreview(previewCanvas);
         String streamID = roomID + "_" + userID + "_call";
         zegoExpressEngine.startPublishingStream(streamID);
     }
@@ -2712,11 +2736,12 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         zegoExpressEngine.stopPublishingStream();
     }
 
-    void startPreview(){
+    void startPreview() {
 //        ZegoCanvas previewCanvas = new ZegoCanvas(findViewById(R.id.preview));
 //        zegoExpressEngine.startPreview(previewCanvas);
     }
-    void stopPreview(){
+
+    void stopPreview() {
         //ZegoExpressEngine.getEngine().stopPreview();
     }
 
@@ -2736,7 +2761,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                 // stream is added, and you can call the `startPlayingStream` method to
                 // play the stream.
                 if (updateType == ZegoUpdateType.ADD) {
-                   // startPlayStream(streamList.get(0).streamID);
+                    // startPlayStream(streamList.get(0).streamID);
                 } else {
                     //stopPlayStream(streamList.get(0).streamID);
                 }
@@ -2908,6 +2933,7 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
                 public void onTick(long millisUntilFinished) {
                     Log.i("Agora : timer : ", String.valueOf(millisUntilFinished));
                 }
+
                 public void onFinish() {
                     hitEndLiveApi("1");
                 }
@@ -2919,7 +2945,9 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
         }
 
     }
+
     private final long enterTime = System.currentTimeMillis();
+
     private void hitEndLiveApi(String s) {
 //        rtcEngine().leaveChannel();
 //        rtcEngine().enableLocalAudio(false);

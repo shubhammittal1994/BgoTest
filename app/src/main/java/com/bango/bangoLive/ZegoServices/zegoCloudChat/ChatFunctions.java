@@ -1,6 +1,11 @@
 package com.bango.bangoLive.ZegoServices.zegoCloudChat;
 
+import com.bango.bangoLive.ZegoServices.ZegoSDKApiKey;
+import com.bango.bangoLive.application.App;
+
+import im.zego.zim.ZIM;
 import im.zego.zim.callback.ZIMMessageSentCallback;
+import im.zego.zim.entity.ZIMAppConfig;
 import im.zego.zim.entity.ZIMError;
 import im.zego.zim.entity.ZIMMessage;
 import im.zego.zim.entity.ZIMMessageSendConfig;
@@ -10,8 +15,20 @@ import im.zego.zim.enums.ZIMConversationType;
 import im.zego.zim.enums.ZIMMessagePriority;
 
 public class ChatFunctions {
+    private static ChatFunctions instance;
 
-    void sendMessage(String conversationID,ZIMTextMessage zimMessage, ZIMPushConfig pushConfig,ZIMMessageSendConfig config ){
+    private ChatFunctions(){
+
+    }
+
+    public static ChatFunctions getChatFunctionsInstance(){
+        if(instance==null){
+            instance= new ChatFunctions();
+        }
+        return instance;
+    }
+
+    public static void sendMessage(String conversationID, ZIMTextMessage zimMessage, ZIMPushConfig pushConfig,ZIMMessageSendConfig config ){
 
 
         // The following shows how to send one-to-one message, the [conversationType] needs to be set to [ZIMConversationTypePeer].
@@ -31,7 +48,7 @@ public class ChatFunctions {
         config.pushConfig = pushConfig;*/
 
 // In 1-on-1 chats, the conversationID is the peer user ID. In group chats, the conversationID is the groupID. In the chat room, the conversationID is the roomID.
-        ChatSDKManager.getChatSDKManager().sendMessage(zimMessage, conversationID, ZIMConversationType.PEER,config, new ZIMMessageSentCallback() {
+        ChatSDKManager.getChatSDKManager().sendMessage(zimMessage, conversationID, ZIMConversationType.GROUP, config, new ZIMMessageSentCallback() {
             @Override
             public void onMessageAttached(ZIMMessage zimMessage){
                 // The callback on the message not sent yet. You can get a temporary object here and this object must be the same as that created zimMessage object. You can make your own business logic using this as needed, for example, display a UI ahead of time.
