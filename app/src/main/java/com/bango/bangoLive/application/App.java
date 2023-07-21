@@ -20,6 +20,7 @@ import java.util.List;
 import im.zego.zegoexpress.ZegoExpressEngine;
 import im.zego.zim.ZIM;
 import im.zego.zim.callback.ZIMEventHandler;
+import im.zego.zim.entity.ZIMConversationQueryConfig;
 import im.zego.zim.callback.ZIMGroupCreatedCallback;
 import im.zego.zim.entity.ZIMConversationChangeInfo;
 import im.zego.zim.entity.ZIMError;
@@ -86,7 +87,9 @@ public class App extends Application {
         ChatSDKManager.getChatSDKManager().setEventHandler(new ZIMEventHandler() {
             @Override
             public void onReceivePeerMessage(ZIM zim, ArrayList<ZIMMessage> messageList, String fromUserID) {
-                Log.e("---->>>", "gjgfhgfghf");
+               showToast(getAppContext(),"message called");
+
+
             }
 
             @Override
@@ -138,6 +141,7 @@ public class App extends Application {
             }
 
         });
+
 //        CaocConfig.Builder.create()
 //                .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT) //default: CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM
 //                .enabled(false) //default: true

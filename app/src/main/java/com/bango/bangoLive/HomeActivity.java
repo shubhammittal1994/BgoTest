@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bango.bangoLive.ZegoServices.CurrentUserType;
+import com.bango.bangoLive.ZegoServices.userTypeAndPermissions.User;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
 import com.bango.bangoLive.application.App;
 import com.bango.bangoLive.databinding.ActivityHomeBinding;
@@ -17,9 +19,16 @@ import com.bango.bangoLive.databinding.ActivityHomeBinding;
 import java.util.ArrayList;
 
 import im.zego.zim.callback.ZIMLoggedInCallback;
+import im.zego.zim.callback.ZIMMessageSentCallback;
 import im.zego.zim.entity.ZIMError;
+import im.zego.zim.entity.ZIMMessage;
+import im.zego.zim.entity.ZIMMessageSendConfig;
+import im.zego.zim.entity.ZIMPushConfig;
+import im.zego.zim.entity.ZIMTextMessage;
 import im.zego.zim.entity.ZIMGroupInfo;
 import im.zego.zim.entity.ZIMUserInfo;
+import im.zego.zim.enums.ZIMConversationType;
+import im.zego.zim.enums.ZIMMessagePriority;
 
 public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
@@ -45,11 +54,17 @@ public class HomeActivity extends AppCompatActivity {
         binding.bottomNavigation.getRoot().setVisibility(View.VISIBLE);
         createZimUserInfo("7193856", "manish");
 
+
+
+
+
+
+
     }
 
     private void createZimUserInfo(String id, String name) {
         ZIMUserInfo zimUserInfo = new ZIMUserInfo();
-        zimUserInfo.userID = id;
+        zimUserInfo.userID = "123546";
         zimUserInfo.userName = name;
 
         //App.showToast(HomeActivity.this,"Zim Logged In !!"+id +"&&"+name);
@@ -57,6 +72,11 @@ public class HomeActivity extends AppCompatActivity {
         ChatSDKManager.getChatSDKManager().login(zimUserInfo, error -> {
             Log.e("--->>>", "Zim Logged In !!");
             App.showToast(HomeActivity.this, "Zim Logged In !!" + error.getMessage());
+
+            //send message code
+
+             sendMessage();
+
 
             ZIMGroupInfo zimGroupInfo = new ZIMGroupInfo();
             zimGroupInfo.groupID = "4141";
@@ -70,6 +90,8 @@ public class HomeActivity extends AppCompatActivity {
                     });
         });
     }
+
+
 
     private void bottomNavigationClicks() {
 
