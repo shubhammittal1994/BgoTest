@@ -40,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
         deviceId = Settings.Secure.getString(SplashActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
         sessionManage();
         clicks();
-
+        startActivity(new Intent(SplashActivity.this, HomeActivity.class));
     }
 
     private void clicks() {

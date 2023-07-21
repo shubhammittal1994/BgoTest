@@ -14,17 +14,21 @@ import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
 import com.bango.bangoLive.application.App;
 import com.bango.bangoLive.databinding.ActivityHomeBinding;
 
+import java.util.ArrayList;
+
 import im.zego.zim.callback.ZIMLoggedInCallback;
 import im.zego.zim.entity.ZIMError;
+import im.zego.zim.entity.ZIMGroupInfo;
 import im.zego.zim.entity.ZIMUserInfo;
 
 public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
     SharedPreferences sharedpreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivityHomeBinding.inflate(getLayoutInflater());
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
@@ -39,23 +43,34 @@ public class HomeActivity extends AppCompatActivity {
 
         /************************** SET VISIBLITY OF BOTTOM NAVIGATION **************************/
         binding.bottomNavigation.getRoot().setVisibility(View.VISIBLE);
-        createZimUserInfo( App.getSharedpref().getString("id"),"shubham");
+        createZimUserInfo("7193856", "manish");
+
     }
+
     private void createZimUserInfo(String id, String name) {
         ZIMUserInfo zimUserInfo = new ZIMUserInfo();
         zimUserInfo.userID = id;
         zimUserInfo.userName = name;
 
-        App.showToast(HomeActivity.this,"Zim Logged In !!"+id +"&&"+name);
-        Log.e("--->>>",""+id +"&&"+name);
-        ChatSDKManager.getChatSDKManager().login(zimUserInfo, new ZIMLoggedInCallback() {
-            @Override
-            public void onLoggedIn(ZIMError error) {
-                Log.e("--->>>","Zim Logged In !!");
-              App.showToast(HomeActivity.this,"Zim Logged In !!"+error.getMessage());
-            }
+        //App.showToast(HomeActivity.this,"Zim Logged In !!"+id +"&&"+name);
+        Log.e("--->>>", "" + id + "&&" + name);
+        ChatSDKManager.getChatSDKManager().login(zimUserInfo, error -> {
+            Log.e("--->>>", "Zim Logged In !!");
+            App.showToast(HomeActivity.this, "Zim Logged In !!" + error.getMessage());
+
+            ZIMGroupInfo zimGroupInfo = new ZIMGroupInfo();
+            zimGroupInfo.groupID = "4141";
+            zimGroupInfo.groupName = "Bella";
+
+            ChatSDKManager.getChatSDKManager().createGroup(zimGroupInfo, new ArrayList<String>(),
+                    (groupInfo, userList, errorUserList, errorInfo) -> {
+                        Log.e(groupInfo.baseInfo.groupName, "User list size:- " + userList.size());
+                        Log.e(groupInfo.baseInfo.groupName, "Error User list size:- " + errorUserList.size());
+                        Log.e(groupInfo.baseInfo.groupName, "Error Info:- " + errorInfo.getCode() + " - " + errorInfo.getMessage());
+                    });
         });
     }
+
     private void bottomNavigationClicks() {
 
         binding.bottomNavigation.hotspotHomeIcon.setOnClickListener(view -> {
@@ -67,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         binding.bottomNavigation.reelsIcon.setOnClickListener(view -> {
-            Navigation.findNavController(this,R.id.home_fragment_Container).navigate(R.id.reels_Fragment);
+            Navigation.findNavController(this, R.id.home_fragment_Container).navigate(R.id.reels_Fragment);
             binding.bottomNavigation.hotspotShadow.setVisibility(View.INVISIBLE);
             binding.bottomNavigation.reelsShadow.setVisibility(View.VISIBLE);
             binding.bottomNavigation.messageShadow.setVisibility(View.INVISIBLE);
@@ -75,7 +90,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         binding.bottomNavigation.messageIcon.setOnClickListener(view -> {
-            Navigation.findNavController(this,R.id.home_fragment_Container).navigate(R.id.message_Fragment);
+            Navigation.findNavController(this, R.id.home_fragment_Container).navigate(R.id.message_Fragment);
             binding.bottomNavigation.hotspotShadow.setVisibility(View.INVISIBLE);
             binding.bottomNavigation.reelsShadow.setVisibility(View.INVISIBLE);
             binding.bottomNavigation.messageShadow.setVisibility(View.VISIBLE);
@@ -83,7 +98,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         binding.bottomNavigation.profileIcon.setOnClickListener(view -> {
-            Navigation.findNavController(this,R.id.home_fragment_Container).navigate(R.id.profile_Fragment);
+            Navigation.findNavController(this, R.id.home_fragment_Container).navigate(R.id.profile_Fragment);
             binding.bottomNavigation.hotspotShadow.setVisibility(View.INVISIBLE);
             binding.bottomNavigation.reelsShadow.setVisibility(View.INVISIBLE);
             binding.bottomNavigation.messageShadow.setVisibility(View.INVISIBLE);
@@ -92,7 +107,7 @@ public class HomeActivity extends AppCompatActivity {
 
         binding.bottomNavigation.liveJoinIcon.setOnClickListener(v -> {
 
-            Navigation.findNavController(this,R.id.home_fragment_Container).navigate(R.id.liveMainFragment);
+            Navigation.findNavController(this, R.id.home_fragment_Container).navigate(R.id.liveMainFragment);
 //                final Dialog dialog = new Dialog(this);
 //                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 //                dialog.setContentView(R.layout.enteroomidialog);
@@ -125,7 +140,7 @@ public class HomeActivity extends AppCompatActivity {
 //                        dialog.dismiss();
 //                    }
 //                });
-          });
+        });
     }
 
     @Override

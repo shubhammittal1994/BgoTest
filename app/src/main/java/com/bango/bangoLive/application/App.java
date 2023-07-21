@@ -12,13 +12,30 @@ import com.bango.bangoLive.ZegoServices.ExpressService;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
 import com.bango.bangoLive.utils.SharedPref;
 import com.bango.bangoLive.utils.Singleton;
+import com.google.firebase.FirebaseApp;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import im.zego.zegoexpress.ZegoExpressEngine;
 import im.zego.zim.ZIM;
 import im.zego.zim.callback.ZIMEventHandler;
+import im.zego.zim.callback.ZIMGroupCreatedCallback;
+import im.zego.zim.entity.ZIMConversationChangeInfo;
+import im.zego.zim.entity.ZIMError;
+import im.zego.zim.entity.ZIMErrorUserInfo;
+import im.zego.zim.entity.ZIMGroupFullInfo;
+import im.zego.zim.entity.ZIMGroupInfo;
+import im.zego.zim.entity.ZIMGroupMemberInfo;
+import im.zego.zim.entity.ZIMGroupOperatedInfo;
 import im.zego.zim.entity.ZIMMessage;
+import im.zego.zim.entity.ZIMMessageReceiptInfo;
+import im.zego.zim.entity.ZIMTextMessage;
+import im.zego.zim.enums.ZIMErrorCode;
+import im.zego.zim.enums.ZIMGroupEvent;
+import im.zego.zim.enums.ZIMGroupMemberEvent;
+import im.zego.zim.enums.ZIMGroupMemberState;
+import im.zego.zim.enums.ZIMGroupState;
 
 public class App extends Application {
 
@@ -40,8 +57,8 @@ public class App extends Application {
     private static SharedPref sharedpref;
 
     //public ClientProxy proxy() {
-     //   return ClientProxy.instance();
-   // }
+    //   return ClientProxy.instance();
+    // }
 
 
     public static App getAppContext() {
@@ -69,8 +86,57 @@ public class App extends Application {
         ChatSDKManager.getChatSDKManager().setEventHandler(new ZIMEventHandler() {
             @Override
             public void onReceivePeerMessage(ZIM zim, ArrayList<ZIMMessage> messageList, String fromUserID) {
-                Log.e("---->>>",messageList.get(0).);
+                Log.e("---->>>", "gjgfhgfghf");
             }
+
+            @Override
+            public void onConversationChanged(ZIM zim, ArrayList<ZIMConversationChangeInfo> conversationChangeInfoList) {
+                super.onConversationChanged(zim, conversationChangeInfoList);
+            }
+
+            @Override
+            public void onConversationTotalUnreadMessageCountUpdated(ZIM zim, int totalUnreadMessageCount) {
+                super.onConversationTotalUnreadMessageCountUpdated(zim, totalUnreadMessageCount);
+            }
+
+            @Override
+            public void onConversationMessageReceiptChanged(ZIM zim, ArrayList<ZIMMessageReceiptInfo> infos) {
+                super.onConversationMessageReceiptChanged(zim, infos);
+            }
+
+            @Override
+            public void onReceiveRoomMessage(ZIM zim, ArrayList<ZIMMessage> messageList, String fromRoomID) {
+                super.onReceiveRoomMessage(zim, messageList, fromRoomID);
+            }
+
+            @Override
+            public void onReceiveGroupMessage(ZIM zim, ArrayList<ZIMMessage> messageList, String fromGroupID) {
+                super.onReceiveGroupMessage(zim, messageList, fromGroupID);
+                showLog(messageList.size() + " -> " + messageList.get(messageList.size()-1) + " -> " + fromGroupID);
+                for (ZIMMessage zimMessage : messageList) {
+                    if (zimMessage instanceof ZIMTextMessage)
+                    {
+                        ZIMTextMessage zimTextMessage = (ZIMTextMessage) zimMessage;
+                        showLog("Received message:- "+ zimTextMessage.message);
+                    }
+                }
+            }
+
+            @Override
+            public void onGroupStateChanged(ZIM zim, ZIMGroupState state, ZIMGroupEvent event, ZIMGroupOperatedInfo operatedInfo, ZIMGroupFullInfo groupInfo) {
+                super.onGroupStateChanged(zim, state, event, operatedInfo, groupInfo);
+            }
+
+            @Override
+            public void onGroupMemberStateChanged(ZIM zim, ZIMGroupMemberState state, ZIMGroupMemberEvent event, ArrayList<ZIMGroupMemberInfo> userList, ZIMGroupOperatedInfo operatedInfo, String groupID) {
+                super.onGroupMemberStateChanged(zim, state, event, userList, operatedInfo, groupID);
+            }
+
+            @Override
+            public void onGroupMemberInfoUpdated(ZIM zim, ArrayList<ZIMGroupMemberInfo> userList, ZIMGroupOperatedInfo operatedInfo, String groupID) {
+                super.onGroupMemberInfoUpdated(zim, userList, operatedInfo, groupID);
+            }
+
         });
 //        CaocConfig.Builder.create()
 //                .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT) //default: CaocConfig.BACKGROUND_MODE_SHOW_CUSTOM
@@ -96,7 +162,7 @@ public class App extends Application {
 //            e.printStackTrace();
 //        }
 
-      //  mPref = getSharedPreferences(Settings.Global.Constants.SF_NAME, Context.MODE_PRIVATE);
+        //  mPref = getSharedPreferences(Settings.Global.Constants.SF_NAME, Context.MODE_PRIVATE);
     }
 
 
@@ -140,7 +206,11 @@ public class App extends Application {
         return expressService;
     }
 
-   public static void showToast(Context context,String message){
-        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    public static void showToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void showLog(String message) {
+        Log.e("--------->>>>>>>>>", message);
     }
 }
