@@ -114,9 +114,11 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.squareup.picasso.Picasso;
 import com.tapadoo.alerter.Alerter;
-import com.zegocloud.uikit.prebuilt.liveaudioroom.ZegoUIKitPrebuiltLiveAudioRoomConfig;
-import com.zegocloud.uikit.service.defines.ZegoScenario;
 
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
@@ -641,6 +643,21 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageModel event) {
+        Log.e("--->>>", event.getMessage());
+        ChatMessageModel chatMessageModels = new ChatMessageModel();
+        chatMessageModels.setGift("");
+        chatMessageModels.setImage(profileImageSave);
+        chatMessageModels.setKey(ref.push().getKey());
+        chatMessageModels.setMessage(event.getMessage());
+        chatMessageModels.setName(sharedpreferences.getString("name", ""));
+        chatMessageModels.setUserId(profileId);
+//                          sendMessage(chatMessageModel, chatMessageModel.getKey());
+        chatMessages.add(chatMessageModels);
+        if (chatMessages != null) {
+            binding.recyclerAllMessage.scrollToPosition(chatMessages.size() - 1);
+        }
+        commentAdapter.notifyDataSetChanged();
+
 
     }
 
@@ -895,7 +912,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         ref.child(otherUserId).child(liveType).child(otherUserId).child("chat comments").child(key).setValue(chatMessageModel);
 
         ZIMTextMessage zimMessage = new ZIMTextMessage();
-        zimMessage.message = "Message content";
+        zimMessage.message = chatMessageModel.getMessage();
 
         ZIMMessageSendConfig config = new ZIMMessageSendConfig();
 // Set priority for the message. 1: Low (by default). 2: Medium. 3: High.
@@ -907,7 +924,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         // pushConfig.extendedData = "Extended info of the offline push";
         config.pushConfig = pushConfig;
 
-        ChatFunctions.sendMessage("hgjjh", zimMessage, pushConfig, config);
+        ChatFunctions.sendMessage("4143", zimMessage, pushConfig, config);
     }
 
 
@@ -917,7 +934,8 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    // chatMessages.clear();
+
+                    // chatMessages.clear();dadasd
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         ChatMessageModel chatMessageModel = dataSnapshot.getValue(ChatMessageModel.class);
                         if (chatMessageModel.getTimeStamp() != null) {
@@ -2670,7 +2688,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     }
 
     void loginRoom(String userID, String userName, String roomID, boolean isHost) {
-
+/*
         ZegoUser user = new ZegoUser(userID, userName);
         ZegoRoomConfig roomConfig = new ZegoRoomConfig();
 
@@ -2713,7 +2731,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 //                    startPublish(userID,roomID);
                 //   zegoExpressEngine.startPlayingStream(roomID);
             }
-        });
+        });*/
     }
 
     private void playingStream(String userID, String roomID) {

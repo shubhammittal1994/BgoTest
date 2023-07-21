@@ -11,7 +11,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:src="@drawable/audioroom_icon_close" />
+        android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
     <RelativeLayout
         android:layout_width="match_parent"

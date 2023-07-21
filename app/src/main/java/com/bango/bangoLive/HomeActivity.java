@@ -79,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
             ZIMGroupInfo zimGroupInfo = new ZIMGroupInfo();
-            zimGroupInfo.groupID = "4141";
+            zimGroupInfo.groupID = "4143";
             zimGroupInfo.groupName = "Bella";
 
             ChatSDKManager.getChatSDKManager().createGroup(zimGroupInfo, new ArrayList<String>(),
