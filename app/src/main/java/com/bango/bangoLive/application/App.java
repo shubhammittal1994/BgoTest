@@ -10,9 +10,12 @@ import android.widget.Toast;
 
 import com.bango.bangoLive.ZegoServices.ExpressService;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
+import com.bango.bangoLive.ZegoServices.zegoCloudChat.model.MessageModel;
 import com.bango.bangoLive.utils.SharedPref;
 import com.bango.bangoLive.utils.Singleton;
 import com.google.firebase.FirebaseApp;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,6 +123,8 @@ public class App extends Application {
                     if (zimMessage instanceof ZIMTextMessage)
                     {
                         ZIMTextMessage zimTextMessage = (ZIMTextMessage) zimMessage;
+                        EventBus.getDefault().post(new MessageModel(zimTextMessage.message,zimTextMessage.getSenderUserID()));
+
                         showLog("Received message:- "+ zimTextMessage.message);
                     }
                 }
