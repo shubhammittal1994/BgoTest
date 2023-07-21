@@ -108,5 +108,6 @@ dependencies {
 
     // Advance web-view
     implementation 'com.github.delight-im:Android-AdvancedWebView:v3.2.1'
+    implementation 'org.greenrobot:eventbus:3.3.1'
 
 }

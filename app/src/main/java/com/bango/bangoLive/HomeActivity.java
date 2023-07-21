@@ -75,7 +75,7 @@ public class HomeActivity extends AppCompatActivity {
 
             //send message code
 
-             sendMessage();
+             //sendMessage();
 
 
             ZIMGroupInfo zimGroupInfo = new ZIMGroupInfo();

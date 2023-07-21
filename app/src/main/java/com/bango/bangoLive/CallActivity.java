@@ -62,6 +62,7 @@ import com.bango.bangoLive.AudioRoom.MODEL.AdminFirebaseRoot;
 import com.bango.bangoLive.AudioRoom.MODEL.ChatMessageModel;
 import com.bango.bangoLive.AudioRoom.MODEL.OtherUserDataModel;
 import com.bango.bangoLive.ViewModel.ApiViewModel;
+import com.bango.bangoLive.ZegoServices.zegoCloudChat.model.MessageModel;
 import com.bango.bangoLive.adapters.LocalAddedAdapter;
 import com.bango.bangoLive.adapters.MusicRVAdapter;
 import com.bango.bangoLive.application.App;
@@ -115,6 +116,9 @@ import com.tapadoo.alerter.Alerter;
 import com.zegocloud.uikit.prebuilt.liveaudioroom.ZegoUIKitPrebuiltLiveAudioRoomConfig;
 import com.zegocloud.uikit.service.defines.ZegoScenario;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
@@ -622,6 +626,23 @@ public class CallActivity extends AppCompatActivity  implements GiftBottomSheetF
 
         loginRoom(profileId,profileName,roomID,false);
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageModel event) {
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     private void gamesDialogBox() {
