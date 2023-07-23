@@ -18,9 +18,14 @@ import com.bango.bangoLive.databinding.ActivityHomeBinding;
 
 import java.util.ArrayList;
 
+import im.zego.zim.callback.ZIMGroupJoinedCallback;
+import im.zego.zim.callback.ZIMGroupLeftCallback;
+import im.zego.zim.callback.ZIMGroupListQueriedCallback;
 import im.zego.zim.callback.ZIMLoggedInCallback;
 import im.zego.zim.callback.ZIMMessageSentCallback;
 import im.zego.zim.entity.ZIMError;
+import im.zego.zim.entity.ZIMGroup;
+import im.zego.zim.entity.ZIMGroupFullInfo;
 import im.zego.zim.entity.ZIMMessage;
 import im.zego.zim.entity.ZIMMessageSendConfig;
 import im.zego.zim.entity.ZIMPushConfig;
@@ -55,11 +60,6 @@ public class HomeActivity extends AppCompatActivity {
         createZimUserInfo("7193856", "manish");
 
 
-
-
-
-
-
     }
 
     private void createZimUserInfo(String id, String name) {
@@ -73,25 +73,42 @@ public class HomeActivity extends AppCompatActivity {
             Log.e("--->>>", "Zim Logged In !!");
             App.showToast(HomeActivity.this, "Zim Logged In !!" + error.getMessage());
 
-            //send message code
-
-             //sendMessage();
-
-
             ZIMGroupInfo zimGroupInfo = new ZIMGroupInfo();
-            zimGroupInfo.groupID = "4143";
-            zimGroupInfo.groupName = "Bella";
+            zimGroupInfo.groupID = "41431";
+            zimGroupInfo.groupName = "Bella11";
 
-            ChatSDKManager.getChatSDKManager().createGroup(zimGroupInfo, new ArrayList<String>(),
-                    (groupInfo, userList, errorUserList, errorInfo) -> {
+            ChatSDKManager.getChatSDKManager().dismissGroup(zimGroupInfo.groupID, (groupID, errorInfo) -> {
+                App.showLog(groupID + " Error Info:- " + errorInfo.getCode() + " - " + errorInfo.getMessage());
 
-                        Log.e(groupInfo.baseInfo.groupName, "User list size:- " + userList.size());
-                        Log.e(groupInfo.baseInfo.groupName, "Error User list size:- " + errorUserList.size());
-                        Log.e(groupInfo.baseInfo.groupName, "Error Info:- " + errorInfo.getCode() + " - " + errorInfo.getMessage());
-                    });
+                ChatSDKManager.getChatSDKManager().queryGroupList((groupList, errorInfoGroupList) -> {
+                    boolean isGroupAvailable = false;
+                    for (int i = 0; i < groupList.size(); i++) {
+                        App.showLog("Group Id:- " + groupList.get(i).baseInfo.groupID);
+                        if (groupList.get(i).baseInfo.groupID.equals(zimGroupInfo.groupID)) {
+                            isGroupAvailable = true;
+                            break;
+                        }
+                    }
+
+                    if (isGroupAvailable) {
+                        App.showLog("Group is already exists.");
+                        ChatSDKManager.getChatSDKManager().joinGroup(zimGroupInfo.groupID, (groupInfo, errorInfoJoin) -> {
+                            App.showLog(groupInfo.baseInfo.groupName + " notificationStatus:- " + groupInfo.notificationStatus.value());
+                            App.showLog(groupInfo.baseInfo.groupName + " Error Info:- " + errorInfoJoin.getCode() + " - " + errorInfoJoin.getMessage());
+                        });
+                    } else {
+                        App.showLog("Group is not exists.");
+                        ChatSDKManager.getChatSDKManager().createGroup(zimGroupInfo, new ArrayList<String>(),
+                                (groupInfo, userList, errorUserList, errorInfo1) -> {
+                                    App.showLog(groupInfo.baseInfo.groupName + " User list size:- " + userList.size());
+                                    App.showLog(groupInfo.baseInfo.groupName + " Error User list size:- " + errorUserList.size());
+                                    App.showLog(groupInfo.baseInfo.groupName + " Error Info:- " + errorInfo1.getCode() + " - " + errorInfo1.getMessage());
+                                });
+                    }
+                });
+            });
         });
     }
-
 
 
     private void bottomNavigationClicks() {

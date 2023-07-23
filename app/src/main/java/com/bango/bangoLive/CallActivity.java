@@ -657,7 +657,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageModel event) {
-        Log.e("--->>>", event.getMessage());
+        Log.e("--->>> onmessage event", event.getMessage());
         ChatMessageModel chatMessageModels = new ChatMessageModel();
         chatMessageModels.setGift("");
         chatMessageModels.setImage(profileImageSave);
