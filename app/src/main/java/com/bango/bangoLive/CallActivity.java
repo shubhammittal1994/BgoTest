@@ -63,6 +63,7 @@ import com.bango.bangoLive.AudioRoom.MODEL.ChatMessageModel;
 import com.bango.bangoLive.AudioRoom.MODEL.OtherUserDataModel;
 import com.bango.bangoLive.ViewModel.ApiViewModel;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatFunctions;
+import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.model.MessageModel;
 import com.bango.bangoLive.adapters.LocalAddedAdapter;
 import com.bango.bangoLive.adapters.MusicRVAdapter;
@@ -151,6 +152,9 @@ import im.zego.zegoexpress.entity.ZegoPlayerConfig;
 import im.zego.zegoexpress.entity.ZegoRoomConfig;
 import im.zego.zegoexpress.entity.ZegoStream;
 import im.zego.zegoexpress.entity.ZegoUser;
+import im.zego.zim.callback.ZIMGroupJoinedCallback;
+import im.zego.zim.entity.ZIMError;
+import im.zego.zim.entity.ZIMGroupFullInfo;
 import im.zego.zim.entity.ZIMMessageSendConfig;
 import im.zego.zim.entity.ZIMPushConfig;
 import im.zego.zim.entity.ZIMTextMessage;
@@ -615,6 +619,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         binding.callMuteIMg.setOnClickListener(v -> muteMicRef.child(roomID).child(profileId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                joinGroup();
                 if (snapshot.exists()) {
                     String status = "";
                     if (snapshot.getValue().toString() != null) {
@@ -639,6 +644,15 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
         loginRoom(profileId, profileName, roomID, false);
 
+    }
+
+    private void joinGroup() {
+        ChatSDKManager.getChatSDKManager().joinGroup("114", new ZIMGroupJoinedCallback() {
+            @Override
+            public void onGroupJoined(ZIMGroupFullInfo groupInfo, ZIMError errorInfo) {
+                Log.e("--->>>", "Joined");
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

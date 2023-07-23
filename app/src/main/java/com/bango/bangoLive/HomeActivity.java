@@ -84,6 +84,7 @@ public class HomeActivity extends AppCompatActivity {
 
             ChatSDKManager.getChatSDKManager().createGroup(zimGroupInfo, new ArrayList<String>(),
                     (groupInfo, userList, errorUserList, errorInfo) -> {
+
                         Log.e(groupInfo.baseInfo.groupName, "User list size:- " + userList.size());
                         Log.e(groupInfo.baseInfo.groupName, "Error User list size:- " + errorUserList.size());
                         Log.e(groupInfo.baseInfo.groupName, "Error Info:- " + errorInfo.getCode() + " - " + errorInfo.getMessage());
