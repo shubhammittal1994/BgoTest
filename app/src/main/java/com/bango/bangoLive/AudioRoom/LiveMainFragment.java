@@ -224,7 +224,7 @@ public class LiveMainFragment extends Fragment {
         intent.putExtra("profileUniqueId", sharedpreferences.getString("userUniqueId", ""));
         intent.putExtra("coverimage", App.getSharedpref().getString("image"));
         intent.putExtra("coverName", startLiveModelClass.getDetails().getLiveTitle());
-        intent.putExtra(AppConstant.I_AM_HOST,true);
+        intent.putExtra(AppConstant.AM_I_HOST,true);
         startActivity(intent);
     }
 

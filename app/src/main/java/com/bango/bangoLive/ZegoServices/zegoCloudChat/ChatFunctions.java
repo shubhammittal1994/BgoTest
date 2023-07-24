@@ -1,5 +1,7 @@
 package com.bango.bangoLive.ZegoServices.zegoCloudChat;
 
+import android.util.Log;
+
 import com.bango.bangoLive.ZegoServices.ZegoSDKApiKey;
 import com.bango.bangoLive.application.App;
 
@@ -39,6 +41,12 @@ public class ChatFunctions {
                 // Implement the event callback on message sent.
                App.showToast(App.getAppContext(),"Message sent");
             }
+        });
+    }
+
+    public static void joinRoom(String roomID) {
+        ChatSDKManager.getChatSDKManager().joinRoom(roomID, (roomInfo, errorInfo) -> {
+            Log.e("--->>>","Room Joined"+roomID+" "+roomInfo);
         });
     }
 }

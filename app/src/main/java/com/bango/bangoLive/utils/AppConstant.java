@@ -13,5 +13,5 @@ public class AppConstant {
     public static final String COUNTRY_NAME = "COUNTRY_NAME";
     public static final String STATUS = "COUNTRY_NAME";
     public static final String AGORA_APP_ID = "31fffdc5a307424981001739c2058aff";
-    public static final String I_AM_HOST = "i_am_host";
+    public static final String AM_I_HOST = "am_i_host";
 }

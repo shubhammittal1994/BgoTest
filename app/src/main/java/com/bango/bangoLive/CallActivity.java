@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatSeekBar;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,7 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -35,13 +33,11 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 
 import android.os.Handler;
-import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -85,7 +81,7 @@ import com.bango.bangoLive.room.MusicTable;
 import com.bango.bangoLive.themes.LiveFreeThemeFragment;
 import com.bango.bangoLive.themes.LivePurchasedThemeFragment;
 import com.bango.bangoLive.themes.LiveThemeFragment;
-import com.bango.bangoLive.utils.CommonUtils;
+import com.bango.bangoLive.utils.AppConstant;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -97,7 +93,6 @@ import com.bango.bangoLive.fragments.Gifts.Model.ModelSendGift;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.Api;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -142,7 +137,6 @@ import im.zego.zegoexpress.ZegoAudioEffectPlayer;
 
 import im.zego.zegoexpress.ZegoExpressEngine;
 import im.zego.zegoexpress.callback.IZegoEventHandler;
-import im.zego.zegoexpress.callback.IZegoRoomLoginCallback;
 import im.zego.zegoexpress.constants.ZegoAudioConfigPreset;
 import im.zego.zegoexpress.constants.ZegoPlayerState;
 import im.zego.zegoexpress.constants.ZegoPublisherState;
@@ -151,20 +145,15 @@ import im.zego.zegoexpress.constants.ZegoStreamResourceMode;
 import im.zego.zegoexpress.constants.ZegoUpdateType;
 import im.zego.zegoexpress.entity.ZegoAudioConfig;
 import im.zego.zegoexpress.entity.ZegoAudioEffectPlayConfig;
-import im.zego.zegoexpress.entity.ZegoCanvas;
 import im.zego.zegoexpress.entity.ZegoPlayerConfig;
 import im.zego.zegoexpress.entity.ZegoRoomConfig;
 import im.zego.zegoexpress.entity.ZegoStream;
 import im.zego.zegoexpress.entity.ZegoUser;
 import im.zego.zim.callback.ZIMGroupJoinedCallback;
-import im.zego.zim.callback.ZIMRoomJoinedCallback;
 import im.zego.zim.entity.ZIMError;
 import im.zego.zim.entity.ZIMGroupFullInfo;
 import im.zego.zim.entity.ZIMMessageSendConfig;
 import im.zego.zim.entity.ZIMPushConfig;
-import im.zego.zim.entity.ZIMRoomFullInfo;
-import im.zego.zim.entity.ZIMRoomInfo;
-import im.zego.zim.entity.ZIMTextMessage;
 import im.zego.zim.enums.ZIMMessagePriority;
 
 public class CallActivity extends AppCompatActivity implements GiftBottomSheetFragment.GetLuckyGift {
@@ -233,7 +222,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     * liveHostid==
     * adminId==
     * */
-    Boolean host = false;
+    Boolean am_i_host = false;
     ImageView playMusicDialogImg;
     int emptyPosition;
     ZegoExpressEngine zegoExpressEngine;
@@ -287,7 +276,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         sharedpreferences = this.getSharedPreferences("Bango", Context.MODE_PRIVATE);
 
         /************************** GET DATA THROUGH INTENT **************************/
-        host = getIntent().getBooleanExtra("host", false);
+        am_i_host = getIntent().getBooleanExtra(AppConstant.AM_I_HOST, false);
 
         roomID = getIntent().getStringExtra("roomID");
         liveTitle = getIntent().getStringExtra("liveTitle");
@@ -308,7 +297,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
         token = getIntent().getStringExtra("token");
 
-        if (host) {
+        if (am_i_host) {
             profileImageSave = sharedpreferences.getString("profileImage", "");
         } else {
             joinRoom(roomID);
@@ -323,7 +312,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         startListenEvent();
         FirebaseHelper.giftsListener(roomID, giftsEventListener);
         getMultiLiveRequest();
-        loginRoom(profileId, profileName, roomID, host);
+        loginRoom(profileId, profileName, roomID, am_i_host);
 
         binding.txtUserName.setText(liveTitle);
         binding.txtId.setText(profileUniqueId);
@@ -606,7 +595,6 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         });
 
         binding.callMuteIMg.setOnClickListener(v -> {
-            joinGroup();
             muteMicRef.child(roomID).child(profileId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -634,19 +622,8 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         currentTimeStamp = getCurrentTimeStamp();
     }
 
-    private void joinGroup() {
-        ChatSDKManager.getChatSDKManager().joinGroup("114311", new ZIMGroupJoinedCallback() {
-            @Override
-            public void onGroupJoined(ZIMGroupFullInfo groupInfo, ZIMError errorInfo) {
-                Log.e("--->>>", "Joined");
-            }
-        });
-    }
-
     private void joinRoom(String roomID) {
-        ChatSDKManager.getChatSDKManager().joinRoom(roomID, (roomInfo, errorInfo) -> {
-            Log.e("--->>>","Room Joined"+roomID+" "+roomInfo);
-        });
+        ChatFunctions.joinRoom(roomID);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

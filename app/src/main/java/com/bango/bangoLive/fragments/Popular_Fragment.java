@@ -24,8 +24,8 @@ import com.bango.bangoLive.adapters.LiveUsersAdapter;
 import com.bango.bangoLive.adapters.SliderAdapterExample;
 import com.bango.bangoLive.ModelClasses.Banner.BannerImagesModel;
 import com.bango.bangoLive.ViewModel.ApiViewModel;
-import com.bango.bangoLive.application.App;
 import com.bango.bangoLive.databinding.FragmentPopularBinding;
+import com.bango.bangoLive.utils.AppConstant;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 
@@ -120,7 +120,7 @@ public class Popular_Fragment extends Fragment implements LiveUsersAdapter.Callb
         intent.putExtra("roomID",getLiveHostListAudioModelClass.getUserId());
         intent.putExtra("profileImage",getLiveHostListAudioModelClass.getImage());
         intent.putExtra("signature",getLiveHostListAudioModelClass.getSignature());
-        intent.putExtra("host",false);
+        intent.putExtra(AppConstant.AM_I_HOST,false);
         //Host Live Count : How much time a user comes Online
         intent.putExtra("liveId",getLiveHostListAudioModelClass.getId());
 
