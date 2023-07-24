@@ -8,32 +8,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.bango.bangoLive.ZegoServices.CurrentUserType;
-import com.bango.bangoLive.ZegoServices.userTypeAndPermissions.User;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
 import com.bango.bangoLive.application.App;
 import com.bango.bangoLive.databinding.ActivityHomeBinding;
 
 import java.util.ArrayList;
 
-import im.zego.zim.callback.ZIMGroupJoinedCallback;
-import im.zego.zim.callback.ZIMGroupLeftCallback;
-import im.zego.zim.callback.ZIMGroupListQueriedCallback;
-import im.zego.zim.callback.ZIMLoggedInCallback;
-import im.zego.zim.callback.ZIMMessageSentCallback;
-import im.zego.zim.entity.ZIMError;
-import im.zego.zim.entity.ZIMGroup;
-import im.zego.zim.entity.ZIMGroupFullInfo;
-import im.zego.zim.entity.ZIMMessage;
-import im.zego.zim.entity.ZIMMessageSendConfig;
-import im.zego.zim.entity.ZIMPushConfig;
-import im.zego.zim.entity.ZIMTextMessage;
 import im.zego.zim.entity.ZIMGroupInfo;
 import im.zego.zim.entity.ZIMUserInfo;
-import im.zego.zim.enums.ZIMConversationType;
-import im.zego.zim.enums.ZIMMessagePriority;
 
 public class HomeActivity extends AppCompatActivity {
     ActivityHomeBinding binding;
@@ -74,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
             App.showToast(HomeActivity.this, "Zim Logged In !!" + error.getMessage());
 
             ZIMGroupInfo zimGroupInfo = new ZIMGroupInfo();
-            zimGroupInfo.groupID = "41431";
+            zimGroupInfo.groupID = "114311";
             zimGroupInfo.groupName = "Bella11";
 
             ChatSDKManager.getChatSDKManager().dismissGroup(zimGroupInfo.groupID, (groupID, errorInfo) -> {

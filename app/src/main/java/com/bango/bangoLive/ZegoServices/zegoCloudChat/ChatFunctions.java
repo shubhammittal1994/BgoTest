@@ -28,26 +28,7 @@ public class ChatFunctions {
         return instance;
     }
 
-    public static void sendMessage(String conversationID, ZIMTextMessage zimMessage, ZIMPushConfig pushConfig,ZIMMessageSendConfig config ){
-
-
-        // The following shows how to send one-to-one message, the [conversationType] needs to be set to [ZIMConversationTypePeer].
-
-
-       /* ZIMTextMessage zimMessage = new ZIMTextMessage();
-        zimMessage.message = "Message content";
-
-        ZIMMessageSendConfig config = new ZIMMessageSendConfig();
-// Set priority for the message. 1: Low (by default). 2: Medium. 3: High.
-        config.priority = ZIMMessagePriority.LOW;
-// Set the offline push notificaition config.
-        ZIMPushConfig pushConfig = new ZIMPushConfig();
-        pushConfig.title = "Title of the offline push";
-        pushConfig.content= "Content of the offline push";
-        // pushConfig.extendedData = "Extended info of the offline push";
-        config.pushConfig = pushConfig;*/
-
-// In 1-on-1 chats, the conversationID is the peer user ID. In group chats, the conversationID is the groupID. In the chat room, the conversationID is the roomID.
+    public static void sendMessage(String conversationID, ZIMCustomTextMessage zimMessage, ZIMPushConfig pushConfig,ZIMMessageSendConfig config ){
         ChatSDKManager.getChatSDKManager().sendMessage(zimMessage, conversationID, ZIMConversationType.GROUP, config, new ZIMMessageSentCallback() {
             @Override
             public void onMessageAttached(ZIMMessage zimMessage){
@@ -56,7 +37,6 @@ public class ChatFunctions {
             @Override
             public void onMessageSent(ZIMMessage zimMessage, ZIMError error) {
                 // Implement the event callback on message sent.
-
                App.showToast(App.getAppContext(),"Message sent");
             }
         });

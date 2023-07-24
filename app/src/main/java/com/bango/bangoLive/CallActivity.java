@@ -62,8 +62,10 @@ import com.bango.bangoLive.AudioRoom.MODEL.AdminFirebaseRoot;
 import com.bango.bangoLive.AudioRoom.MODEL.ChatMessageModel;
 import com.bango.bangoLive.AudioRoom.MODEL.OtherUserDataModel;
 import com.bango.bangoLive.ViewModel.ApiViewModel;
+import com.bango.bangoLive.ZegoServices.ZegoSdkEnums.MessageTypeEnum;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatFunctions;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
+import com.bango.bangoLive.ZegoServices.zegoCloudChat.ZIMCustomTextMessage;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.model.MessageModel;
 import com.bango.bangoLive.adapters.LocalAddedAdapter;
 import com.bango.bangoLive.adapters.MusicRVAdapter;
@@ -153,10 +155,13 @@ import im.zego.zegoexpress.entity.ZegoRoomConfig;
 import im.zego.zegoexpress.entity.ZegoStream;
 import im.zego.zegoexpress.entity.ZegoUser;
 import im.zego.zim.callback.ZIMGroupJoinedCallback;
+import im.zego.zim.callback.ZIMRoomJoinedCallback;
 import im.zego.zim.entity.ZIMError;
 import im.zego.zim.entity.ZIMGroupFullInfo;
 import im.zego.zim.entity.ZIMMessageSendConfig;
 import im.zego.zim.entity.ZIMPushConfig;
+import im.zego.zim.entity.ZIMRoomFullInfo;
+import im.zego.zim.entity.ZIMRoomInfo;
 import im.zego.zim.entity.ZIMTextMessage;
 import im.zego.zim.enums.ZIMMessagePriority;
 
@@ -215,6 +220,17 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     String status = "";
     String musictime, profileUniqueId, liveTitle, liveId, profileName, profileId, profileImageSave, profileImage, roomID, otherUserId, liveStatus, coverImage, coverName;
     String adminId = "", adminIdThroughCallback = "";
+
+    /*
+    * Host-->> RoomStart-->>
+    * RoomID==ProfileID
+    * LiveID==RoomID
+    * otherUserId==userID
+    * profileId== RoomCreate
+    * profileUniqueId==UserName
+    * liveHostid==
+    * adminId==
+    * */
     Boolean host = false;
     ImageView playMusicDialogImg;
     int emptyPosition;
@@ -247,6 +263,8 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         binding = ActivityCallBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+
 
         //Set Full Screen Background Window
         CallActivity.this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -303,6 +321,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             Picasso.with(this).load(coverImage).error(R.drawable.actress).into(binding.imgProfileuser);
             Picasso.with(this).load(profileImage).error(R.drawable.actress).into(binding.imgHostProfile);
         } else {
+            joinRoom(roomID);
             roomID = getIntent().getStringExtra("roomID");
             liveTitle = getIntent().getStringExtra("liveTitle");
             liveId = getIntent().getStringExtra("liveId");
@@ -619,7 +638,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         binding.callMuteIMg.setOnClickListener(v -> muteMicRef.child(roomID).child(profileId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                joinGroup();
+
                 if (snapshot.exists()) {
                     String status = "";
                     if (snapshot.getValue().toString() != null) {
@@ -646,12 +665,9 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
     }
 
-    private void joinGroup() {
-        ChatSDKManager.getChatSDKManager().joinGroup("114", new ZIMGroupJoinedCallback() {
-            @Override
-            public void onGroupJoined(ZIMGroupFullInfo groupInfo, ZIMError errorInfo) {
-                Log.e("--->>>", "Joined");
-            }
+    private void joinRoom(String roomID) {
+        ChatSDKManager.getChatSDKManager().joinRoom(roomID, (roomInfo, errorInfo) -> {
+            Log.e("--->>>","Room Joined"+roomID+" "+roomInfo);
         });
     }
 
@@ -925,20 +941,22 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     private void sendMessage(ChatMessageModel chatMessageModel, String key) {
         ref.child(otherUserId).child(liveType).child(otherUserId).child("chat comments").child(key).setValue(chatMessageModel);
 
-        ZIMTextMessage zimMessage = new ZIMTextMessage();
+        ZIMCustomTextMessage zimMessage = new ZIMCustomTextMessage();
         zimMessage.message = chatMessageModel.getMessage();
+        zimMessage.setMessageTypeEnum(MessageTypeEnum.ROOM_MESSAGE);
 
         ZIMMessageSendConfig config = new ZIMMessageSendConfig();
-// Set priority for the message. 1: Low (by default). 2: Medium. 3: High.
+
         config.priority = ZIMMessagePriority.LOW;
-// Set the offline push notificaition config.
+
         ZIMPushConfig pushConfig = new ZIMPushConfig();
         pushConfig.title = "Title of the offline push";
         pushConfig.content = "Content of the offline push";
         // pushConfig.extendedData = "Extended info of the offline push";
         config.pushConfig = pushConfig;
 
-        ChatFunctions.sendMessage("4143", zimMessage, pushConfig, config);
+
+        ChatFunctions.sendMessage("114311", zimMessage, pushConfig, config);
     }
 
 

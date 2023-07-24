@@ -116,15 +116,20 @@ public class Popular_Fragment extends Fragment implements LiveUsersAdapter.Callb
 
         Intent intent = new Intent(requireContext(), CallActivity.class);
         intent.putExtra("profileName",getLiveHostListAudioModelClass.getName());
+        //RoomID
         intent.putExtra("roomID",getLiveHostListAudioModelClass.getUserId());
         intent.putExtra("profileImage",getLiveHostListAudioModelClass.getImage());
         intent.putExtra("signature",getLiveHostListAudioModelClass.getSignature());
         intent.putExtra("host",false);
+        //Host Live Count : How much time a user comes Online
         intent.putExtra("liveId",getLiveHostListAudioModelClass.getId());
+
         intent.putExtra("liveType","multiLive");
         intent.putExtra("liveStatus", "host");
+        /*Other UserId is Mine here*/
         intent.putExtra("otherUserId",profileId);
         intent.putExtra("status", "1");
+        /*Uniqe ID */
         intent.putExtra("profileUniqueId",getLiveHostListAudioModelClass.getUsername());
         intent.putExtra("coverimage",getLiveHostListAudioModelClass.getPosterImage());
         intent.putExtra("coverName",getLiveHostListAudioModelClass.getLiveTitle());

@@ -45,6 +45,8 @@
     <string name="create_profile">Create Profile</string>
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
+    <string name="room_creation_failed">Room Creation Failed !!</string>
+    <string name="something_went_wrong_during_room_creation">Something went wrong during room creation !</string>
 
     <integer-array name="gift_values">
         <item>20</item>

@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,9 +41,10 @@ import com.bango.bangoLive.AudioRoom.MODEL.GetPosterImage;
 import com.bango.bangoLive.HomeActivity;
 import com.bango.bangoLive.R;
 import com.bango.bangoLive.ViewModel.ApiViewModel;
+import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
 import com.bango.bangoLive.application.App;
+import com.bango.bangoLive.utils.AppConstant;
 import com.bango.bangoLive.utils.CommonUtils;
-import com.bango.bangoLive.utils.RealPathUtil;
 import com.bango.bangoLive.CallActivity;
 import com.bango.bangoLive.fragments.ApplyForHostFragment;
 import com.bango.bangoLive.fragments.profile.EditProfile_Fragment;
@@ -56,6 +55,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
+import im.zego.zim.entity.ZIMRoomInfo;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -65,11 +65,11 @@ public class LiveMainFragment extends Fragment {
     String userName;
     private final String maxValueOfJoiners = "1";
     androidx.appcompat.app.AlertDialog dailogbox, dialog;
-    private String posterImage,test ="";
+    private String posterImage, test = "";
 
     SharedPreferences sharedpreferences;
 
-    String profileName,profileId,profileImage,profileUniqueId;
+    String profileName, profileId, profileImage, profileUniqueId;
     private RequestBody userIId;
     private EditText liveTitle;
     Animation animation;
@@ -93,24 +93,24 @@ public class LiveMainFragment extends Fragment {
 
         /************************** SHARED PREFERENCES **************************/
         sharedpreferences = getContext().getSharedPreferences("Bango", Context.MODE_PRIVATE);
-        profileName = sharedpreferences.getString("name","");
-        profileId = sharedpreferences.getString("id","");
-        profileImage = sharedpreferences.getString("profileImage","");
+        profileName = sharedpreferences.getString("name", "");
+        profileId = sharedpreferences.getString("id", "");
+        profileImage = sharedpreferences.getString("profileImage", "");
 
-        animation = AnimationUtils.loadAnimation(requireContext(),R.anim.middle_animation_code);
+        animation = AnimationUtils.loadAnimation(requireContext(), R.anim.middle_animation_code);
         view.findViewById(R.id.audio_live).setAnimation(animation);
 
-        liveTitle=view.findViewById(R.id.liveTitle);
+        liveTitle = view.findViewById(R.id.liveTitle);
 
-      //  getStatus();
-      //  getDataSome();
+        //  getStatus();
+        //  getDataSome();
         findIds(view);
         getPosterImage(profileId);
 
         view.findViewById(R.id.circular_image).setOnClickListener(view1 -> {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 2);
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent, 2);
         });
 
         view.findViewById(R.id.cancel_live).setOnClickListener(view13 -> startActivity(new Intent(requireContext(), HomeActivity.class)));
@@ -118,33 +118,19 @@ public class LiveMainFragment extends Fragment {
         view.findViewById(R.id.audio_live).setOnClickListener(view1 -> {
             if (profileName.equals("")) {
                 updateProfile();
-            } else if(App.getSharedpref().getString("image").isEmpty()) {
+            } else if (App.getSharedpref().getString("image").isEmpty()) {
                 Alerter.create(requireActivity()).setTitle("Cover Image Alert").setText("Please select your cover image").setBackgroundColorRes(R.color.app_dark_color).show();
-            }else if(liveTitle.getText().toString().isEmpty()) {
+            } else if (liveTitle.getText().toString().isEmpty()) {
                 Alerter.create(requireActivity()).setTitle("Live Title Alert").setText("Please select your Live Title").setBackgroundColorRes(R.color.app_dark_color).show();
-            }
-            else {
-                new ApiViewModel().startAudioLive(requireActivity(),sharedpreferences.getString("id",""),liveTitle.getText().toString().trim()).observe(requireActivity(), new Observer<StartLiveModelClass>() {
+            } else {
+                new ApiViewModel().startAudioLive(requireActivity(), sharedpreferences.getString("id", ""), liveTitle.getText().toString().trim()).observe(requireActivity(), new Observer<StartLiveModelClass>() {
                     @Override
                     public void onChanged(StartLiveModelClass startLiveModelClass) {
-                        if (startLiveModelClass.getStatus()==1){
-                            Toast.makeText(requireContext(), "liveId"+startLiveModelClass.getDetails().getId(), Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(requireContext(), CallActivity.class);
-                            intent.putExtra("host",true);
-                            intent.putExtra("liveTitle",liveTitle.getText().toString());
-                            intent.putExtra("liveId",startLiveModelClass.getDetails().getId());
-                            intent.putExtra("token",startLiveModelClass.getDetails().getSignature());
-                            intent.putExtra("roomID",sharedpreferences.getString("id",""));
-                            intent.putExtra("profileImage",profileImage);
-                            intent.putExtra("profileName",profileName);
-                            intent.putExtra("status", "2");
-                            intent.putExtra("liveStatus", "hostLive");
-                            intent.putExtra("liveType","multiLive");
-                            intent.putExtra("profileUniqueId", sharedpreferences.getString("userUniqueId",""));
-                            intent.putExtra("coverimage",App.getSharedpref().getString("image"));
-                            intent.putExtra("coverName",startLiveModelClass.getDetails().getLiveTitle());
-                            startActivity(intent);
-                        }else{
+                        if (startLiveModelClass.getStatus() == 1) {
+                            createRoom(sharedpreferences.getString("id", ""), startLiveModelClass);
+                           // Toast.makeText(requireContext(), "liveId" + startLiveModelClass.getDetails().getId(), Toast.LENGTH_SHORT).show();
+
+                        } else {
                             Alerter.create(requireActivity()).setTitle("Alert").setText(startLiveModelClass.getMessage()).setBackgroundColorRes(R.color.app_dark_color).show();
                         }
                     }
@@ -188,7 +174,7 @@ public class LiveMainFragment extends Fragment {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_Container, new EditProfile_Fragment()).addToBackStack(null).commit();
-            }else {
+            } else {
                 requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment_Container, new EditProfile_Fragment()).addToBackStack(null).commit();
             }
             dialog.dismiss();
@@ -201,6 +187,45 @@ public class LiveMainFragment extends Fragment {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
+    }
+
+    private void createRoom(String roomID, StartLiveModelClass startLiveModelClass) {
+        ZIMRoomInfo zimRoomInfo = new ZIMRoomInfo();
+        zimRoomInfo.roomID = roomID;
+        zimRoomInfo.roomName = liveTitle.getText().toString();
+        ChatSDKManager.getChatSDKManager().createRoom(zimRoomInfo, (roomInfo, errorInfo) ->
+                {
+                    /*0 --->>Success
+                     * 1--->> Failed
+                     * */
+                    if (errorInfo.getCode().value() == 0) {
+                        navigateToNextActivity(startLiveModelClass);
+                    } else if (errorInfo.getCode().value() == 1) {
+                        App.showToast(getActivity(), getString(R.string.room_creation_failed));
+                    } else {
+                        App.showToast(getActivity(), getString(R.string.something_went_wrong_during_room_creation));
+                    }
+                }
+        );
+    }
+
+    void navigateToNextActivity(StartLiveModelClass startLiveModelClass) {
+        Intent intent = new Intent(requireContext(), CallActivity.class);
+        intent.putExtra("host", true);
+        intent.putExtra("liveTitle", liveTitle.getText().toString());
+        intent.putExtra("liveId", startLiveModelClass.getDetails().getId());
+        intent.putExtra("token", startLiveModelClass.getDetails().getSignature());
+        intent.putExtra("roomID", sharedpreferences.getString("id", ""));
+        intent.putExtra("profileImage", profileImage);
+        intent.putExtra("profileName", profileName);
+        intent.putExtra("status", "2");
+        intent.putExtra("liveStatus", "hostLive");
+        intent.putExtra("liveType", "multiLive");
+        intent.putExtra("profileUniqueId", sharedpreferences.getString("userUniqueId", ""));
+        intent.putExtra("coverimage", App.getSharedpref().getString("image"));
+        intent.putExtra("coverName", startLiveModelClass.getDetails().getLiveTitle());
+        intent.putExtra(AppConstant.I_AM_HOST,true);
+        startActivity(intent);
     }
 
 
@@ -265,8 +290,8 @@ public class LiveMainFragment extends Fragment {
         dialog.show();
         ImageView status_image = dialog.findViewById(R.id.status_image);
         TextView about_status = dialog.findViewById(R.id.about_status);
-            status_image.setImageResource(R.drawable.expired);
-            about_status.setText("Your request is Rejected");
+        status_image.setImageResource(R.drawable.expired);
+        about_status.setText("Your request is Rejected");
     }
 
 
@@ -284,21 +309,21 @@ public class LiveMainFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
 
             assert data != null;
-             imageUriPhotos = data.getData();
+            imageUriPhotos = data.getData();
 
 //            String stringPhotoPath = RealPathUtil.getRealPath(requireActivity(), imageUriPhotos);
 //            test = RealPathUtil.getRealPath(requireActivity(), imageUriPhotos);
             stringPhotoPath = uriToStringConvert(imageUriPhotos);
 //            String image = imageUriPhotos.getPath().toString();
             hitApiPosterApp(profileId, stringPhotoPath);
-          //  getImagePathFromUri(requireContext(),imageUriPhotos);
+            //  getImagePathFromUri(requireContext(),imageUriPhotos);
             circular_image.setImageURI(imageUriPhotos);
         } else {
             Toast.makeText(requireContext(), "Image Uploading Cancelled", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private  String uriToStringConvert(Uri newUri) {
+    private String uriToStringConvert(Uri newUri) {
         String path;
         String[] filePathColumn = {MediaStore.Images.Media.DATA};
         Cursor cursor = requireActivity().getContentResolver().query(newUri, filePathColumn, null, null, null);
@@ -339,19 +364,19 @@ public class LiveMainFragment extends Fragment {
 
         File file1 = new File(stringPhotoPath);
         RequestBody requestBody = RequestBody.create(MediaType.parse("image"), file1);
-        MultipartBody.Part  photoPath = MultipartBody.Part.createFormData("image", file1.getName(), requestBody);
+        MultipartBody.Part photoPath = MultipartBody.Part.createFormData("image", file1.getName(), requestBody);
 
 //        File file1 = new File(stringPhotoPath);
 //        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), file1);
 //        MultipartBody.Part  photoPath = MultipartBody.Part.createFormData("image/jpeg", file1.getName(), requestBody);
-        Log.d("photoPath","photoPath: "+photoPath);
-        Log.d("photoPath","photoPath: "+userIId);
-        new ApiViewModel().addPosterImagee(requireActivity(),userIId, CommonUtils.getFileData(stringPhotoPath, "posterImage")).observe(requireActivity(), new Observer<AddPosterImage>() {
+        Log.d("photoPath", "photoPath: " + photoPath);
+        Log.d("photoPath", "photoPath: " + userIId);
+        new ApiViewModel().addPosterImagee(requireActivity(), userIId, CommonUtils.getFileData(stringPhotoPath, "posterImage")).observe(requireActivity(), new Observer<AddPosterImage>() {
             @Override
             public void onChanged(AddPosterImage addPosterImage) {
-                if (addPosterImage.getStatus().equalsIgnoreCase("1")){
+                if (addPosterImage.getStatus().equalsIgnoreCase("1")) {
                     Toast.makeText(requireContext(), "" + addPosterImage.getMessage(), Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Toast.makeText(requireContext(), "hhhhh", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -361,7 +386,6 @@ public class LiveMainFragment extends Fragment {
 //                    Toast.makeText(requireContext(), "" + map.get("message"), Toast.LENGTH_SHORT).show();
 //                }
 //            });
-
 
 
     }
@@ -405,15 +429,15 @@ public class LiveMainFragment extends Fragment {
     }
 
     private void getPosterImage(String userId) {
-        Toast.makeText(requireContext(), "userId"+userId, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), "userId" + userId, Toast.LENGTH_SHORT).show();
         new ApiViewModel().getPosterImage(userId).observe(requireActivity(), new Observer<GetPosterImage>() {
             @Override
             public void onChanged(GetPosterImage getPosterImage) {
-                if (getPosterImage.getStatus().equals("1")){
-                   if (!getPosterImage.getDetails().isEmpty()){
-                       App.getSharedpref().saveString("image",getPosterImage.getDetails());
-                       Glide.with(requireContext()).load(getPosterImage.getDetails()).placeholder(R.drawable.profilemaleicon).into(circular_image);
-                   }
+                if (getPosterImage.getStatus().equals("1")) {
+                    if (!getPosterImage.getDetails().isEmpty()) {
+                        App.getSharedpref().saveString("image", getPosterImage.getDetails());
+                        Glide.with(requireContext()).load(getPosterImage.getDetails()).placeholder(R.drawable.profilemaleicon).into(circular_image);
+                    }
                 }
             }
         });
@@ -463,8 +487,6 @@ public class LiveMainFragment extends Fragment {
         /************************** CLEAR FULL SCREEN BACKGROUND WINDOW **************************/
         requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
-
-
 
 
 }

@@ -86,7 +86,8 @@ public class App extends Application {
 
         singleton = new Singleton();
         sharedpref = new SharedPref(context);
-        ChatSDKManager.getChatSDKManager();
+
+
         ChatSDKManager.getChatSDKManager().setEventHandler(new ZIMEventHandler() {
             @Override
             public void onReceivePeerMessage(ZIM zim, ArrayList<ZIMMessage> messageList, String fromUserID) {

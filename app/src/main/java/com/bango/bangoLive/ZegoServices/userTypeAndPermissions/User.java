@@ -1,10 +1,10 @@
 package com.bango.bangoLive.ZegoServices.userTypeAndPermissions;
 
-import com.bango.bangoLive.ZegoServices.CurrentUserType;
+import com.bango.bangoLive.ZegoServices.ZegoSdkEnums.CurrentUserTypeEnums;
 
 public class User {
     public UserPermissions userPermissions;
-    CurrentUserType currentUserType;
+    CurrentUserTypeEnums currentUserTypeEnums;
 
     public UserPermissions getUserPermissions() {
         return userPermissions;
@@ -14,17 +14,17 @@ public class User {
         this.userPermissions = userPermissions;
     }
 
-    public CurrentUserType getCurrentUserType() {
-        return currentUserType;
+    public CurrentUserTypeEnums getCurrentUserType() {
+        return currentUserTypeEnums;
     }
 
-    public void setCurrentUserType(CurrentUserType currentUserType) {
-        this.currentUserType = currentUserType;
+    public void setCurrentUserType(CurrentUserTypeEnums currentUserTypeEnums) {
+        this.currentUserTypeEnums = currentUserTypeEnums;
     }
 
-    public User(CurrentUserType currentUserType) {
-        this.currentUserType = currentUserType;
-        switch (currentUserType) {
+    public User(CurrentUserTypeEnums currentUserTypeEnums) {
+        this.currentUserTypeEnums = currentUserTypeEnums;
+        switch (currentUserTypeEnums) {
             case AUDIENCE: {
               this.userPermissions= new UserPermissions(true,false);
                 break;

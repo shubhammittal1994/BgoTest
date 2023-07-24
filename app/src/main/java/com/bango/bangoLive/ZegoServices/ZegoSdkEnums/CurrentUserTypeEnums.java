@@ -1,6 +1,6 @@
-package com.bango.bangoLive.ZegoServices;
+package com.bango.bangoLive.ZegoServices.ZegoSdkEnums;
 
-public enum CurrentUserType {
+public enum CurrentUserTypeEnums {
     AUDIENCE,
     HOST,
     VIP1,
