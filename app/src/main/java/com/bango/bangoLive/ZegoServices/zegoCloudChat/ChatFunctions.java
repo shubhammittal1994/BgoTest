@@ -30,8 +30,9 @@ public class ChatFunctions {
         return instance;
     }
 
-    public static void sendMessage(String conversationID, ZIMCustomTextMessage zimMessage, ZIMPushConfig pushConfig,ZIMMessageSendConfig config ){
-        ChatSDKManager.getChatSDKManager().sendMessage(zimMessage, conversationID, ZIMConversationType.GROUP, config, new ZIMMessageSentCallback() {
+    public static void sendMessage(String conversationID, ZIMCustomTextMessage zimMessage, ZIMPushConfig pushConfig,ZIMMessageSendConfig config ,ZIMConversationType zimConversationType){
+        App.showLog("--->>> Room conversation id:- "+conversationID+" -> "+zimMessage.message);
+        ChatSDKManager.getChatSDKManager().sendMessage(zimMessage, conversationID, zimConversationType, config, new ZIMMessageSentCallback() {
             @Override
             public void onMessageAttached(ZIMMessage zimMessage){
                 // The callback on the message not sent yet. You can get a temporary object here and this object must be the same as that created zimMessage object. You can make your own business logic using this as needed, for example, display a UI ahead of time.
@@ -46,7 +47,7 @@ public class ChatFunctions {
 
     public static void joinRoom(String roomID) {
         ChatSDKManager.getChatSDKManager().joinRoom(roomID, (roomInfo, errorInfo) -> {
-            Log.e("--->>>","Room Joined"+roomID+" "+roomInfo);
+            App.showLog("--->>> Room Joined:- "+roomID+" -> "+roomInfo.baseInfo.roomID + " -> "+ roomInfo.baseInfo.roomName);
         });
     }
 }

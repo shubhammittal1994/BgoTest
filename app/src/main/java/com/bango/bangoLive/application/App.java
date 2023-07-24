@@ -114,6 +114,16 @@ public class App extends Application {
             @Override
             public void onReceiveRoomMessage(ZIM zim, ArrayList<ZIMMessage> messageList, String fromRoomID) {
                 super.onReceiveRoomMessage(zim, messageList, fromRoomID);
+                showLog(messageList.size() + " -> " + messageList.get(messageList.size()-1) + " -> " + fromRoomID);
+                for (ZIMMessage zimMessage : messageList) {
+                    if (zimMessage instanceof ZIMTextMessage)
+                    {
+                        ZIMTextMessage zimTextMessage = (ZIMTextMessage) zimMessage;
+                        EventBus.getDefault().post(new MessageModel(zimTextMessage.message,zimTextMessage.getSenderUserID()));
+
+                        showLog("Received message:- "+ zimTextMessage.message);
+                    }
+                }
             }
 
             @Override

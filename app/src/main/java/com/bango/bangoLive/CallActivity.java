@@ -150,10 +150,12 @@ import im.zego.zegoexpress.entity.ZegoRoomConfig;
 import im.zego.zegoexpress.entity.ZegoStream;
 import im.zego.zegoexpress.entity.ZegoUser;
 import im.zego.zim.callback.ZIMGroupJoinedCallback;
+import im.zego.zim.callback.ZIMRoomLeftCallback;
 import im.zego.zim.entity.ZIMError;
 import im.zego.zim.entity.ZIMGroupFullInfo;
 import im.zego.zim.entity.ZIMMessageSendConfig;
 import im.zego.zim.entity.ZIMPushConfig;
+import im.zego.zim.enums.ZIMConversationType;
 import im.zego.zim.enums.ZIMMessagePriority;
 
 public class CallActivity extends AppCompatActivity implements GiftBottomSheetFragment.GetLuckyGift {
@@ -248,14 +250,14 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     private final DatabaseReference muteMicRef = firebaseDatabase.getReference().child("muteMicRef");
     private final DatabaseReference userLiveBackImgRef = firebaseDatabase.getReference().child("userLiveBackImgRef");
 
+    private String audioRoomId = "test123";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCallBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
-
 
         //Set Full Screen Background Window
         CallActivity.this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -312,7 +314,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         startListenEvent();
         FirebaseHelper.giftsListener(roomID, giftsEventListener);
         getMultiLiveRequest();
-        loginRoom(profileId, profileName, roomID, am_i_host);
+        loginRoom(profileId, profileName, audioRoomId, am_i_host);
 
         binding.txtUserName.setText(liveTitle);
         binding.txtId.setText(profileUniqueId);
@@ -906,7 +908,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         config.pushConfig = pushConfig;
 
 
-        ChatFunctions.sendMessage(roomID, zimMessage, pushConfig, config);
+        ChatFunctions.sendMessage(roomID, zimMessage, pushConfig, config, ZIMConversationType.ROOM);
         chatMessages.add(chatMessageModel);
         binding.recyclerAllMessage.scrollToPosition(chatMessages.size() - 1);
         if (commentAdapter != null)
@@ -1773,7 +1775,8 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         goLiveModelClass.setRequestStatus("1");
         isHostStatus = true;
 
-        loginRoom(profileId, profileName, roomID, isHostStatus);
+        App.showLog("sendRequestForMultiLive loginRoom");
+        loginRoom(profileId, profileName, audioRoomId, isHostStatus);
 
 
 //      goLiveModelClass.setSvga(profileFrame);
@@ -2659,7 +2662,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                 }
             });
 
-            logoutRoom();
+            logoutRoom(audioRoomId);
 //              zegoExpressEngine.stopPlayingStream(roomID);
 //              zegoExpressEngine.logoutRoom(roomID);
             dialog.dismiss();
@@ -2680,26 +2683,18 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         // `ZegoRoomConfig` in which the `isUserStatusNotify` parameter is set to
         // `true` is passed.
         roomConfig.isUserStatusNotify = true;
-        Log.d("LOGINROOM", "roomID: " + roomID);
-        Log.d("LOGINROOM", "user: " + user);
-        Log.d("LOGINROOM", "roomConfig: " + roomConfig);
+        App.showLog("LOGINROOM roomID: " + roomID);
+        App.showLog("LOGINROOM user: " + user);
+        App.showLog("LOGINROOM roomConfig: " + roomConfig);
 
-        zegoExpressEngine.loginRoom(roomID, user, roomConfig, (int error, JSONObject extendedData) -> {
+         /*zegoExpressEngine.loginRoom(roomID, user, roomConfig, (int error, JSONObject extendedData) -> {
             ZegoPlayerConfig playerConfig = new ZegoPlayerConfig();
             playerConfig.resourceMode = ZegoStreamResourceMode.ONLY_RTC;
             // Room login result. This callback is sufficient if you only need to
             // check the login result.
-            Toast.makeText(this, "eerror" + error, Toast.LENGTH_SHORT).show();
-            Log.d("error", "errorrrrr :" + error);
-            // Login successful.
-            // Start the preview and stream publishing.
-            Toast.makeText(this, "roomiiid" + roomID, Toast.LENGTH_SHORT).show();
 
-            Toast.makeText(this, "Login successful.", Toast.LENGTH_LONG).show();
-            Toast.makeText(this, "host Status" + isHost, Toast.LENGTH_SHORT).show();
-            if (isHost) {
+           if (isHost) {
                 //startPreview();
-                startPublish(userID, roomID);
                 //   zegoExpressEngine.startPlayingStream(roomID,playerConfig);
 
 //                    playerConfig.cdnConfig(true);  // Enable audio
@@ -2710,11 +2705,28 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             } else {
                 //startPlayStream(userID, roomID);
             }
+        });*/
+        zegoExpressEngine.loginRoom(roomID, user, roomConfig, (int error, JSONObject extendedData) -> {
+            // Room login result. This callback is sufficient if you only need to
+            // check the login result.
+            if (error == 0) {
+                Toast.makeText(this, "eerror" + error, Toast.LENGTH_SHORT).show();
+                App.showLog("error errorrrrr :" + error);
+                // Login successful.
+                // Start the preview and stream publishing.
+                Toast.makeText(this, "roomiiid " + roomID, Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(this, "Login successful.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "host Status " + isHost, Toast.LENGTH_SHORT).show();
+                startPublish(userID, roomID);
+            } else {
+                // Login failed. For details, see [Error codes\|_blank](/404).
+                Toast.makeText(this, "Login failed. error = " + error, Toast.LENGTH_LONG).show();
+            }
         });
     }
 
-    private void startPlayStream(String userID, String streamID) {
-        //String streamID = roomID + "_" + userID + "_receive";
+    void startPlayStream(String streamID) {
         zegoExpressEngine.startPlayingStream(streamID);
     }
 
@@ -2722,32 +2734,29 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         zegoExpressEngine.stopPlayingStream(streamID);
     }
 
-
     void startPublish(String userID, String roomID) {
 
         ZegoAudioConfig audioConfig = new ZegoAudioConfig(ZegoAudioConfigPreset.HIGH_QUALITY_STEREO);
         zegoExpressEngine.setAudioConfig(audioConfig);
 
         zegoExpressEngine.startPublishingStream(roomID);
+        App.showLog("Start Publish:- " + roomID);
     }
 
-
-    void stopPublish() {
-        zegoExpressEngine.stopPublishingStream();
-    }
-
-    void startPreview() {
-        //ZegoCanvas previewCanvas = new ZegoCanvas(findViewById(R.id.preview));
-        //zegoExpressEngine.startPreview(previewCanvas);
-    }
-
-    void stopPreview() {
-        zegoExpressEngine.stopPreview();
-    }
-
-    void logoutRoom() {
-        zegoExpressEngine.logoutRoom();
+    void logoutRoom(String roomID) {
+        zegoExpressEngine.logoutRoom(roomID);
         zegoExpressEngine.stopPlayingStream(roomID);
+        ChatSDKManager.getChatSDKManager().leaveRoom(roomID, new ZIMRoomLeftCallback() {
+            @Override
+            public void onRoomLeft(String roomID, ZIMError errorInfo) {
+                App.showLog("Roomid:- " + roomID + " , errorinfo:- " + errorInfo.getMessage());
+            }
+        });
+        if (am_i_host) {
+            //Stop publishing
+            zegoExpressEngine.stopPublishingStream();
+        }
+        stopListenEvent();
     }
 
 
@@ -2760,8 +2769,9 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                 // When `updateType` is set to `ZegoUpdateType.ADD`, an audio and video
                 // stream is added, and you can call the `startPlayingStream` method to
                 // play the stream.
+                App.showLog("Room id:- " + roomID + " , stremList:- " + streamList.get(0).streamID + " , update type:- 0(add) 1 (delete)" + updateType);
                 if (updateType == ZegoUpdateType.ADD) {
-                    startPlayStream("", streamList.get(0).streamID);
+                    startPlayStream(streamList.get(0).streamID);
                 } else {
                     stopPlayStream(streamList.get(0).streamID);
                 }
@@ -2880,7 +2890,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     }
 
     void stopListenEvent() {
-        ZegoExpressEngine.getEngine().setEventHandler(null);
+        zegoExpressEngine.setEventHandler(null);
     }
 
 //    ZegoLiveRoom.sharedInstance().startPlayingStream(streamID, new IZegoLivePlayerCallback() {

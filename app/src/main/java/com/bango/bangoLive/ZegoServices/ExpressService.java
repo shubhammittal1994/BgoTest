@@ -33,7 +33,7 @@ public class ExpressService {
         ZegoEngineProfile profile = new ZegoEngineProfile();
         profile.appID = appID;
         profile.appSign = appSign;
-        profile.scenario = ZegoScenario.DEFAULT;
+        profile.scenario = ZegoScenario.STANDARD_VOICE_CALL;
         profile.application = application;
         engine = ZegoExpressEngine.createEngine(profile, new IZegoEventHandler() {
         });
