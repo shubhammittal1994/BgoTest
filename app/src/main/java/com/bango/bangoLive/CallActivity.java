@@ -2710,14 +2710,14 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             // Room login result. This callback is sufficient if you only need to
             // check the login result.
             if (error == 0) {
-                Toast.makeText(this, "eerror" + error, Toast.LENGTH_SHORT).show();
-                App.showLog("error errorrrrr :" + error);
+                //Toast.makeText(this, "eerror" + error, Toast.LENGTH_SHORT).show();
+                App.showLog("error :" + error);
                 // Login successful.
                 // Start the preview and stream publishing.
-                Toast.makeText(this, "roomiiid " + roomID, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "roomiiid " + roomID, Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(this, "Login successful.", Toast.LENGTH_LONG).show();
-                Toast.makeText(this, "host Status " + isHost, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Login successful.", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "host Status " + isHost, Toast.LENGTH_SHORT).show();
                 startPublish(userID, roomID);
             } else {
                 // Login failed. For details, see [Error codes\|_blank](/404).
