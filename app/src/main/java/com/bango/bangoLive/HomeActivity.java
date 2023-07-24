@@ -40,20 +40,20 @@ public class HomeActivity extends AppCompatActivity {
 
         /************************** SET VISIBLITY OF BOTTOM NAVIGATION **************************/
         binding.bottomNavigation.getRoot().setVisibility(View.VISIBLE);
-        createZimUserInfo("7193856", "manish");
+        createZimUserInfo();
 
 
     }
 
-    private void createZimUserInfo(String id, String name) {
+    private void createZimUserInfo() {
         ZIMUserInfo zimUserInfo = new ZIMUserInfo();
-        zimUserInfo.userID = "123546";
-        zimUserInfo.userName = name;
+        zimUserInfo.userID = App.getSharedpref().getString("id");
+        zimUserInfo.userName = App.getSharedpref().getString("name");
 
         //App.showToast(HomeActivity.this,"Zim Logged In !!"+id +"&&"+name);
-        Log.e("--->>>", "" + id + "&&" + name);
+        App.showLog("--->>> " + zimUserInfo.userID + " & " + zimUserInfo.userName);
         ChatSDKManager.getChatSDKManager().login(zimUserInfo, error -> {
-            Log.e("--->>>", "Zim Logged In !!");
+            App.showLog("--->>> Zim Logged In !!");
             App.showToast(HomeActivity.this, "Zim Logged In !!" + error.getMessage());
 
             ZIMGroupInfo zimGroupInfo = new ZIMGroupInfo();

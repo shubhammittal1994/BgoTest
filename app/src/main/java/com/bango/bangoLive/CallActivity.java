@@ -143,11 +143,13 @@ import im.zego.zegoexpress.ZegoAudioEffectPlayer;
 import im.zego.zegoexpress.ZegoExpressEngine;
 import im.zego.zegoexpress.callback.IZegoEventHandler;
 import im.zego.zegoexpress.callback.IZegoRoomLoginCallback;
+import im.zego.zegoexpress.constants.ZegoAudioConfigPreset;
 import im.zego.zegoexpress.constants.ZegoPlayerState;
 import im.zego.zegoexpress.constants.ZegoPublisherState;
 import im.zego.zegoexpress.constants.ZegoRoomStateChangedReason;
 import im.zego.zegoexpress.constants.ZegoStreamResourceMode;
 import im.zego.zegoexpress.constants.ZegoUpdateType;
+import im.zego.zegoexpress.entity.ZegoAudioConfig;
 import im.zego.zegoexpress.entity.ZegoAudioEffectPlayConfig;
 import im.zego.zegoexpress.entity.ZegoCanvas;
 import im.zego.zegoexpress.entity.ZegoPlayerConfig;
@@ -287,81 +289,48 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         /************************** GET DATA THROUGH INTENT **************************/
         host = getIntent().getBooleanExtra("host", false);
 
+        roomID = getIntent().getStringExtra("roomID");
+        liveTitle = getIntent().getStringExtra("liveTitle");
+        liveId = getIntent().getStringExtra("liveId");
+
+        profileName = sharedpreferences.getString("name", "");
+        profileId = sharedpreferences.getString("id", "");
+        profileImage = getIntent().getStringExtra("profileImage");
+        //  profileName = getIntent().getStringExtra("profileName");
+        profileUniqueId = getIntent().getStringExtra("profileUniqueId");
+        status = getIntent().getStringExtra("status");
+        liveType = getIntent().getStringExtra("liveType");
+        liveStatus = getIntent().getStringExtra("liveStatus");
+        liveHostid = getIntent().getStringExtra("roomID");
+        coverImage = getIntent().getStringExtra("coverimage");
+        coverName = getIntent().getStringExtra("coverName");
+        otherUserId = getIntent().getStringExtra("roomID");
+
+        token = getIntent().getStringExtra("token");
+
         if (host) {
-            roomID = getIntent().getStringExtra("roomID");
-            liveTitle = getIntent().getStringExtra("liveTitle");
-            liveId = getIntent().getStringExtra("liveId");
-
-            profileName = sharedpreferences.getString("name", "");
-            profileId = sharedpreferences.getString("id", "");
             profileImageSave = sharedpreferences.getString("profileImage", "");
-            profileImage = getIntent().getStringExtra("profileImage");
-            //  profileName = getIntent().getStringExtra("profileName");
-            profileUniqueId = getIntent().getStringExtra("profileUniqueId");
-            status = getIntent().getStringExtra("status");
-            liveType = getIntent().getStringExtra("liveType");
-            liveStatus = getIntent().getStringExtra("liveStatus");
-            liveHostid = getIntent().getStringExtra("roomID");
-            coverImage = getIntent().getStringExtra("coverimage");
-            coverName = getIntent().getStringExtra("coverName");
-
-            token = getIntent().getStringExtra("token");
-
-            MultiLiveAudioAdapter.directHostId = getIntent().getStringExtra("roomID");
-            MultiLiveAudioAdapter.liveType = getIntent().getStringExtra("liveType");
-            //  InviteAudienceRVAdapter.directHostId = getIntent().getStringExtra("liveHostIds");
-            otherUserId = getIntent().getStringExtra("roomID");
-            loginRoom(profileId, profileName, roomID, host);
-            FirebaseHelper.giftsListener(roomID, giftsEventListener);
-            getMultiLiveRequest();
-
-            binding.txtUserName.setText(liveTitle);
-            binding.txtId.setText(profileUniqueId);
-            binding.hostName.setText(profileName);
-            Picasso.with(this).load(coverImage).error(R.drawable.actress).into(binding.imgProfileuser);
-            Picasso.with(this).load(profileImage).error(R.drawable.actress).into(binding.imgHostProfile);
         } else {
             joinRoom(roomID);
-            roomID = getIntent().getStringExtra("roomID");
-            liveTitle = getIntent().getStringExtra("liveTitle");
-            liveId = getIntent().getStringExtra("liveId");
-            other = getIntent().getStringExtra("otherUserId");
-            profileName = sharedpreferences.getString("name", "");
-            profileId = sharedpreferences.getString("id", "");
-            profileImage = getIntent().getStringExtra("profileImage");
             profileName = getIntent().getStringExtra("profileName");
-            profileUniqueId = getIntent().getStringExtra("profileUniqueId");
-            status = getIntent().getStringExtra("status");
-            liveType = getIntent().getStringExtra("liveType");
-            MultiLiveAudioAdapter.liveType = getIntent().getStringExtra("liveType");
-
-            liveHostid = getIntent().getStringExtra("roomID");
-            coverImage = getIntent().getStringExtra("coverimage");
-            coverName = getIntent().getStringExtra("coverName");
-
-            MultiLiveAudioAdapter.directHostId = getIntent().getStringExtra("roomID");
-            //  InviteAudienceRVAdapter.directHostId = getIntent().getStringExtra("liveHostIds");
-            otherUserId = getIntent().getStringExtra("roomID");
-
-            FirebaseHelper.giftsListener(roomID, giftsEventListener);
-            getMultiLiveRequest();
-
-            loginRoom(profileId, profileName, roomID, host);
-
-            binding.txtUserName.setText(liveTitle);
-            binding.txtId.setText(profileUniqueId);
-            binding.hostName.setText(profileName);
-            Picasso.with(this).load(profileImage).error(R.drawable.actress).into(binding.imgHostProfile);
-            Picasso.with(this).load(coverImage).error(R.drawable.actress).into(binding.imgProfileuser);
-
-
+            other = getIntent().getStringExtra("otherUserId");
         }
 
-        if (profileId.equalsIgnoreCase(roomID)) {
-            loginRoom(profileId, profileName, roomID, false);
-        } else {
+        MultiLiveAudioAdapter.directHostId = getIntent().getStringExtra("roomID");
+        MultiLiveAudioAdapter.liveType = getIntent().getStringExtra("liveType");
+        //  InviteAudienceRVAdapter.directHostId = getIntent().getStringExtra("liveHostIds");
 
-        }
+        startListenEvent();
+        FirebaseHelper.giftsListener(roomID, giftsEventListener);
+        getMultiLiveRequest();
+        loginRoom(profileId, profileName, roomID, host);
+
+        binding.txtUserName.setText(liveTitle);
+        binding.txtId.setText(profileUniqueId);
+        binding.hostName.setText(profileName);
+        Picasso.with(this).load(coverImage).error(R.drawable.actress).into(binding.imgProfileuser);
+        Picasso.with(this).load(profileImage).error(R.drawable.actress).into(binding.imgHostProfile);
+
         liveHostBackImg = getIntent().getStringExtra("roomID");
         Picasso.with(this).load(coverImage).error(R.drawable.actress).into(binding.imgProfileuser);
         binding.txtUserName.setText(coverName);
@@ -396,6 +365,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
         /************************** SET AUDIO EFFECT PLAYER **************************/
         audioEffectPlayer = ((App) getApplication()).getExpressService().getEngine().createAudioEffectPlayer();
+
         /************************** GIFT ICON CLICK OPEN A GIFT FRAGMENT **************************/
         binding.giftIcon.setOnClickListener(v -> {
             GiftBottomSheetFragment giftBottomSheetFragment = new GiftBottomSheetFragment(roomID);
@@ -635,34 +605,42 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             openOtherUserProfile(goLiveModelClass, adminStatus);
         });
 
-        binding.callMuteIMg.setOnClickListener(v -> muteMicRef.child(roomID).child(profileId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                if (snapshot.exists()) {
-                    String status = "";
-                    if (snapshot.getValue().toString() != null) {
-                        status = snapshot.getValue().toString();
-                    }
-                    if (status.equalsIgnoreCase("0")) {
-                        binding.imgMuteMic.setImageResource(R.drawable.ic_baseline_mic_off_24);
+        binding.callMuteIMg.setOnClickListener(v -> {
+            joinGroup();
+            muteMicRef.child(roomID).child(profileId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String status = "";
+                        if (snapshot.getValue().toString() != null) {
+                            status = snapshot.getValue().toString();
+                        }
+                        if (status.equalsIgnoreCase("0")) {
+                            binding.imgMuteMic.setImageResource(R.drawable.ic_baseline_mic_off_24);
+                        } else {
+                            onVoiceMuteClicked(binding.imgMuteMic, "1");
+                        }
                     } else {
-                        onVoiceMuteClicked(binding.imgMuteMic, "1");
+                        onVoiceMuteClicked(binding.imgMuteMic, "");
                     }
-                } else {
-                    onVoiceMuteClicked(binding.imgMuteMic, "");
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        }));
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        });
 
         currentTimeStamp = getCurrentTimeStamp();
+    }
 
-        loginRoom(profileId, profileName, roomID, false);
-
+    private void joinGroup() {
+        ChatSDKManager.getChatSDKManager().joinGroup("114311", new ZIMGroupJoinedCallback() {
+            @Override
+            public void onGroupJoined(ZIMGroupFullInfo groupInfo, ZIMError errorInfo) {
+                Log.e("--->>>", "Joined");
+            }
+        });
     }
 
     private void joinRoom(String roomID) {
@@ -675,13 +653,8 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     public void onMessageEvent(MessageModel event) {
         Log.e("--->>> onmessage event", event.getMessage());
         ChatMessageModel chatMessageModels = new ChatMessageModel();
-        chatMessageModels.setGift("");
-        chatMessageModels.setImage(profileImageSave);
-        chatMessageModels.setKey(ref.push().getKey());
         chatMessageModels.setMessage(event.getMessage());
-        chatMessageModels.setName(sharedpreferences.getString("name", ""));
         chatMessageModels.setUserId(profileId);
-//                          sendMessage(chatMessageModel, chatMessageModel.getKey());
         chatMessages.add(chatMessageModels);
         if (chatMessages != null) {
             binding.recyclerAllMessage.scrollToPosition(chatMessages.size() - 1);
@@ -939,7 +912,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     }
 
     private void sendMessage(ChatMessageModel chatMessageModel, String key) {
-        ref.child(otherUserId).child(liveType).child(otherUserId).child("chat comments").child(key).setValue(chatMessageModel);
+        //ref.child(otherUserId).child(liveType).child(otherUserId).child("chat comments").child(key).setValue(chatMessageModel);
 
         ZIMCustomTextMessage zimMessage = new ZIMCustomTextMessage();
         zimMessage.message = chatMessageModel.getMessage();
@@ -956,7 +929,11 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         config.pushConfig = pushConfig;
 
 
-        ChatFunctions.sendMessage("114311", zimMessage, pushConfig, config);
+        ChatFunctions.sendMessage(roomID, zimMessage, pushConfig, config);
+        chatMessages.add(chatMessageModel);
+        binding.recyclerAllMessage.scrollToPosition(chatMessages.size() - 1);
+        if (commentAdapter != null)
+            commentAdapter.notifyDataSetChanged();
     }
 
 
@@ -2720,10 +2697,8 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     }
 
     void loginRoom(String userID, String userName, String roomID, boolean isHost) {
-/*
         ZegoUser user = new ZegoUser(userID, userName);
         ZegoRoomConfig roomConfig = new ZegoRoomConfig();
-
         // The `onRoomUserUpdate` callback can be received only when
         // `ZegoRoomConfig` in which the `isUserStatusNotify` parameter is set to
         // `true` is passed.
@@ -2733,8 +2708,6 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         Log.d("LOGINROOM", "roomConfig: " + roomConfig);
 
         zegoExpressEngine.loginRoom(roomID, user, roomConfig, (int error, JSONObject extendedData) -> {
-
-
             ZegoPlayerConfig playerConfig = new ZegoPlayerConfig();
             playerConfig.resourceMode = ZegoStreamResourceMode.ONLY_RTC;
             // Room login result. This callback is sufficient if you only need to
@@ -2744,12 +2717,12 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             // Login successful.
             // Start the preview and stream publishing.
             Toast.makeText(this, "roomiiid" + roomID, Toast.LENGTH_SHORT).show();
-            //zegoExpressEngine.startPlayingStream(roomID);
+
             Toast.makeText(this, "Login successful.", Toast.LENGTH_LONG).show();
             Toast.makeText(this, "host Status" + isHost, Toast.LENGTH_SHORT).show();
             if (isHost) {
-                startPreview();
-                zegoExpressEngine.startPublishingStream(roomID);
+                //startPreview();
+                startPublish(userID, roomID);
                 //   zegoExpressEngine.startPlayingStream(roomID,playerConfig);
 
 //                    playerConfig.cdnConfig(true);  // Enable audio
@@ -2758,27 +2731,27 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 //                    startPublish(userID,roomID);
 //                    playingStream(userID,roomID);
             } else {
-                zegoExpressEngine.startPlayingStream(roomID);
-//                    playingStream(userID,roomID);
-//                    startPublish(userID,roomID);
-                //   zegoExpressEngine.startPlayingStream(roomID);
+                //startPlayStream(userID, roomID);
             }
-        });*/
+        });
     }
 
-    private void playingStream(String userID, String roomID) {
-        String streamID = roomID + "_" + userID + "_receive";
+    private void startPlayStream(String userID, String streamID) {
+        //String streamID = roomID + "_" + userID + "_receive";
         zegoExpressEngine.startPlayingStream(streamID);
+    }
+
+    void stopPlayStream(String streamID) {
+        zegoExpressEngine.stopPlayingStream(streamID);
     }
 
 
     void startPublish(String userID, String roomID) {
-        // After calling the `loginRoom` method, call this method to publish streams.
-        // The StreamID must be unique in the room.
-        // ZegoCanvas previewCanvas = new ZegoCanvas(findViewById(R.id.preview));
-        // ZegoExpressEngine.getEngine().startPreview(previewCanvas);
-        String streamID = roomID + "_" + userID + "_call";
-        zegoExpressEngine.startPublishingStream(streamID);
+
+        ZegoAudioConfig audioConfig = new ZegoAudioConfig(ZegoAudioConfigPreset.HIGH_QUALITY_STEREO);
+        zegoExpressEngine.setAudioConfig(audioConfig);
+
+        zegoExpressEngine.startPublishingStream(roomID);
     }
 
 
@@ -2787,16 +2760,16 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     }
 
     void startPreview() {
-//        ZegoCanvas previewCanvas = new ZegoCanvas(findViewById(R.id.preview));
-//        zegoExpressEngine.startPreview(previewCanvas);
+        //ZegoCanvas previewCanvas = new ZegoCanvas(findViewById(R.id.preview));
+        //zegoExpressEngine.startPreview(previewCanvas);
     }
 
     void stopPreview() {
-        //ZegoExpressEngine.getEngine().stopPreview();
+        zegoExpressEngine.stopPreview();
     }
 
     void logoutRoom() {
-        ZegoExpressEngine.getEngine().logoutRoom();
+        zegoExpressEngine.logoutRoom();
         zegoExpressEngine.stopPlayingStream(roomID);
     }
 
@@ -2811,9 +2784,9 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                 // stream is added, and you can call the `startPlayingStream` method to
                 // play the stream.
                 if (updateType == ZegoUpdateType.ADD) {
-                    // startPlayStream(streamList.get(0).streamID);
+                    startPlayStream("", streamList.get(0).streamID);
                 } else {
-                    //stopPlayStream(streamList.get(0).streamID);
+                    stopPlayStream(streamList.get(0).streamID);
                 }
             }
 

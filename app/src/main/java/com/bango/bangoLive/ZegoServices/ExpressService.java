@@ -42,4 +42,10 @@ public class ExpressService {
     public ZegoExpressEngine getEngine() {
         return engine;
     }
+
+    // destroy engine
+    private void destroyEngine() {
+        ZegoExpressEngine.destroyEngine(null);
+    }
+
 }
