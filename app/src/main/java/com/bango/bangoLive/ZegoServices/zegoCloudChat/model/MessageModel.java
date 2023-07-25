@@ -3,6 +3,7 @@ package com.bango.bangoLive.ZegoServices.zegoCloudChat.model;
 public class MessageModel {
     String message;
     String userName;
+    String userId;
 
     public String getMessage() {
         return message;
@@ -20,10 +21,19 @@ public class MessageModel {
         this.userName = userName;
     }
 
-    public MessageModel(String message, String userName){
+    public String getUserId() {
+        return userId;
+    }
 
-        this.message=message;
-        this.userName=userName;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public MessageModel(String message){
+        String[] fullStringArray = message.split("-->\\$\\$<--");
+        this.message=fullStringArray[0];
+        this.userId=fullStringArray[1];
+        this.userName=fullStringArray[2];
     };
 
 
