@@ -639,8 +639,6 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             binding.recyclerAllMessage.scrollToPosition(chatMessages.size() - 1);
         }
         commentAdapter.notifyDataSetChanged();
-
-
     }
 
     @Override
@@ -974,13 +972,13 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         if (!isMute) {
             isMute = true;
             // rtcEngine.muteLocalAudioStream(true);
-            zegoExpressEngine.mutePublishStreamAudio(true);
+            zegoExpressEngine.mutePublishStreamAudio(true);//
             data.put("mute", "0");
         } else {
             isMute = false;
             data.put("mute", "1");
             //   rtcEngine.muteLocalAudioStream(false);
-            zegoExpressEngine.mutePublishStreamAudio(false);
+            zegoExpressEngine.mutePublishStreamAudio(false);//
             ref.child(otherUserId).child(liveType).child(otherUserId).child("multiLiveRequest").child(profileId).updateChildren(data);
         }
 
@@ -1111,8 +1109,8 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         }
 
-        audioManager.setMode(AudioManager.MODE_NORMAL);
-        audioManager.setSpeakerphoneOn(false);
+        //audioManager.setMode(AudioManager.MODE_NORMAL);
+        //audioManager.setSpeakerphoneOn(true);
 
     }
 
@@ -2710,14 +2708,14 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             // Room login result. This callback is sufficient if you only need to
             // check the login result.
             if (error == 0) {
-                Toast.makeText(this, "eerror" + error, Toast.LENGTH_SHORT).show();
-                App.showLog("error errorrrrr :" + error);
+                //Toast.makeText(this, "eerror" + error, Toast.LENGTH_SHORT).show();
+                App.showLog("error :" + error);
                 // Login successful.
                 // Start the preview and stream publishing.
-                Toast.makeText(this, "roomiiid " + roomID, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "roomiiid " + roomID, Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(this, "Login successful.", Toast.LENGTH_LONG).show();
-                Toast.makeText(this, "host Status " + isHost, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Login successful.", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "host Status " + isHost, Toast.LENGTH_SHORT).show();
                 startPublish(userID, roomID);
             } else {
                 // Login failed. For details, see [Error codes\|_blank](/404).
@@ -2737,7 +2735,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     void startPublish(String userID, String roomID) {
 
         ZegoAudioConfig audioConfig = new ZegoAudioConfig(ZegoAudioConfigPreset.HIGH_QUALITY_STEREO);
-        zegoExpressEngine.setAudioConfig(audioConfig);
+        //zegoExpressEngine.setAudioConfig(audioConfig);
 
         zegoExpressEngine.startPublishingStream(roomID);
         App.showLog("Start Publish:- " + roomID);
@@ -2962,7 +2960,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 //        rtcEngine().leaveChannel();
 //        rtcEngine().enableLocalAudio(false);
         zegoExpressEngine.logoutRoom();
-        zegoExpressEngine.muteLocalAudioMixing(false);
+        zegoExpressEngine.muteLocalAudioMixing(false);//
 
         ref.child("reservedSheet").child(liveId).removeValue();
 
@@ -2972,7 +2970,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                 if (modelAgoraLiveUsers.getStatus().equalsIgnoreCase("1")) {
 
                     zegoExpressEngine.logoutRoom();
-                    zegoExpressEngine.muteLocalAudioMixing(false);
+                    zegoExpressEngine.muteLocalAudioMixing(false);//
 //                    rtcEngine().leaveChannel();
 //                    rtcEngine().enableLocalAudio(false);
 
