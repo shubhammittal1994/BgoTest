@@ -6,5 +6,6 @@ public enum MessageTypeEnum {
     BLOCK_PERSON,
     ROOM_MESSAGE,
     ONE_TO_ONE_MESSAGE,
-    BULLET_MESSAGE
+    BULLET_MESSAGE,
+    TERMINATE_ROOM
 }

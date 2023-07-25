@@ -331,9 +331,10 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         //  InviteAudienceRVAdapter.directHostId = getIntent().getStringExtra("liveHostIds");
 
         startListenEvent();
-        FirebaseHelper.giftsListener(roomID, giftsEventListener);
-        getMultiLiveRequest();
         loginRoom(profileId, profileName, audioRoomId, am_i_host);
+        //FirebaseHelper.giftsListener(roomID, giftsEventListener);
+        getMultiLiveRequest();
+
 
         binding.txtUserName.setText(liveTitle);
         binding.txtId.setText(profileUniqueId);
@@ -988,7 +989,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
 
     public void onVoiceMuteClicked(View view, String status) {
-        HashMap<String, Object> data = new HashMap<>();
+       /* HashMap<String, Object> data = new HashMap<>();
         if (!isMute) {
             isMute = true;
             // rtcEngine.muteLocalAudioStream(true);
@@ -1007,7 +1008,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             iv.setImageResource(R.drawable.ic_baseline_mic_off_24);
         } else {
             iv.setImageResource(R.drawable.ic_baseline_mic_24);
-        }
+        }*/
     }
 
     private Long getCurrentTimeStamp() {
@@ -1187,7 +1188,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                             }
 
                             if (goLiveModelClass.getUserID().equalsIgnoreCase(profileId)) {
-
+/*
                                 //Mute
                                 //for mute host to another users
                                 if (goLiveModelClass.getMute().equalsIgnoreCase("0")) {
@@ -1205,7 +1206,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                                     muteMicRef.child(roomID).child(goLiveModelClass.getUserID()).setValue("1");
                                     binding.imgMuteMic.setImageResource(R.drawable.ic_baseline_mic_24);
 
-                                }
+                                }*/
                             }
                         }
                     }
