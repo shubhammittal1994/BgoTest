@@ -155,6 +155,7 @@ import im.zego.zim.entity.ZIMError;
 import im.zego.zim.entity.ZIMGroupFullInfo;
 import im.zego.zim.entity.ZIMMessageSendConfig;
 import im.zego.zim.entity.ZIMPushConfig;
+import im.zego.zim.entity.ZIMTextMessage;
 import im.zego.zim.enums.ZIMConversationType;
 import im.zego.zim.enums.ZIMMessagePriority;
 
@@ -653,7 +654,8 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         Log.e("--->>> onmessage event", event.getMessage());
         ChatMessageModel chatMessageModels = new ChatMessageModel();
         chatMessageModels.setMessage(event.getMessage());
-        chatMessageModels.setUserId(profileId);
+        chatMessageModels.setUserId(event.getUserId());
+        chatMessageModels.setName(event.getUserName());
         chatMessages.add(chatMessageModels);
         if (chatMessages != null) {
             binding.recyclerAllMessage.scrollToPosition(chatMessages.size() - 1);
@@ -911,10 +913,10 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     private void sendMessage(ChatMessageModel chatMessageModel, String key) {
         //ref.child(otherUserId).child(liveType).child(otherUserId).child("chat comments").child(key).setValue(chatMessageModel);
 
-        ZIMCustomTextMessage zimMessage = new ZIMCustomTextMessage();
-        zimMessage.message = chatMessageModel.getMessage();
-        zimMessage.name = "nitya";
-        zimMessage.setMessageTypeEnum(MessageTypeEnum.ROOM_MESSAGE);
+        ZIMTextMessage zimMessage = new ZIMCustomTextMessage();
+        zimMessage.message = chatMessageModel.getMessage() + "-->$$<--" + chatMessageModel.getUserId() + "-->$$<--" + chatMessageModel.getName();
+        //zimMessage.name = "nitya";
+        //zimMessage.setMessageTypeEnum(MessageTypeEnum.ROOM_MESSAGE);
 
         ZIMMessageSendConfig config = new ZIMMessageSendConfig();
 

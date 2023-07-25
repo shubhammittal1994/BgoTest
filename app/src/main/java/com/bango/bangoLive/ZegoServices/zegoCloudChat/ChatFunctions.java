@@ -30,7 +30,7 @@ public class ChatFunctions {
         return instance;
     }
 
-    public static void sendMessage(String conversationID, ZIMCustomTextMessage zimMessage, ZIMPushConfig pushConfig,ZIMMessageSendConfig config ,ZIMConversationType zimConversationType){
+    public static void sendMessage(String conversationID, ZIMTextMessage zimMessage, ZIMPushConfig pushConfig,ZIMMessageSendConfig config ,ZIMConversationType zimConversationType){
         App.showLog("--->>> Room conversation id:- "+conversationID+" -> "+zimMessage.message);
         ChatSDKManager.getChatSDKManager().sendMessage(zimMessage, conversationID, zimConversationType, config, new ZIMMessageSentCallback() {
             @Override

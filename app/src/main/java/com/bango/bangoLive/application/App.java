@@ -117,13 +117,10 @@ public class App extends Application {
                 super.onReceiveRoomMessage(zim, messageList, fromRoomID);
                 showLog(messageList.size() + " -> " + messageList.get(messageList.size()-1) + " -> " + fromRoomID);
                 for (ZIMMessage zimMessage : messageList) {
-                    if (zimMessage instanceof  ZIMTextMessage) {
-                        showLog("Received message:- " + zimMessage.toString());
-                    }
-                    if (zimMessage instanceof ZIMCustomTextMessage)
+                    if (zimMessage instanceof ZIMTextMessage)
                     {
-                        ZIMCustomTextMessage zimTextMessage = (ZIMCustomTextMessage) zimMessage;
-                        EventBus.getDefault().post(new MessageModel(zimTextMessage.message,zimTextMessage.getSenderUserID()));
+                        ZIMTextMessage zimTextMessage = (ZIMTextMessage) zimMessage;
+                        EventBus.getDefault().post(new MessageModel(zimTextMessage.message));
 
                         showLog("Received message:- " + zimTextMessage.toString());
                     }
@@ -138,7 +135,7 @@ public class App extends Application {
                     if (zimMessage instanceof ZIMTextMessage)
                     {
                         ZIMTextMessage zimTextMessage = (ZIMTextMessage) zimMessage;
-                        EventBus.getDefault().post(new MessageModel(zimTextMessage.message,zimTextMessage.getSenderUserID()));
+                        EventBus.getDefault().post(new MessageModel(zimTextMessage.message));
 
                         showLog("Received message:- "+ zimTextMessage.message);
                     }
