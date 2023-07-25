@@ -306,6 +306,25 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             profileName = getIntent().getStringExtra("profileName");
             other = getIntent().getStringExtra("otherUserId");
         }
+        App.showLog(
+                "roomID:- " + roomID +
+                        "liveTitle:- " + liveTitle +
+                        "liveId:- " + liveId +
+                        "profileName:- " + profileName +
+                        "profileId:- " + profileId +
+                        "profileImage:- " + profileImage +
+                        "profileUniqueId:- " + profileUniqueId +
+                        "status:- " + status  +
+                        "liveType:- " + liveType +
+                        "liveStatus:- " + liveStatus +
+                        "liveHostid:- " + liveHostid +
+                        "coverImage:- " + coverImage +
+                        "coverName:- " + coverName  +
+                        "otherUserId:- " + otherUserId +
+                        "profileImageSave:- " + profileImageSave +
+                        "profileName 1:- " + profileName +
+                        "other:- " + other
+        );
 
         MultiLiveAudioAdapter.directHostId = getIntent().getStringExtra("roomID");
         MultiLiveAudioAdapter.liveType = getIntent().getStringExtra("liveType");
@@ -893,6 +912,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
         ZIMCustomTextMessage zimMessage = new ZIMCustomTextMessage();
         zimMessage.message = chatMessageModel.getMessage();
+        zimMessage.setName("nitya");
         zimMessage.setMessageTypeEnum(MessageTypeEnum.ROOM_MESSAGE);
 
         ZIMMessageSendConfig config = new ZIMMessageSendConfig();

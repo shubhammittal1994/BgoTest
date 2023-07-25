@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.bango.bangoLive.ZegoServices.ExpressService;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
+import com.bango.bangoLive.ZegoServices.zegoCloudChat.ZIMCustomTextMessage;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.model.MessageModel;
 import com.bango.bangoLive.utils.SharedPref;
 import com.bango.bangoLive.utils.Singleton;
@@ -116,12 +117,15 @@ public class App extends Application {
                 super.onReceiveRoomMessage(zim, messageList, fromRoomID);
                 showLog(messageList.size() + " -> " + messageList.get(messageList.size()-1) + " -> " + fromRoomID);
                 for (ZIMMessage zimMessage : messageList) {
-                    if (zimMessage instanceof ZIMTextMessage)
+                    if (zimMessage instanceof  ZIMTextMessage) {
+                        showLog("Received ZIMTextMessage message:- " + zimMessage.toString());
+                    }
+                    if (zimMessage instanceof ZIMCustomTextMessage)
                     {
-                        ZIMTextMessage zimTextMessage = (ZIMTextMessage) zimMessage;
+                        ZIMCustomTextMessage zimTextMessage = (ZIMCustomTextMessage) zimMessage;
                         EventBus.getDefault().post(new MessageModel(zimTextMessage.message,zimTextMessage.getSenderUserID()));
 
-                        showLog("Received message:- "+ zimTextMessage.message);
+                        showLog("Received message:- "+ zimTextMessage.toString());
                     }
                 }
             }
