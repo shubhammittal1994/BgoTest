@@ -7,12 +7,12 @@ import im.zego.zim.entity.ZIMTextMessage;
 import im.zego.zim.enums.ZIMMessageType;
 
 public class ZIMCustomTextMessage extends ZIMTextMessage {
-    MessageTypeEnum messageTypeEnum;
-    public String name = "";
+    //public MessageTypeEnum messageTypeEnum;
+  /*  public String name = "";
     public String message = "";
 
     public ZIMCustomTextMessage() {
-
+        super(ZIMMessageType.TEXT);
     }
 
     public MessageTypeEnum getMessageTypeEnum() {
@@ -23,28 +23,13 @@ public class ZIMCustomTextMessage extends ZIMTextMessage {
         this.messageTypeEnum = messageTypeEnum;
     }
 
-    public String getName() {
-        return name;
+        name = "";
+        message = "";
     }
+    public ZIMCustomTextMessage(String name,String message) {
+        this.name=name;
+        this.message=message;
+        //this.messageTypeEnum=messageTypeEnum;
+    }*/
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    @Override
-    public String toString() {
-        return "ZIMCustomTextMessage{" +
-                "messageTypeEnum=" + messageTypeEnum +
-                ", name='" + name + '\'' +
-                ", message='" + message + '\'' +
-                '}';
-    }
 }

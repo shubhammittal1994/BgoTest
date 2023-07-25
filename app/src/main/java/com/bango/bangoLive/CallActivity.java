@@ -334,7 +334,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         startListenEvent();
         loginRoom(profileId, profileName, audioRoomId, am_i_host);
         //FirebaseHelper.giftsListener(roomID, giftsEventListener);
-        getMultiLiveRequest();
+       // getMultiLiveRequest();
 
 
         binding.txtUserName.setText(liveTitle);
@@ -1010,7 +1010,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             iv.setImageResource(R.drawable.ic_baseline_mic_off_24);
         } else {
             iv.setImageResource(R.drawable.ic_baseline_mic_24);
-        }*/
+        }
     }
 
     private Long getCurrentTimeStamp() {
@@ -2756,12 +2756,14 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     }
 
     void startPublish(String userID, String roomID) {
-
+        String streamID = roomID + "_" + userID + "_call";
         ZegoAudioConfig audioConfig = new ZegoAudioConfig(ZegoAudioConfigPreset.HIGH_QUALITY_STEREO);
-        //zegoExpressEngine.setAudioConfig(audioConfig);
+        zegoExpressEngine.setAudioConfig(audioConfig);
 
-        zegoExpressEngine.startPublishingStream(roomID);
-        App.showLog("Start Publish:- " + roomID);
+        zegoExpressEngine.enableCamera(false);
+        zegoExpressEngine.mutePublishStreamAudio(false);
+        zegoExpressEngine.startPublishingStream(streamID);
+        App.showLog("---->>>>StreamID " + streamID);
     }
 
     void logoutRoom(String roomID) {
@@ -2966,7 +2968,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                 }
 
                 public void onFinish() {
-                    hitEndLiveApi("1");
+                //    hitEndLiveApi("1");
                 }
             };
 
