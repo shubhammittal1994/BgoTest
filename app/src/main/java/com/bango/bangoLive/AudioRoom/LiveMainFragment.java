@@ -55,6 +55,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
+import im.zego.zim.entity.ZIMRoomAdvancedConfig;
 import im.zego.zim.entity.ZIMRoomInfo;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -128,7 +129,7 @@ public class LiveMainFragment extends Fragment {
                     public void onChanged(StartLiveModelClass startLiveModelClass) {
                         if (startLiveModelClass.getStatus() == 1) {
                             createRoom(sharedpreferences.getString("id", ""), startLiveModelClass);
-                           // Toast.makeText(requireContext(), "liveId" + startLiveModelClass.getDetails().getId(), Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(requireContext(), "liveId" + startLiveModelClass.getDetails().getId(), Toast.LENGTH_SHORT).show();
 
                         } else {
                             Alerter.create(requireActivity()).setTitle("Alert").setText(startLiveModelClass.getMessage()).setBackgroundColorRes(R.color.app_dark_color).show();
@@ -193,20 +194,32 @@ public class LiveMainFragment extends Fragment {
         ZIMRoomInfo zimRoomInfo = new ZIMRoomInfo();
         zimRoomInfo.roomID = roomID;
         zimRoomInfo.roomName = liveTitle.getText().toString();
-        ChatSDKManager.getChatSDKManager().createRoom(zimRoomInfo, (roomInfo, errorInfo) ->
+        ZIMRoomAdvancedConfig config=new ZIMRoomAdvancedConfig();
+        config.roomDestroyDelayTime=30;
+        ChatSDKManager.getChatSDKManager().enterRoom(zimRoomInfo,config, (roomInfo, errorInfo) ->
                 {
-                    /*0 --->>Success
+                    /* 0 --->>Success
                      * 1--->> Failed
+                     * 6000323-->> Room Already Exist
                      * */
                     if (errorInfo.getCode().value() == 0) {
                         navigateToNextActivity(startLiveModelClass);
+                        App.showLog("Room is created" + roomID);
                     } else if (errorInfo.getCode().value() == 1) {
                         App.showToast(getActivity(), getString(R.string.room_creation_failed));
+                        App.showLog(roomID + " Room creation failed ! " + errorInfo.getMessage());
+                    } else if (errorInfo.getCode().value() == 6000323) {
+                        App.showLog(roomID + " room already exists ! " + errorInfo.getMessage());
                     } else {
                         App.showToast(getActivity(), getString(R.string.something_went_wrong_during_room_creation));
+                        App.showLog(roomID + " Room not created ! " + errorInfo.getMessage());
                     }
                 }
         );
+    }
+
+    void logoutRoom(){
+
     }
 
     void navigateToNextActivity(StartLiveModelClass startLiveModelClass) {
@@ -224,7 +237,7 @@ public class LiveMainFragment extends Fragment {
         intent.putExtra("profileUniqueId", sharedpreferences.getString("userUniqueId", ""));
         intent.putExtra("coverimage", App.getSharedpref().getString("image"));
         intent.putExtra("coverName", startLiveModelClass.getDetails().getLiveTitle());
-        intent.putExtra(AppConstant.AM_I_HOST,true);
+        intent.putExtra(AppConstant.AM_I_HOST, true);
         startActivity(intent);
     }
 

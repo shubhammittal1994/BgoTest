@@ -45,6 +45,7 @@ public class ChatFunctions {
         });
     }
 
+
     public static void joinRoom(String roomID) {
         ChatSDKManager.getChatSDKManager().joinRoom(roomID, (roomInfo, errorInfo) -> {
             App.showLog("--->>> Room Joined:- "+roomID+" -> "+roomInfo.baseInfo.roomID + " -> "+ roomInfo.baseInfo.roomName);

@@ -2749,7 +2749,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         ChatSDKManager.getChatSDKManager().leaveRoom(roomID, new ZIMRoomLeftCallback() {
             @Override
             public void onRoomLeft(String roomID, ZIMError errorInfo) {
-                App.showLog("Roomid:- " + roomID + " , errorinfo:- " + errorInfo.getMessage());
+                App.showLog("--->>>:- " + roomID + " , errorinfo:- " + errorInfo.getMessage());
             }
         });
         if (am_i_host) {
