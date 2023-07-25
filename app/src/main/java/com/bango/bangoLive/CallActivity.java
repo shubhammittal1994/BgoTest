@@ -912,7 +912,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
         ZIMCustomTextMessage zimMessage = new ZIMCustomTextMessage();
         zimMessage.message = chatMessageModel.getMessage();
-        zimMessage.setName("nitya");
+        zimMessage.name = "nitya";
         zimMessage.setMessageTypeEnum(MessageTypeEnum.ROOM_MESSAGE);
 
         ZIMMessageSendConfig config = new ZIMMessageSendConfig();
@@ -989,7 +989,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
     public void onVoiceMuteClicked(View view, String status) {
         HashMap<String, Object> data = new HashMap<>();
-        if (!isMute) {
+        /*if (!isMute) {
             isMute = true;
             // rtcEngine.muteLocalAudioStream(true);
             zegoExpressEngine.mutePublishStreamAudio(true);//
@@ -1000,7 +1000,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             //   rtcEngine.muteLocalAudioStream(false);
             zegoExpressEngine.mutePublishStreamAudio(false);//
             ref.child(otherUserId).child(liveType).child(otherUserId).child("multiLiveRequest").child(profileId).updateChildren(data);
-        }
+        }*/
 
         ImageView iv = (ImageView) view;
         if (isMute) {

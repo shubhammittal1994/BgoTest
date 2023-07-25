@@ -118,14 +118,14 @@ public class App extends Application {
                 showLog(messageList.size() + " -> " + messageList.get(messageList.size()-1) + " -> " + fromRoomID);
                 for (ZIMMessage zimMessage : messageList) {
                     if (zimMessage instanceof  ZIMTextMessage) {
-                        showLog("Received ZIMTextMessage message:- " + zimMessage.toString());
+                        showLog("Received message:- " + zimMessage.toString());
                     }
                     if (zimMessage instanceof ZIMCustomTextMessage)
                     {
                         ZIMCustomTextMessage zimTextMessage = (ZIMCustomTextMessage) zimMessage;
                         EventBus.getDefault().post(new MessageModel(zimTextMessage.message,zimTextMessage.getSenderUserID()));
 
-                        showLog("Received message:- "+ zimTextMessage.toString());
+                        showLog("Received message:- " + zimTextMessage.toString());
                     }
                 }
             }
