@@ -2792,10 +2792,16 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                 // When `updateType` is set to `ZegoUpdateType.ADD`, an audio and video
                 // stream is added, and you can call the `startPlayingStream` method to
                 // play the stream.
-                App.showLog("Room id:- " + roomID + " , stremList:- " + streamList.get(0).streamID + " , update type:- 0(add) 1 (delete)" + updateType);
+                App.showLog("Room id:- " + roomID + " , stremList:- " + streamList.get(0).streamID + " , update type:- 0(add) 1 (delete)" + updateType+ " Room user Size "+streamList.size());
+
                 if (updateType == ZegoUpdateType.ADD) {
-                    startPlayStream(streamList.get(0).streamID);
+
+                    for(ZegoStream user: streamList) {
+
+                        startPlayStream(user.streamID);
+                    }
                 } else {
+
                     stopPlayStream(streamList.get(0).streamID);
                 }
             }
