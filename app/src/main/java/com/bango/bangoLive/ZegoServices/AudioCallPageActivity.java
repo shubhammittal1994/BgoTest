@@ -1,5 +1,6 @@
 package com.bango.bangoLive.ZegoServices;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.bango.bangoLive.R;
+import com.bango.bangoLive.application.App;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONObject;
@@ -37,6 +39,8 @@ public class AudioCallPageActivity extends AppCompatActivity {
 
     private boolean isHost;
 
+
+    @SuppressLint("SuspiciousIndentation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +49,8 @@ public class AudioCallPageActivity extends AppCompatActivity {
         userName = getIntent().getStringExtra("userName");
         roomID = getIntent().getStringExtra("roomID");
         isHost = getIntent().getBooleanExtra("isHost", false);
+
+          ((App) getApplication()).getExpressService().getEngine();
 
         Log.d("Debug", "UserId:- " + userID + ", userName:- " + userName + ", roomId:- " + roomID);
 
@@ -77,6 +83,10 @@ public class AudioCallPageActivity extends AppCompatActivity {
         }
     }
 
+   void printLog(String msg){
+        Log.e("------->>>>",msg);
+    }
+
     // Log in to a room.
     void loginRoom() {
         ZegoUser user = new ZegoUser(userID, userName);
@@ -91,10 +101,12 @@ public class AudioCallPageActivity extends AppCompatActivity {
             if (error == 0) {
                 // Login successful.
                 // Start the preview and stream publishing.
+                printLog("Login successful.");
                 Toast.makeText(this, "Login successful.", Toast.LENGTH_LONG).show();
 
                 startPublish();
             } else {
+                printLog("Login not successful.");
                 // Login failed. For details, see [Error codes\|_blank](/404).
                 Toast.makeText(this, "Login failed. error = " + error, Toast.LENGTH_LONG).show();
             }
@@ -114,6 +126,7 @@ public class AudioCallPageActivity extends AppCompatActivity {
 
         String streamID = roomID + "_" + userID + "_call";
         Log.d("Debug", "streamID:- " + streamID);
+        printLog("publishing start method.");
         ZegoExpressEngine.getEngine().enableCamera(false);
         ZegoExpressEngine.getEngine().mutePublishStreamAudio(false);
         ZegoExpressEngine.getEngine().startPublishingStream(streamID);
@@ -142,6 +155,7 @@ public class AudioCallPageActivity extends AppCompatActivity {
                 // When `updateType` is set to `ZegoUpdateType.ADD`, an audio and video
                 // stream is added, and you can call the `startPlayingStream` method to
                 // play the stream.
+                printLog("Start Listen Event");
                 if (updateType == ZegoUpdateType.ADD) {
                     startPlayStream(streamList.get(0).streamID);
                 } else {
@@ -159,9 +173,11 @@ public class AudioCallPageActivity extends AppCompatActivity {
                 if (updateType == ZegoUpdateType.ADD) {
                     for (ZegoUser user : userList) {
                         String text = user.userID + "logged in to the room.";
+                        printLog("logged in to the room"+ text);
                         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
                     }
                 } else if (updateType == ZegoUpdateType.DELETE) {
+                    printLog("logged in to the room"+ updateType);
                     for (ZegoUser user : userList) {
                         String text = user.userID + "logged out of the room.";
                         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
@@ -173,6 +189,7 @@ public class AudioCallPageActivity extends AppCompatActivity {
             // Callback for updates on the current user's room connection status.
             public void onRoomStateChanged(String roomID, ZegoRoomStateChangedReason reason, int i, JSONObject jsonObject) {
                 super.onRoomStateChanged(roomID, reason, i, jsonObject);
+                printLog("onRoomStateChanged"+ reason);
                 if (reason == ZegoRoomStateChangedReason.LOGINING) {
                     // Logging in to a room. When `loginRoom` is called to log in to a
                     // room or `switchRoom` is called to switch to another room, the room
@@ -224,6 +241,7 @@ public class AudioCallPageActivity extends AppCompatActivity {
             @Override
             public void onPublisherStateUpdate(String streamID, ZegoPublisherState state, int errorCode, JSONObject extendedData) {
                 super.onPublisherStateUpdate(streamID, state, errorCode, extendedData);
+                printLog("onPublisherStateUpdate"+ state);
                 if (errorCode != 0) {
                     // Stream publishing exception.
                 }
@@ -245,6 +263,7 @@ public class AudioCallPageActivity extends AppCompatActivity {
             @Override
             public void onPlayerStateUpdate(String streamID, ZegoPlayerState state, int errorCode, JSONObject extendedData) {
                 super.onPlayerStateUpdate(streamID, state, errorCode, extendedData);
+                printLog("onPlayerStateUpdate"+ state);
                 if (errorCode != 0) {
                     // Stream playing exception.
                     Toast.makeText(getApplicationContext(), "onPlayerStateUpdate, state:" + state + "errorCode:" + errorCode, Toast.LENGTH_LONG).show();

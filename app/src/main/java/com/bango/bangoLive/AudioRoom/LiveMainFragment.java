@@ -129,7 +129,8 @@ public class LiveMainFragment extends Fragment {
                     @Override
                     public void onChanged(StartLiveModelClass startLiveModelClass) {
                         if (startLiveModelClass.getStatus() == 1) {
-                            createRoom(sharedpreferences.getString("id", ""), startLiveModelClass);
+                            navigateToNextActivity(startLiveModelClass);
+                       //    createRoom(sharedpreferences.getString("id", ""), startLiveModelClass);
                             // Toast.makeText(requireContext(), "liveId" + startLiveModelClass.getDetails().getId(), Toast.LENGTH_SHORT).show();
 
                         } else {
@@ -224,11 +225,11 @@ public class LiveMainFragment extends Fragment {
     }
 
     void navigateToNextActivity(StartLiveModelClass startLiveModelClass) {
-        Intent intent = new Intent(requireContext(), AudioCallPageActivity.class);
-        intent.putExtra("userID", sharedpreferences.getString("userUniqueId", ""));
+        Intent intent = new Intent(requireContext(), CallActivity.class);
+        /*intent.putExtra("userID", sharedpreferences.getString("userUniqueId", ""));
         intent.putExtra("userName", profileName);
         intent.putExtra("roomID",  sharedpreferences.getString("id", ""));
-        intent.putExtra("isHost", true);
+        intent.putExtra("isHost", true);*/
         intent.putExtra("host", true);
         intent.putExtra("liveTitle", liveTitle.getText().toString());
         intent.putExtra("liveId", startLiveModelClass.getDetails().getId());
