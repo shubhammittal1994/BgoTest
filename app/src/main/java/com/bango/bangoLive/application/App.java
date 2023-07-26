@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.bango.bangoLive.ZegoServices.ExpressService;
+import com.bango.bangoLive.ZegoServices.ZegoSDKApiKey;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ZIMCustomTextMessage;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.model.MessageModel;
@@ -45,9 +46,9 @@ import im.zego.zim.enums.ZIMGroupState;
 public class App extends Application {
 
 
-    long appID = 641603141;
+  /*  long appID = 641603141;
     String isTestEnvironment = "true";
-    String appSign = "35cab12c284816e0113c0f0a0cf3a5ca3bd92534c0a91126469e7f595b014ee5";
+    String appSign = "35cab12c284816e0113c0f0a0cf3a5ca3bd92534c0a91126469e7f595b014ee5";*/
 
     public static Singleton singleton;
 
@@ -217,7 +218,7 @@ public class App extends Application {
     }
 
     public ExpressService getExpressService() {
-        return getExpressServiceHelper(this, appID, appSign);
+        return getExpressServiceHelper(this, ZegoSDKApiKey.APP_ID,ZegoSDKApiKey.APP_SIGN);
     }
 
     private ExpressService getExpressServiceHelper(Application application, long appId, String appSign) {
