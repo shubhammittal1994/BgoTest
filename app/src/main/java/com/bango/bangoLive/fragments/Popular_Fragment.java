@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.bango.bangoLive.AudioRoom.AudioRoomModelClass.GetLiveHostListAudioModelClass;
 import com.bango.bangoLive.CallActivity;
 import com.bango.bangoLive.ModelClasses.Banner.BannerRoot;
+import com.bango.bangoLive.ZegoServices.AudioCallPageActivity;
 import com.bango.bangoLive.adapters.LiveUsersAdapter;
 import com.bango.bangoLive.adapters.SliderAdapterExample;
 import com.bango.bangoLive.ModelClasses.Banner.BannerImagesModel;
@@ -114,7 +115,11 @@ public class Popular_Fragment extends Fragment implements LiveUsersAdapter.Callb
     public void onClickCallback(GetLiveHostListAudioModelClass.Detail getLiveHostListAudioModelClass) {
         Log.d("TAG", "onClickCallback: "+getLiveHostListAudioModelClass.getUserId());
 
-        Intent intent = new Intent(requireContext(), CallActivity.class);
+        Intent intent = new Intent(requireContext(), AudioCallPageActivity.class);
+        intent.putExtra("userID", sharedpreferences.getString("userUniqueId", ""));
+        intent.putExtra("userName", "Manish");
+        intent.putExtra("roomID",  sharedpreferences.getString("id", ""));
+        intent.putExtra("isHost", false);
         intent.putExtra("profileName",getLiveHostListAudioModelClass.getName());
         //RoomID
         intent.putExtra("roomID",getLiveHostListAudioModelClass.getUserId());

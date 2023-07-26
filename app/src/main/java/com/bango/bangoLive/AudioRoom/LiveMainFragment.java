@@ -41,6 +41,7 @@ import com.bango.bangoLive.AudioRoom.MODEL.GetPosterImage;
 import com.bango.bangoLive.HomeActivity;
 import com.bango.bangoLive.R;
 import com.bango.bangoLive.ViewModel.ApiViewModel;
+import com.bango.bangoLive.ZegoServices.AudioCallPageActivity;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
 import com.bango.bangoLive.application.App;
 import com.bango.bangoLive.utils.AppConstant;
@@ -223,7 +224,11 @@ public class LiveMainFragment extends Fragment {
     }
 
     void navigateToNextActivity(StartLiveModelClass startLiveModelClass) {
-        Intent intent = new Intent(requireContext(), CallActivity.class);
+        Intent intent = new Intent(requireContext(), AudioCallPageActivity.class);
+        intent.putExtra("userID", sharedpreferences.getString("userUniqueId", ""));
+        intent.putExtra("userName", profileName);
+        intent.putExtra("roomID",  sharedpreferences.getString("id", ""));
+        intent.putExtra("isHost", true);
         intent.putExtra("host", true);
         intent.putExtra("liveTitle", liveTitle.getText().toString());
         intent.putExtra("liveId", startLiveModelClass.getDetails().getId());
