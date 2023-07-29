@@ -17,8 +17,8 @@ public class ChatSDKManager {
      public static ZIM getChatSDKManager(){
         if(instance==null){
             ZIMAppConfig appConfig=new ZIMAppConfig();
-            appConfig.appID = ZegoSDKApiKey.APP_ID;
-            appConfig.appSign = ZegoSDKApiKey.APP_SIGN;
+            appConfig.appID = ZegoSDKApiKey.APP_ID_CHAT;
+            appConfig.appSign = ZegoSDKApiKey.APP_SIGN_CHAT;
            instance=  ZIM.create(appConfig, App.getInstance());
         }
         return instance;

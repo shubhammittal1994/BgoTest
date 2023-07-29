@@ -129,8 +129,8 @@ public class LiveMainFragment extends Fragment {
                     @Override
                     public void onChanged(StartLiveModelClass startLiveModelClass) {
                         if (startLiveModelClass.getStatus() == 1) {
-                            navigateToNextActivity(startLiveModelClass);
-                       //    createRoom(sharedpreferences.getString("id", ""), startLiveModelClass);
+                       //     navigateToNextActivity(startLiveModelClass);
+                           createRoom(sharedpreferences.getString("id", ""), startLiveModelClass);
                             // Toast.makeText(requireContext(), "liveId" + startLiveModelClass.getDetails().getId(), Toast.LENGTH_SHORT).show();
 
                         } else {
