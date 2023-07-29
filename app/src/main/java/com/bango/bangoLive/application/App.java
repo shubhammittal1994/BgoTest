@@ -37,6 +37,7 @@ import im.zego.zim.entity.ZIMGroupOperatedInfo;
 import im.zego.zim.entity.ZIMMessage;
 import im.zego.zim.entity.ZIMMessageReceiptInfo;
 import im.zego.zim.entity.ZIMTextMessage;
+import im.zego.zim.entity.ZIMUserInfo;
 import im.zego.zim.enums.ZIMErrorCode;
 import im.zego.zim.enums.ZIMGroupEvent;
 import im.zego.zim.enums.ZIMGroupMemberEvent;
@@ -91,6 +92,16 @@ public class App extends Application {
 
 
         ChatSDKManager.getChatSDKManager().setEventHandler(new ZIMEventHandler() {
+            @Override
+            public void onRoomMemberJoined(ZIM zim, ArrayList<ZIMUserInfo> memberList, String roomID) {
+                super.onRoomMemberJoined(zim, memberList, roomID);
+            }
+
+            @Override
+            public void onRoomMemberLeft(ZIM zim, ArrayList<ZIMUserInfo> memberList, String roomID) {
+                super.onRoomMemberLeft(zim, memberList, roomID);
+            }
+
             @Override
             public void onReceivePeerMessage(ZIM zim, ArrayList<ZIMMessage> messageList, String fromUserID) {
                showToast(getAppContext(),"message called");
