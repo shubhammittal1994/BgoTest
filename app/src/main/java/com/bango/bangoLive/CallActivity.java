@@ -651,7 +651,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageModel event) {
-        App.showLog("--->>> on message event " + event.getMessage());
+       // App.showLog("--->>> on message event " + event.getMessage());
         ChatMessageModel chatMessageModels = new ChatMessageModel();
         chatMessageModels.setMessage(event.getMessage());
         chatMessageModels.setUserId(event.getUserId());
@@ -2702,13 +2702,13 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         // `Zego RoomConfig` in which the `isUserStatusNotify` parameter is set to
         // `true` is passed.
         roomConfig.isUserStatusNotify = true;
-        App.showLog("LOGIN ROOM roomID: " + roomID + ", user: " + user + ", roomConfig: " + roomConfig);
+        App.showLog(" Express SDK LOGIN ROOM roomID: " + roomID + ", user: " + user + ", roomConfig: " + roomConfig);
 
         zegoExpressEngine.loginRoom(roomID, user, roomConfig, (int error, JSONObject extendedData) -> {
             // Room login result. This callback is sufficient if you only need to
             // check the login result.
             if (error == 0) {
-                App.showLog("error :" + error);
+                App.showLog("Express SDK error :" + error);
                 // Login successful.
                 startPublish(userID, roomID);
             } else {
@@ -2734,14 +2734,14 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         zegoExpressEngine.enableCamera(false);
         zegoExpressEngine.mutePublishStreamAudio(false);
         zegoExpressEngine.startPublishingStream(streamID);
-        App.showLog("---->>>>streamID " + streamID);
+        App.showLog("---->>>> Express SDK streamID " + streamID);
     }
 
     void logoutRoom(String roomID) {
         zegoExpressEngine.logoutRoom(roomID);
         zegoExpressEngine.stopPlayingStream(roomID);
         ChatSDKManager.getChatSDKManager().leaveRoom(roomID,
-                (roomID1, errorInfo) -> App.showLog("--->>>:- " + roomID1 + " , errorinfo:- " + errorInfo.getMessage()));
+                (roomID1, errorInfo) -> App.showLog("--->>>:- Express SDK" + roomID1 + " , errorinfo:- " + errorInfo.getMessage()));
         if (am_i_host) {
             //Stop publishing
             zegoExpressEngine.stopPublishingStream();
@@ -2759,14 +2759,14 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                 // When `updateType` is set to `ZegoUpdateType.ADD`, an audio and video
                 // stream is added, and you can call the `startPlayingStream` method to
                 // play the stream.
-                App.showLog("Room id:- " + roomID + " , update type:- 0(add) 1(delete):- " + updateType+ " Room user Size "+streamList.size());
+                App.showLog("Express SDK Room id:- " + roomID + " , update type:- 0(add) 1(delete):- " + updateType+ " Room user Size "+streamList.size());
                 if (updateType == ZegoUpdateType.ADD) {
                     for(ZegoStream user: streamList) {
-                        App.showLog("StreamID:- " + user.streamID + " - " + user.user.userID + " - " + user.user.userName + " - " + user.extraInfo);
+                        App.showLog("Express SDK StreamID:- " + user.streamID + " - " + user.user.userID + " - " + user.user.userName + " - " + user.extraInfo);
                         startPlayStream(user.streamID);
                     }
                 } else {
-                    App.showLog("StreamID:- " + streamList.get(0).streamID + " - " + streamList.get(0).user.userID + " - " + streamList.get(0).user.userName + " - " + streamList.get(0).extraInfo);
+                    App.showLog("Express SDK StreamID:- " + streamList.get(0).streamID + " - " + streamList.get(0).user.userID + " - " + streamList.get(0).user.userName + " - " + streamList.get(0).extraInfo);
                     stopPlayStream(streamList.get(0).streamID);
                 }
             }

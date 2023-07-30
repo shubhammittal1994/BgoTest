@@ -134,7 +134,7 @@ public class App extends Application {
                         ZIMTextMessage zimTextMessage = (ZIMTextMessage) zimMessage;
                         EventBus.getDefault().post(new MessageModel(zimTextMessage.message));
 
-                        showLog("Received message:- " + zimTextMessage.toString());
+                     //   showLog("Received message:- " + zimTextMessage.toString());
                     }
                 }
             }
@@ -149,7 +149,7 @@ public class App extends Application {
                         ZIMTextMessage zimTextMessage = (ZIMTextMessage) zimMessage;
                         EventBus.getDefault().post(new MessageModel(zimTextMessage.message));
 
-                        showLog("Received message:- "+ zimTextMessage.message);
+                       // showLog("Received message:- "+ zimTextMessage.message);
                     }
                 }
             }
