@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         App.showLog("--->>> " + zimUserInfo.userID + " & " + zimUserInfo.userName);
         ChatSDKManager.getChatSDKManager().login(zimUserInfo, error -> {
             App.showLog("--->>> Zim Logged In !!");
-            App.showToast(HomeActivity.this, "Zim Logged In !!" + error.getMessage());
+            App.showToast("Zim Logged In !!" + error.getMessage());
 
             ZIMGroupInfo zimGroupInfo = new ZIMGroupInfo();
             zimGroupInfo.groupID = "114311";

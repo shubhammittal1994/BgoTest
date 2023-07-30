@@ -208,12 +208,12 @@ public class LiveMainFragment extends Fragment {
                         navigateToNextActivity(startLiveModelClass);
                         App.showLog("Room is created" + roomID);
                     } else if (errorInfo.getCode().value() == 1) {
-                        App.showToast(getActivity(), getString(R.string.room_creation_failed));
+                        App.showToast(getString(R.string.room_creation_failed));
                         App.showLog(roomID + " Room creation failed ! " + errorInfo.getMessage());
                     } else if (errorInfo.getCode().value() == 6000323) {
                         App.showLog(roomID + " room already exists ! " + errorInfo.getMessage());
                     } else {
-                        App.showToast(getActivity(), getString(R.string.something_went_wrong_during_room_creation));
+                        App.showToast(getString(R.string.something_went_wrong_during_room_creation));
                         App.showLog(roomID + " Room not created ! " + errorInfo.getMessage());
                     }
                 }

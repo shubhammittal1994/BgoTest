@@ -40,7 +40,7 @@ public class ChatFunctions {
             @Override
             public void onMessageSent(ZIMMessage zimMessage, ZIMError error) {
                 // Implement the event callback on message sent.
-               App.showToast(App.getAppContext(),"Message sent");
+               App.showToast("Message sent");
             }
         });
     }
