@@ -2721,8 +2721,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     void startPlayStream(String streamID) {
         zegoExpressEngine.startPlayingStream(streamID);
     }
-
-    void stopPlayStream(String streamID) {
+void stopPlayStream(String streamID) {
         zegoExpressEngine.stopPlayingStream(streamID);
     }
 

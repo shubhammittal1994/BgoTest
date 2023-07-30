@@ -104,7 +104,7 @@ public class App extends Application {
 
             @Override
             public void onReceivePeerMessage(ZIM zim, ArrayList<ZIMMessage> messageList, String fromUserID) {
-               showToast(getAppContext(),"message called");
+               showToast("message called");
 
 
             }
@@ -133,7 +133,6 @@ public class App extends Application {
                     {
                         ZIMTextMessage zimTextMessage = (ZIMTextMessage) zimMessage;
                         EventBus.getDefault().post(new MessageModel(zimTextMessage.message));
-
                      //   showLog("Received message:- " + zimTextMessage.toString());
                     }
                 }
@@ -239,8 +238,8 @@ public class App extends Application {
         return expressService;
     }
 
-    public static void showToast(Context context, String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    public static void showToast(String message) {
+        Toast.makeText(getAppContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     public static void showLog(String message) {
