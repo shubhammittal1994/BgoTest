@@ -40,7 +40,8 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="gone"/>
 <!--    <androidx.appcompat.widget.AppCompatImageView-->
 <!--        android:id="@+id/lottieGift"-->
 <!--        android:layout_width="match_parent"-->
@@ -200,7 +201,8 @@
             android:layout_height="match_parent"
             android:elevation="10dp"
             android:visibility="gone"
-            app:antiAlias="true" />
+            app:antiAlias="true"
+            tools:visibility="visible" />
         <com.opensource.svgaplayer.SVGAImageView
             android:id="@+id/muCarsRVImage"
             android:layout_width="match_parent"
@@ -227,7 +229,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="gone">
             <RelativeLayout
                 android:id="@+id/rlHostInfo"
                 android:layout_width="wrap_content"
@@ -266,7 +269,8 @@
             android:textColor="@color/white"
             android:textSize="10sp"
             android:visibility="gone"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:visibility="visible"/>
 
 <!--        <ViewStub-->
 <!--            android:id="@id/small_video_view_dock"-->
@@ -352,7 +356,8 @@
                                         android:layout_marginStart="20dp"
                                         android:scaleType="fitXY"
                                         android:src="@drawable/lock"
-                                        android:visibility="gone" />
+                                        android:visibility="gone"
+                                        tools:visibility="visible" />
 
                                     <androidx.appcompat.widget.AppCompatTextView
                                         android:id="@+id/txtId"
@@ -373,7 +378,8 @@
                                         android:layout_marginStart="10dp"
                                         android:scaleType="fitXY"
                                         android:src="@drawable/lock"
-                                        android:visibility="gone" />
+                                        android:visibility="gone"
+                                        tools:visibility="visible" />
                                     <!--                               android:drawableLeft="@drawable/ic_person"-->
                                 </LinearLayout>
                             </LinearLayout>
@@ -434,7 +440,8 @@
                         android:text="12:44:55 pm"
                         android:textColor="@color/white"
                         android:textSize="12sp"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
 
                     <LinearLayout
                         android:id="@+id/showLiveDiamondslLayout"
@@ -531,7 +538,8 @@
                     android:visibility="gone"
                     android:orientation="horizontal"
                     android:paddingStart="5dp"
-                    android:paddingEnd="7dp">
+                    android:paddingEnd="7dp"
+                    tools:visibility="visible">
 
                     <ImageView
                         android:layout_width="18dp"
@@ -560,7 +568,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
 
                     <RelativeLayout
@@ -569,7 +578,8 @@
                         android:layout_height="38dp"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/ripple_bg"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
 
                     </RelativeLayout>
@@ -620,7 +630,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_marginTop="200dp"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        tools:visibility="visible">
 
                         <TextView
                             android:id="@+id/luckyBaglottedTv"

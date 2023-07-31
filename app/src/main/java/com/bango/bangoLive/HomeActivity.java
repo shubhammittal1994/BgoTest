@@ -61,12 +61,12 @@ public class HomeActivity extends AppCompatActivity {
             zimGroupInfo.groupName = "Bella11";
 
             ChatSDKManager.getChatSDKManager().dismissGroup(zimGroupInfo.groupID, (groupID, errorInfo) -> {
-                App.showLog(groupID + " Error Info:- " + errorInfo.getCode() + " - " + errorInfo.getMessage());
+                //App.showLog(groupID + " Error Info:- " + errorInfo.getCode() + " - " + errorInfo.getMessage());
 
                 ChatSDKManager.getChatSDKManager().queryGroupList((groupList, errorInfoGroupList) -> {
                     boolean isGroupAvailable = false;
                     for (int i = 0; i < groupList.size(); i++) {
-                        App.showLog("Group Id:- " + groupList.get(i).baseInfo.groupID);
+                        //App.showLog("Group Id:- " + groupList.get(i).baseInfo.groupID);
                         if (groupList.get(i).baseInfo.groupID.equals(zimGroupInfo.groupID)) {
                             isGroupAvailable = true;
                             break;
@@ -74,18 +74,18 @@ public class HomeActivity extends AppCompatActivity {
                     }
 
                     if (isGroupAvailable) {
-                        App.showLog("Group is already exists.");
+                        //App.showLog("Group is already exists.");
                         ChatSDKManager.getChatSDKManager().joinGroup(zimGroupInfo.groupID, (groupInfo, errorInfoJoin) -> {
-                            App.showLog(groupInfo.baseInfo.groupName + " notificationStatus:- " + groupInfo.notificationStatus.value());
-                            App.showLog(groupInfo.baseInfo.groupName + " Error Info:- " + errorInfoJoin.getCode() + " - " + errorInfoJoin.getMessage());
+                            //App.showLog(groupInfo.baseInfo.groupName + " notificationStatus:- " + groupInfo.notificationStatus.value());
+                            //App.showLog(groupInfo.baseInfo.groupName + " Error Info:- " + errorInfoJoin.getCode() + " - " + errorInfoJoin.getMessage());
                         });
                     } else {
-                        App.showLog("Group is not exists.");
+                        //App.showLog("Group is not exists.");
                         ChatSDKManager.getChatSDKManager().createGroup(zimGroupInfo, new ArrayList<String>(),
                                 (groupInfo, userList, errorUserList, errorInfo1) -> {
-                                    App.showLog(groupInfo.baseInfo.groupName + " User list size:- " + userList.size());
-                                    App.showLog(groupInfo.baseInfo.groupName + " Error User list size:- " + errorUserList.size());
-                                    App.showLog(groupInfo.baseInfo.groupName + " Error Info:- " + errorInfo1.getCode() + " - " + errorInfo1.getMessage());
+                                    //App.showLog(groupInfo.baseInfo.groupName + " User list size:- " + userList.size());
+                                    //App.showLog(groupInfo.baseInfo.groupName + " Error User list size:- " + errorUserList.size());
+                                    //App.showLog(groupInfo.baseInfo.groupName + " Error Info:- " + errorInfo1.getCode() + " - " + errorInfo1.getMessage());
                                 });
                     }
                 });
