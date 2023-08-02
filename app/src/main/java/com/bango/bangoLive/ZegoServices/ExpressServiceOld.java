@@ -2,16 +2,12 @@ package com.bango.bangoLive.ZegoServices;
 
 import android.app.Application;
 
-import com.bango.bangoLive.ZegoServices.userTypeAndPermissions.User;
-import com.bango.bangoLive.ZegoServices.userTypeAndPermissions.UserPermissions;
-
 import im.zego.zegoexpress.ZegoExpressEngine;
 import im.zego.zegoexpress.callback.IZegoEventHandler;
 import im.zego.zegoexpress.constants.ZegoScenario;
-import im.zego.zegoexpress.entity.ZegoAudioConfig;
 import im.zego.zegoexpress.entity.ZegoEngineProfile;
 
-public class ExpressService {
+public class ExpressServiceOld {
 
     private ZegoExpressEngine engine;
 
@@ -21,7 +17,7 @@ public class ExpressService {
 //    String isTestEnvironment = "true";
 //    String appSign = "f045051f0dcbb111a51a11bf141e5e5056a8d372dbf1a9fd51b2996f874ddd5a";
 
-    public ExpressService(Application application, long appID, String appSign) {
+    public ExpressServiceOld(Application application, long appID, String appSign) {
         initSDK(application, appID, appSign);
 
     }

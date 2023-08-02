@@ -8,37 +8,27 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.bango.bangoLive.ZegoServices.ExpressService;
+import com.bango.bangoLive.ZegoServices.ExpressServiceOld;
 import com.bango.bangoLive.ZegoServices.ZegoSDKApiKey;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
-import com.bango.bangoLive.ZegoServices.zegoCloudChat.ZIMCustomTextMessage;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.model.MessageModel;
 import com.bango.bangoLive.utils.SharedPref;
 import com.bango.bangoLive.utils.Singleton;
-import com.google.firebase.FirebaseApp;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import im.zego.zegoexpress.ZegoExpressEngine;
 import im.zego.zim.ZIM;
 import im.zego.zim.callback.ZIMEventHandler;
-import im.zego.zim.entity.ZIMConversationQueryConfig;
-import im.zego.zim.callback.ZIMGroupCreatedCallback;
 import im.zego.zim.entity.ZIMConversationChangeInfo;
-import im.zego.zim.entity.ZIMError;
-import im.zego.zim.entity.ZIMErrorUserInfo;
 import im.zego.zim.entity.ZIMGroupFullInfo;
-import im.zego.zim.entity.ZIMGroupInfo;
 import im.zego.zim.entity.ZIMGroupMemberInfo;
 import im.zego.zim.entity.ZIMGroupOperatedInfo;
 import im.zego.zim.entity.ZIMMessage;
 import im.zego.zim.entity.ZIMMessageReceiptInfo;
 import im.zego.zim.entity.ZIMTextMessage;
 import im.zego.zim.entity.ZIMUserInfo;
-import im.zego.zim.enums.ZIMErrorCode;
 import im.zego.zim.enums.ZIMGroupEvent;
 import im.zego.zim.enums.ZIMGroupMemberEvent;
 import im.zego.zim.enums.ZIMGroupMemberState;
@@ -53,7 +43,7 @@ public class App extends Application {
 
     public static Singleton singleton;
 
-    public ExpressService expressService;
+    public ExpressServiceOld expressService;
 
     private Context context;
     private static App instance;
@@ -227,13 +217,13 @@ public class App extends Application {
         return instance;
     }
 
-    public ExpressService getExpressService() {
+    public ExpressServiceOld getExpressService() {
         return getExpressServiceHelper(this, ZegoSDKApiKey.APP_ID,ZegoSDKApiKey.APP_SIGN);
     }
 
-    private ExpressService getExpressServiceHelper(Application application, long appId, String appSign) {
+    private ExpressServiceOld getExpressServiceHelper(Application application, long appId, String appSign) {
         if (expressService == null) {
-            expressService = new ExpressService(this, appId, appSign);
+            expressService = new ExpressServiceOld(this, appId, appSign);
         }
         return expressService;
     }

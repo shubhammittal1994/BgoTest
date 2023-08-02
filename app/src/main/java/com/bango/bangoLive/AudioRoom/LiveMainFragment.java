@@ -196,7 +196,7 @@ public class LiveMainFragment extends Fragment {
         ZIMRoomInfo zimRoomInfo = new ZIMRoomInfo();
         zimRoomInfo.roomID = roomID;
         zimRoomInfo.roomName = liveTitle.getText().toString();
-        ZIMRoomAdvancedConfig config=new ZIMRoomAdvancedConfig();
+        ZIMRoomAdvancedConfig config = new ZIMRoomAdvancedConfig();
         config.roomDestroyDelayTime=30;
         ChatSDKManager.getChatSDKManager().enterRoom(zimRoomInfo,config, (roomInfo, errorInfo) ->
                 {

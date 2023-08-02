@@ -137,6 +137,7 @@ import im.zego.zegoexpress.ZegoAudioEffectPlayer;
 
 import im.zego.zegoexpress.ZegoExpressEngine;
 import im.zego.zegoexpress.callback.IZegoEventHandler;
+import im.zego.zegoexpress.callback.IZegoIMSendBroadcastMessageCallback;
 import im.zego.zegoexpress.constants.ZegoAudioConfigPreset;
 import im.zego.zegoexpress.constants.ZegoPlayerState;
 import im.zego.zegoexpress.constants.ZegoPublisherState;
@@ -934,6 +935,15 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             commentAdapter.notifyDataSetChanged();
     }
 
+    public void sendBroadCastMessage(String msg) {
+        zegoExpressEngine.sendBroadcastMessage(roomID, msg, new IZegoIMSendBroadcastMessageCallback() {
+            /**  The callback to report the delivery result of the Broadcast Message */
+            @Override
+            public void onIMSendBroadcastMessageResult(int errorCode, long messageID) {
+                //Handle the delivery result of the Broadcast Message.
+            }
+        });
+    }
 
     private void getCommentChatMessageFirebase() {
 
@@ -2721,7 +2731,8 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     void startPlayStream(String streamID) {
         zegoExpressEngine.startPlayingStream(streamID);
     }
-void stopPlayStream(String streamID) {
+
+    void stopPlayStream(String streamID) {
         zegoExpressEngine.stopPlayingStream(streamID);
     }
 

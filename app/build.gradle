@@ -91,8 +91,11 @@ dependencies {
     //rounded image view
     implementation 'com.makeramen:roundedimageview:2.3.0'
     //implementation 'com.github.ZEGOCLOUD:zego_uikit_prebuilt_live_audio_room_android:+'
-    implementation 'im.zego:zim:2.7.1'
-    implementation 'im.zego:express-audio:3.7.0'
+    //implementation 'im.zego:zim:2.7.1'
+    //implementation 'im.zego:express-audio:3.7.0'
+
+    implementation 'im.zego:zim:2.8.4'
+    implementation 'im.zego:express-video:3.6.0'
     implementation 'com.google.firebase:firebase-database:20.0.1'
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'
 
