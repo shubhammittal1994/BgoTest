@@ -2698,8 +2698,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
             logoutRoom(audioRoomId);
             dialog.dismiss();
-
-            startActivity(new Intent(CallActivity.this, HomeActivity.class));
+            finish();
         });
     }
 
@@ -2857,11 +2856,9 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         stopListenEvent();*/
 
         App.showLog("logout room called");
-        if (isFinishing()) {
-            ZEGOLiveAudioRoomManager.getInstance().removeRoomData();
-            ZEGOLiveAudioRoomManager.getInstance().removeRoomListeners();
-            ZEGOSDKManager.getInstance().logoutRoom(null);
-        }
+        ZEGOLiveAudioRoomManager.getInstance().removeRoomData();
+        ZEGOLiveAudioRoomManager.getInstance().removeRoomListeners();
+        ZEGOSDKManager.getInstance().logoutRoom(null);
     }
 
 
