@@ -1036,6 +1036,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                 binding.llOption.setVisibility(View.GONE);
                 binding.rlGiftHeart.setVisibility(View.VISIBLE);
                 binding.rlGift.setVisibility(View.GONE);
+                binding.rlMultiLiveRequest.setVisibility(View.VISIBLE);
                 //  getMultiLiveRequestStatus();
             }
         } else {
@@ -1121,7 +1122,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         });
 
         binding.rlMultiLiveRequest.setOnClickListener(view -> {
-            // openRequestMultiLiveDialog();
+            //openRequestMultiLiveDialog();
         });
 
         binding.rlSendMessage.setOnClickListener(view -> {
@@ -2836,7 +2837,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         if (isFinishing()) {
             ZEGOLiveAudioRoomManager.getInstance().removeRoomData();
             ZEGOLiveAudioRoomManager.getInstance().removeRoomListeners();
-            ZEGOSDKManager.getInstance().logoutRoom(roomID, null);
+            ZEGOSDKManager.getInstance().logoutRoom(null);
         }
     }
 

@@ -432,13 +432,14 @@ public class ExpressService {
         });
     }
 
-    public void logoutRoom(String roomID, IZegoRoomLogoutCallback callback) {
+    public void logoutRoom(IZegoRoomLogoutCallback callback) {
         if (engineProxy.getExpressEngine() == null || currentRoomID == null) {
             return;
         }
+        String currentRoomId = currentRoomID;
         removeRoomData();
         removeAutoDeleteRoomListeners();
-        engineProxy.logoutRoom(roomID, callback);
+        engineProxy.logoutRoom(currentRoomId, callback);
     }
 
     public void addEventHandler(IExpressEngineEventHandler eventHandler) {
