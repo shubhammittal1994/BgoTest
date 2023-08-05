@@ -40,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
 
         /************************** SET VISIBLITY OF BOTTOM NAVIGATION **************************/
         binding.bottomNavigation.getRoot().setVisibility(View.VISIBLE);
-        createZimUserInfo();
+        //createZimUserInfo();
 
 
     }

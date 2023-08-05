@@ -14,6 +14,9 @@ import android.provider.Settings;
 import android.view.View;
 
 import com.bango.bangoLive.ViewModel.ApiViewModel;
+import com.bango.bangoLive.ZegoServices.ZEGOSDKKeyCenter;
+import com.bango.bangoLive.ZegoServices.internal.sdk.basic.ZEGOSDKCallBack;
+import com.bango.bangoLive.ZegoServices.internal.sdk.zim.ZEGOSDKManager;
 import com.bango.bangoLive.databinding.ActivitySplashBinding;
 import com.bango.bangoLive.loginCredentials.activities.fragments.LoginActivity;
 import com.bumptech.glide.Glide;
@@ -40,14 +43,36 @@ public class SplashActivity extends AppCompatActivity {
         deviceId = Settings.Secure.getString(SplashActivity.this.getContentResolver(), Settings.Secure.ANDROID_ID);
         sessionManage();
         clicks();
-        startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+        initZEGOSDK();
+        openHomeActivity();
+    }
+
+    private void initZEGOSDK() {
+        ZEGOSDKManager.getInstance().initSDK(getApplication(), ZEGOSDKKeyCenter.appID, ZEGOSDKKeyCenter.appSign, ZEGOSDKKeyCenter.APP_ID_CHAT, ZEGOSDKKeyCenter.APP_SIGN_CHAT);
+    }
+
+    private void signInZEGOSDK(String userID, String userName, ZEGOSDKCallBack callback) {
+        ZEGOSDKManager.getInstance().connectUser(userID, userName, callback);
+    }
+
+    private void openHomeActivity() {
+        String userID = sharedpreferences.getString("id", "");
+        String userName = sharedpreferences.getString("userUniqueId", "");
+
+        signInZEGOSDK(userID, userName, (errorCode, message) -> {
+            if (errorCode == 0) {
+                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+            } else {
+                //TODO Google signout code here
+            }
+        });
     }
 
     private void clicks() {
         binding.txtSkip.setOnClickListener(view -> {
             if (canClick) {
                 if (!sharedpreferences.getString("id","").isEmpty()) {
-                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+                    openHomeActivity();
                 } else {
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 }

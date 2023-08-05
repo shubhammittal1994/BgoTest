@@ -9,7 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.bango.bangoLive.ZegoServices.ExpressServiceOld;
-import com.bango.bangoLive.ZegoServices.ZegoSDKApiKey;
+import com.bango.bangoLive.ZegoServices.ZEGOSDKKeyCenter;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.model.MessageModel;
 import com.bango.bangoLive.utils.SharedPref;
@@ -218,7 +218,7 @@ public class App extends Application {
     }
 
     public ExpressServiceOld getExpressService() {
-        return getExpressServiceHelper(this, ZegoSDKApiKey.APP_ID,ZegoSDKApiKey.APP_SIGN);
+        return getExpressServiceHelper(this, ZEGOSDKKeyCenter.APP_ID,ZEGOSDKKeyCenter.APP_SIGN);
     }
 
     private ExpressServiceOld getExpressServiceHelper(Application application, long appId, String appSign) {

@@ -193,17 +193,18 @@ public class LiveMainFragment extends Fragment {
     }
 
     private void createRoom(String roomID, StartLiveModelClass startLiveModelClass) {
-        ZIMRoomInfo zimRoomInfo = new ZIMRoomInfo();
+        /*ZIMRoomInfo zimRoomInfo = new ZIMRoomInfo();
         zimRoomInfo.roomID = roomID;
         zimRoomInfo.roomName = liveTitle.getText().toString();
         ZIMRoomAdvancedConfig config = new ZIMRoomAdvancedConfig();
-        config.roomDestroyDelayTime=30;
-        ChatSDKManager.getChatSDKManager().enterRoom(zimRoomInfo,config, (roomInfo, errorInfo) ->
+        config.roomDestroyDelayTime=30;*/
+        navigateToNextActivity(startLiveModelClass);
+        /*ChatSDKManager.getChatSDKManager().enterRoom(zimRoomInfo,config, (roomInfo, errorInfo) ->
                 {
-                    /* 0 --->>Success
+                    *//* 0 --->>Success
                      * 1--->> Failed
                      * 6000323-->> Room Already Exist
-                     * */
+                     * *//*
                     if (errorInfo.getCode().value() == 0) {
                         navigateToNextActivity(startLiveModelClass);
                        // App.showLog("Room is created" + roomID);
@@ -217,7 +218,7 @@ public class LiveMainFragment extends Fragment {
                      //   App.showLog(roomID + " Room not created ! " + errorInfo.getMessage());
                     }
                 }
-        );
+        );*/
     }
 
     void logoutRoom(){

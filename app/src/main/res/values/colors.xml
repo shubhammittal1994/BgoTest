@@ -16,4 +16,13 @@
     <color name="yellow">#ffff00</color>
     <color name="neon">#051468</color>
     <color name="green">#f83302</color>
+
+    <color name="purple_dark">#9F76FF</color>
+    <color name="teal">#8BE7FF</color>
+    <color name="gray">#888888</color>
+    <color name="gray_666">#666666</color>
+    <color name="gray_555">#555555</color>
+    <color name="gray_444">#444444</color>
+    <color name="gray_333">#333333</color>
+    <color name="bottom_btn_background">#661e2740</color>
 </resources>

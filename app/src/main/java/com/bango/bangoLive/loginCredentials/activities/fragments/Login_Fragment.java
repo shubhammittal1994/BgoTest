@@ -21,7 +21,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.helper.widget.MotionEffect;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -40,6 +39,8 @@ import com.bango.bangoLive.HomeActivity;
 import com.bango.bangoLive.ModelClasses.LoginResponse;
 import com.bango.bangoLive.R;
 import com.bango.bangoLive.ViewModel.ApiViewModel;
+import com.bango.bangoLive.ZegoServices.internal.sdk.basic.ZEGOSDKCallBack;
+import com.bango.bangoLive.ZegoServices.internal.sdk.zim.ZEGOSDKManager;
 import com.bango.bangoLive.application.App;
 import com.bango.bangoLive.databinding.FragmentLoginBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -52,14 +53,11 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.tapadoo.alerter.Alerter;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-
-import im.zego.zim.entity.ZIMUserInfo;
 
 public class Login_Fragment extends Fragment {
 
@@ -235,20 +233,28 @@ public class Login_Fragment extends Fragment {
                     if (loginResponse.getSuccess()!=null) {
 
                         if (loginResponse.getSuccess().equalsIgnoreCase("1")) {
+                            String userID = loginResponse.getDetails().getId();
+                            String userName = loginResponse.getDetails().getUsername();
 
-                            SharedPreferences.Editor editor = sharedpreferences.edit();
-                            editor.putString("id",loginResponse.getDetails().getId());
-                            editor.putString("userUniqueId",loginResponse.getDetails().getUsername());
-                            editor.putString("name",loginResponse.getDetails().getName());
-                            editor.putString("profileImage",loginResponse.getDetails().getImage());
-                            App.getSharedpref().saveString("id",loginResponse.getDetails().getId());
-                            App.getSharedpref().saveString("image",loginResponse.getDetails().getImage());
-                            App.getSharedpref().saveString("adminStatus",loginResponse.getDetails().getAdmin());
-                            Log.d("key","userId"+loginResponse.getDetails().getId());
-                            Log.d("key","name"+loginResponse.getDetails().getName());
-                            Log.d("key","profileImage"+loginResponse.getDetails().getImage());
-                            editor.commit();
-                            startActivity(new Intent(requireContext(), HomeActivity.class));
+                            signInZEGOSDK(userID, userName, (errorCode, message) -> {
+                                if (errorCode == 0) {
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.putString("id",userID);
+                                    editor.putString("userUniqueId",userName);
+                                    editor.putString("name",loginResponse.getDetails().getName());
+                                    editor.putString("profileImage",loginResponse.getDetails().getImage());
+                                    App.getSharedpref().saveString("id",userID);
+                                    App.getSharedpref().saveString("image",loginResponse.getDetails().getImage());
+                                    App.getSharedpref().saveString("adminStatus",loginResponse.getDetails().getAdmin());
+                                    Log.d("key","userId"+userID);
+                                    Log.d("key","name"+loginResponse.getDetails().getName());
+                                    Log.d("key","profileImage"+loginResponse.getDetails().getImage());
+                                    editor.commit();
+                                    startActivity(new Intent(requireContext(), HomeActivity.class));
+                                } else {
+                                    //TODO Google signout code here
+                                }
+                            });
                         } else {
                             Toast.makeText(requireActivity(), "" + loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -351,5 +357,9 @@ public class Login_Fragment extends Fragment {
         super.onPause();
         /************************** CLEAR FULL SCREEN BACKGROUND WINDOW **************************/
         requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+    }
+
+    private void signInZEGOSDK(String userID, String userName, ZEGOSDKCallBack callback) {
+        ZEGOSDKManager.getInstance().connectUser(userID, userName, callback);
     }
 }

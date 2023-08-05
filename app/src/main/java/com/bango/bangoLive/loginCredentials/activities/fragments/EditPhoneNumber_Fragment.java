@@ -53,11 +53,11 @@ public class EditPhoneNumber_Fragment extends Fragment {
                 .observe(requireActivity(), new Observer<Map>() {
                     @Override
                     public void onChanged(Map map) {
-                        Fragment fragment = new Verification_Otp_Fragment();
+                        //Fragment fragment = new Verification_Otp_Fragment();
                         Bundle bundle = new Bundle();
                         bundle.putString("phone", binding.countryCode.getSelectedCountryCodeWithPlus()+binding.phoneNumberEditText.getText().toString());
                         bundle.putString("status", map.get("success").toString());
-                        fragment.setArguments(bundle);
+                        //fragment.setArguments(bundle);
                         Navigation.findNavController(requireActivity(), R.id.nav_host_login_fragment).navigate(R.id.action_editPhoneNumber_Fragment_to_verification_Otp_Fragment,bundle);
                     }
                 });

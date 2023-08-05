@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.bango.bangoLive.ZegoServices.Utils;
+import com.bango.bangoLive.ZegoServices.internal.utils.Utils;
 
 
 public class AudioRoomBackgroundView extends FrameLayout {

@@ -58,9 +58,15 @@ import com.bango.bangoLive.AudioRoom.MODEL.AdminFirebaseRoot;
 import com.bango.bangoLive.AudioRoom.MODEL.ChatMessageModel;
 import com.bango.bangoLive.AudioRoom.MODEL.OtherUserDataModel;
 import com.bango.bangoLive.ViewModel.ApiViewModel;
-import com.bango.bangoLive.ZegoServices.ZegoSdkEnums.MessageTypeEnum;
+import com.bango.bangoLive.ZegoServices.internal.ZEGOLiveAudioRoomManager;
+import com.bango.bangoLive.ZegoServices.internal.business.audioroom.LiveAudioRoomLayoutConfig;
+import com.bango.bangoLive.ZegoServices.internal.sdk.basic.ZEGOSDKCallBack;
+import com.bango.bangoLive.ZegoServices.internal.sdk.express.IExpressEngineEventHandler;
+import com.bango.bangoLive.ZegoServices.internal.sdk.zim.IZIMEventHandler;
+import com.bango.bangoLive.ZegoServices.internal.sdk.zim.RoomRequest;
+import com.bango.bangoLive.ZegoServices.internal.sdk.zim.ZEGOSDKManager;
+import com.bango.bangoLive.ZegoServices.internal.utils.Utils;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatFunctions;
-import com.bango.bangoLive.ZegoServices.zegoCloudChat.ChatSDKManager;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.ZIMCustomTextMessage;
 import com.bango.bangoLive.ZegoServices.zegoCloudChat.model.MessageModel;
 import com.bango.bangoLive.adapters.LocalAddedAdapter;
@@ -136,24 +142,14 @@ import im.delight.android.webview.AdvancedWebView;
 import im.zego.zegoexpress.ZegoAudioEffectPlayer;
 
 import im.zego.zegoexpress.ZegoExpressEngine;
-import im.zego.zegoexpress.callback.IZegoEventHandler;
-import im.zego.zegoexpress.callback.IZegoIMSendBroadcastMessageCallback;
-import im.zego.zegoexpress.constants.ZegoAudioConfigPreset;
-import im.zego.zegoexpress.constants.ZegoPlayerState;
-import im.zego.zegoexpress.constants.ZegoPublisherState;
-import im.zego.zegoexpress.constants.ZegoRoomStateChangedReason;
+import im.zego.zegoexpress.constants.ZegoScenario;
 import im.zego.zegoexpress.constants.ZegoStreamResourceMode;
 import im.zego.zegoexpress.constants.ZegoUpdateType;
-import im.zego.zegoexpress.entity.ZegoAudioConfig;
 import im.zego.zegoexpress.entity.ZegoAudioEffectPlayConfig;
 import im.zego.zegoexpress.entity.ZegoPlayerConfig;
-import im.zego.zegoexpress.entity.ZegoRoomConfig;
 import im.zego.zegoexpress.entity.ZegoStream;
-import im.zego.zegoexpress.entity.ZegoUser;
-import im.zego.zim.callback.ZIMGroupJoinedCallback;
-import im.zego.zim.callback.ZIMRoomLeftCallback;
+import im.zego.zim.callback.ZIMRoomAttributesOperatedCallback;
 import im.zego.zim.entity.ZIMError;
-import im.zego.zim.entity.ZIMGroupFullInfo;
 import im.zego.zim.entity.ZIMMessageSendConfig;
 import im.zego.zim.entity.ZIMPushConfig;
 import im.zego.zim.entity.ZIMTextMessage;
@@ -217,15 +213,15 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     String adminId = "", adminIdThroughCallback = "";
 
     /*
-    * Host-->> RoomStart-->>
-    * RoomID==ProfileID
-    * LiveID==RoomID
-    * otherUserId==userID
-    * profileId== RoomCreate
-    * profileUniqueId==UserName
-    * liveHostid==
-    * adminId==
-    * */
+     * Host-->> RoomStart-->>
+     * RoomID==ProfileID
+     * LiveID==RoomID
+     * otherUserId==userID
+     * profileId== RoomCreate
+     * profileUniqueId==UserName
+     * liveHostid==
+     * adminId==
+     * */
     Boolean am_i_host = false;
     ImageView playMusicDialogImg;
     int emptyPosition;
@@ -253,6 +249,8 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     private final DatabaseReference userLiveBackImgRef = firebaseDatabase.getReference().child("userLiveBackImgRef");
 
     private String audioRoomId = "test123";
+    private LiveAudioRoomLayoutConfig seatLayoutConfig;
+    String TAG = "LiveAudioRoomActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -304,7 +302,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         if (am_i_host) {
             profileImageSave = sharedpreferences.getString("profileImage", "");
         } else {
-            joinRoom(roomID);
+            //joinRoom(roomID);
             profileName = getIntent().getStringExtra("profileName");
             other = getIntent().getStringExtra("otherUserId");
         }
@@ -316,26 +314,32 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                         " profileId:- " + profileId +
                         " profileImage:- " + profileImage +
                         " profileUniqueId:- " + profileUniqueId +
-                        " status:- " + status  +
+                        " status:- " + status +
                         " liveType:- " + liveType +
                         " liveStatus:- " + liveStatus +
                         " liveHostid:- " + liveHostid +
                         " coverImage:- " + coverImage +
-                        " coverName:- " + coverName  +
+                        " coverName:- " + coverName +
                         " otherUserId:- " + otherUserId +
                         " profileImageSave:- " + profileImageSave +
                         " profileName 1:- " + profileName +
                         " other:- " + other
         );
 
-        MultiLiveAudioAdapter.directHostId = getIntent().getStringExtra("roomID");
-        MultiLiveAudioAdapter.liveType = getIntent().getStringExtra("liveType");
-        //  InviteAudienceRVAdapter.directHostId = getIntent().getStringExtra("liveHostIds");
+        // two rows, four columns
+        seatLayoutConfig = new LiveAudioRoomLayoutConfig();
+        seatLayoutConfig.rowSpacing = Utils.dp2px(8, getResources().getDisplayMetrics());
+        ZEGOLiveAudioRoomManager.getInstance().init(seatLayoutConfig);
+        binding.seatContainer.setLayoutConfig(seatLayoutConfig);
+   //  InviteAudienceRVAdapter.directHostId = getIntent().getStringExtra("liveHostIds");
 
-        startListenEvent();
+        //startListenEvent();
         loginRoom(profileId, profileName, audioRoomId, am_i_host);
         //FirebaseHelper.giftsListener(roomID, giftsEventListener);
-       // getMultiLiveRequest();
+        MultiLiveAudioAdapter.directHostId = getIntent().getStringExtra("roomID");
+        MultiLiveAudioAdapter.liveType = getIntent().getStringExtra("liveType");
+
+        // getMultiLiveRequest();
 
 
         binding.txtUserName.setText(liveTitle);
@@ -652,7 +656,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageModel event) {
-       // App.showLog("--->>> on message event " + event.getMessage());
+        // App.showLog("--->>> on message event " + event.getMessage());
         ChatMessageModel chatMessageModels = new ChatMessageModel();
         chatMessageModels.setMessage(event.getMessage());
         chatMessageModels.setUserId(event.getUserId());
@@ -933,16 +937,6 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         binding.recyclerAllMessage.scrollToPosition(chatMessages.size() - 1);
         if (commentAdapter != null)
             commentAdapter.notifyDataSetChanged();
-    }
-
-    public void sendBroadCastMessage(String msg) {
-        zegoExpressEngine.sendBroadcastMessage(roomID, msg, new IZegoIMSendBroadcastMessageCallback() {
-            /**  The callback to report the delivery result of the Broadcast Message */
-            @Override
-            public void onIMSendBroadcastMessageResult(int errorCode, long messageID) {
-                //Handle the delivery result of the Broadcast Message.
-            }
-        });
     }
 
     private void getCommentChatMessageFirebase() {
@@ -2691,30 +2685,25 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             });
 
             logoutRoom(audioRoomId);
-//              zegoExpressEngine.stopPlayingStream(roomID);
-//              zegoExpressEngine.logoutRoom(roomID);
             dialog.dismiss();
 
-            //remove announcement and
-//            muteMicRef.child(roomID).removeValue();
-//            emojiRef.child(roomID).removeValue();
-//            lockSeat.child(roomID).removeValue();
-//            liveUsersRef.child(profileId).removeValue();
             startActivity(new Intent(CallActivity.this, HomeActivity.class));
         });
     }
 
     void loginRoom(String userID, String userName, String roomID, boolean isHost) {
-        ZegoUser user = new ZegoUser(userID, userName);
-        ZegoRoomConfig roomConfig = new ZegoRoomConfig();
+        //ZegoUser user = new ZegoUser(userID, userName);
+        //ZegoRoomConfig roomConfig = new ZegoRoomConfig();
 
         // The `onRoomUserUpdate` callback can be received only when
         // `Zego RoomConfig` in which the `isUserStatusNotify` parameter is set to
         // `true` is passed.
-        roomConfig.isUserStatusNotify = true;
-        App.showLog(" Express SDK LOGIN ROOM roomID: " + roomID + ", user: " + user + ", roomConfig: " + roomConfig);
+        //roomConfig.isUserStatusNotify = true;
+        App.showLog(" Express SDK LOGIN ROOM roomID: " + roomID + ", user: " +
+                ZEGOSDKManager.getInstance().expressService.getCurrentUser().userID + ", roomConfig: " +
+                ZEGOSDKManager.getInstance().expressService.getCurrentUser().userName);
 
-        zegoExpressEngine.loginRoom(roomID, user, roomConfig, (int error, JSONObject extendedData) -> {
+        /*zegoExpressEngine.loginRoom(roomID, user, roomConfig, (int error, JSONObject extendedData) -> {
             // Room login result. This callback is sufficient if you only need to
             // check the login result.
             if (error == 0) {
@@ -2725,10 +2714,80 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                 // Login failed. For details, see [Error codes\|_blank](/404).
                 Toast.makeText(this, "Login failed. error = " + error, Toast.LENGTH_LONG).show();
             }
+        });*/
+
+        ZEGOSDKManager.getInstance().expressService.openCamera(false);
+        ZEGOSDKManager.getInstance().expressService.addEventHandler(new IExpressEngineEventHandler() {
+            @Override
+            public void onRoomStreamUpdate(String roomID, ZegoUpdateType updateType, ArrayList<ZegoStream> streamList,
+                                           JSONObject extendedData) {
+                super.onRoomStreamUpdate(roomID, updateType, streamList, extendedData);
+                for (ZegoStream zegoStream : streamList) {
+                    if (updateType == ZegoUpdateType.ADD) {
+                        ZegoPlayerConfig config = new ZegoPlayerConfig();
+                        config.resourceMode = ZegoStreamResourceMode.ONLY_RTC;
+                        App.showLog("Express SDK streamID Start:" + zegoStream.streamID);
+                        ZEGOSDKManager.getInstance().expressService.startPlayingStream(zegoStream.streamID, config);
+                    } else {
+                        App.showLog("Express SDK streamID Stop:" + zegoStream.streamID);
+                        ZEGOSDKManager.getInstance().expressService.stopPlayingStream(zegoStream.streamID);
+                    }
+                }
+            }
+        });
+        ZegoScenario chatRoom = ZegoScenario.HIGH_QUALITY_CHATROOM;
+        ZEGOSDKManager.getInstance().loginRoom(roomID, chatRoom, new ZEGOSDKCallBack() {
+            @Override
+            public void onResult(int errorCode, String message) {
+                if (errorCode != 0) {
+                    App.showLog("onRoomLoginResult: error: " + errorCode);
+                    finish();
+                } else {
+                    if (isHost) {
+                        ZEGOLiveAudioRoomManager.getInstance().setHostAndLockSeat();
+                        ZEGOLiveAudioRoomManager.getInstance().takeSeat(0, new ZIMRoomAttributesOperatedCallback() {
+                            @Override
+                            public void onRoomAttributesOperated(String roomID, ArrayList<String> errorKeys,
+                                                                 ZIMError errorInfo) {
+                                App.showLog("isHost onRoomAttributesOperated called");
+                            }
+                        });
+                    }
+                    initListenerAfterLoginRoom();
+                }
+            }
         });
     }
 
-    void startPlayStream(String streamID) {
+    private void initListenerAfterLoginRoom() {
+        ZEGOSDKManager.getInstance().zimService.addEventHandler(new IZIMEventHandler() {
+            @Override
+            public void onOutgoingRoomRequestAccepted(RoomRequest request) {
+                super.onOutgoingRoomRequestAccepted(request);
+                int seatIndex = ZEGOLiveAudioRoomManager.getInstance().findFirstAvailableSeatIndex();
+                if (seatIndex != -1) {
+                    ZEGOLiveAudioRoomManager.getInstance().takeSeat(seatIndex, new ZIMRoomAttributesOperatedCallback() {
+                        @Override
+                        public void onRoomAttributesOperated(String roomID, ArrayList<String> errorKeys,
+                                                             ZIMError errorInfo) {
+
+                        }
+                    });
+                } else {
+                    App.showToast("Cannot find available seat");
+                }
+            }
+
+            @Override
+            public void onUserAvatarUpdated(String userID, String url) {
+                super.onUserAvatarUpdated(userID, url);
+                App.showLog("onUserAvatarUpdated " + userID + " - " + url);
+                //binding.seatContainer.onUserAvatarUpdated(userID, url);
+            }
+        });
+    }
+
+    /*void startPlayStream(String streamID) {
         zegoExpressEngine.startPlayingStream(streamID);
     }
 
@@ -2745,10 +2804,10 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         zegoExpressEngine.mutePublishStreamAudio(false);
         zegoExpressEngine.startPublishingStream(streamID);
         App.showLog("---->>>> Express SDK streamID " + streamID);
-    }
+    }*/
 
     void logoutRoom(String roomID) {
-        zegoExpressEngine.logoutRoom(roomID);
+        /*zegoExpressEngine.logoutRoom(roomID);
         zegoExpressEngine.stopPlayingStream(roomID);
         ChatSDKManager.getChatSDKManager().leaveRoom(roomID,
                 (roomID1, errorInfo) -> App.showLog("--->>>:- Express SDK" + roomID1 + " , errorinfo:- " + errorInfo.getMessage()));
@@ -2756,11 +2815,18 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
             //Stop publishing
             zegoExpressEngine.stopPublishingStream();
         }
-        stopListenEvent();
+        stopListenEvent();*/
+
+        App.showLog("logout room called");
+        if (isFinishing()) {
+            ZEGOLiveAudioRoomManager.getInstance().removeRoomData();
+            ZEGOLiveAudioRoomManager.getInstance().removeRoomListeners();
+            ZEGOSDKManager.getInstance().logoutRoom(null);
+        }
     }
 
 
-    void startListenEvent() {
+    /*void startListenEvent() {
         zegoExpressEngine.setEventHandler(new IZegoEventHandler() {
             @Override
             // Callback for updates on the status of the streams in the room.
@@ -2898,7 +2964,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
     void stopListenEvent() {
         zegoExpressEngine.setEventHandler(null);
-    }
+    }*/
 
     @Override
     protected void onResume() {
@@ -2941,7 +3007,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                 }
 
                 public void onFinish() {
-                //    hitEndLiveApi("1");
+                    //    hitEndLiveApi("1");
                 }
             };
 
@@ -2955,10 +3021,6 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     private final long enterTime = System.currentTimeMillis();
 
     private void hitEndLiveApi(String s) {
-//        rtcEngine().leaveChannel();
-//        rtcEngine().enableLocalAudio(false);
-        zegoExpressEngine.logoutRoom();
-        zegoExpressEngine.muteLocalAudioMixing(false);//
 
         ref.child("reservedSheet").child(liveId).removeValue();
 
@@ -2966,19 +3028,9 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
             if (modelAgoraLiveUsers != null) {
                 if (modelAgoraLiveUsers.getStatus().equalsIgnoreCase("1")) {
-
-                    zegoExpressEngine.logoutRoom();
-                    zegoExpressEngine.muteLocalAudioMixing(false);//
-//                    rtcEngine().leaveChannel();
-//                    rtcEngine().enableLocalAudio(false);
-
                     long totalTime = System.currentTimeMillis() - enterTime;
-
-
                     startActivity(new Intent(CallActivity.this, HomeActivity.class).putExtra("coins", binding.tvTotalCoins.getText().toString()));
                     finish();
-
-
                 } else {
                     Toast.makeText(this, modelAgoraLiveUsers.getMessage(), Toast.LENGTH_SHORT).show();
                 }
