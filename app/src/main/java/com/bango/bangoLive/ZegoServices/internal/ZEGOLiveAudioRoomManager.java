@@ -125,13 +125,13 @@ public class ZEGOLiveAudioRoomManager {
         return lockSeat;
     }
 
-    public void setHostAndLockSeat() {
+    public void setHostAndLockSeatStatus(boolean isLockSeat) {
         JSONObject extraInfoValueJson = audioRoomExtraInfo.getExtraInfoValueJson();
         try {
             ZEGOSDKUser localUser = ZEGOSDKManager.getInstance().expressService.getCurrentUser();
             JSONObject jsonObject = new JSONObject(extraInfoValueJson.toString());
             jsonObject.put(EXTRA_INFO_VALUE_HOST, localUser.userID);
-            jsonObject.put(EXTRA_INFO_VALUE_LOCK_SEAT, true);
+            jsonObject.put(EXTRA_INFO_VALUE_LOCK_SEAT, isLockSeat);
             ZEGOSDKManager.getInstance().expressService.setRoomExtraInfo(EXTRA_INFO_KEY, jsonObject.toString());
         } catch (JSONException e) {
             throw new RuntimeException(e);

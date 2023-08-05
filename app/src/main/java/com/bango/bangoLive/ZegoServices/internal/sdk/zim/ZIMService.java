@@ -381,7 +381,7 @@ public class ZIMService {
         });
     }
 
-    public void logoutRoom(ZIMRoomLeftCallback callback) {
+    public void logoutRoom(String roomID, ZIMRoomLeftCallback callback) {
         if (zimProxy.getZIM() == null || currentRoom == null) {
             return;
         }

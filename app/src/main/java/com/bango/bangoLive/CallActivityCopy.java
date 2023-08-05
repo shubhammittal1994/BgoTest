@@ -2745,7 +2745,7 @@ public class CallActivityCopy extends AppCompatActivity implements GiftBottomShe
                     finish();
                 } else {
                     if (isHost) {
-                        ZEGOLiveAudioRoomManager.getInstance().setHostAndLockSeat();
+                        ZEGOLiveAudioRoomManager.getInstance().setHostAndLockSeatStatus(false);
                         ZEGOLiveAudioRoomManager.getInstance().takeSeat(0, new ZIMRoomAttributesOperatedCallback() {
                             @Override
                             public void onRoomAttributesOperated(String roomID, ArrayList<String> errorKeys,

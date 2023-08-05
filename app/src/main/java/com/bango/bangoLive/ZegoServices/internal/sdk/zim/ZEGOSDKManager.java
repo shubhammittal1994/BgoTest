@@ -30,6 +30,7 @@ public class ZEGOSDKManager {
     private Context context;
     private long appID;
     private String appSign;
+    private String roomId;
 
     private static final class Holder {
 
@@ -78,8 +79,8 @@ public class ZEGOSDKManager {
     }
 
     public void disconnectUser() {
-        zimService.logoutRoom(null);
-        expressService.logoutRoom(null);
+        zimService.logoutRoom(roomId, null);
+        expressService.logoutRoom(roomId, null);
         zimService.disconnectUser();
         expressService.disconnectUser();
 
@@ -90,6 +91,7 @@ public class ZEGOSDKManager {
             @Override
             public void onRoomEntered(ZIMRoomFullInfo roomInfo, ZIMError errorInfo) {
                 if (errorInfo.code == ZIMErrorCode.SUCCESS) {
+                    roomId = roomID;
                     expressService.setRoomScenario(scenario);
                     expressService.loginRoom(roomID, new IZegoRoomLoginCallback() {
                         @Override
@@ -102,7 +104,7 @@ public class ZEGOSDKManager {
                     });
                 } else {
                     if (callback != null) {
-                        App.showLog(errorInfo.code.value() +  "  --- zim error:" + errorInfo.message);
+                        App.showLog(errorInfo.code.value() + "  --- zim error:" + errorInfo.message);
                         callback.onResult(errorInfo.code.value(), "zim error:" + errorInfo.message);
                     }
                 }
@@ -115,6 +117,7 @@ public class ZEGOSDKManager {
             @Override
             public void onRoomEntered(ZIMRoomFullInfo roomInfo, ZIMError errorInfo) {
                 if (errorInfo.code == ZIMErrorCode.SUCCESS) {
+                    roomId = roomID;
                     expressService.setRoomScenario(scenario);
                     expressService.loginRoom(roomID, token, new IZegoRoomLoginCallback() {
                         @Override
@@ -133,7 +136,7 @@ public class ZEGOSDKManager {
         });
     }
 
-    public void logoutRoom(ZEGOSDKCallBack callBack) {
+    public void logoutRoom(String roomID, ZEGOSDKCallBack callBack) {
         App.showLog("sdkmanager logout room call");
         MergeCallBack<Integer, ZIMError> mergeCallBack = new MergeCallBack<Integer, ZIMError>() {
             @Override
@@ -151,14 +154,15 @@ public class ZEGOSDKManager {
                 }
             }
         };
+        if (roomId == null) roomId = roomID;
 
-        expressService.logoutRoom(new IZegoRoomLogoutCallback() {
+        expressService.logoutRoom(roomId, new IZegoRoomLogoutCallback() {
             @Override
             public void onRoomLogoutResult(int errorCode, JSONObject extendedData) {
                 mergeCallBack.setResult1(errorCode);
             }
         });
-        zimService.logoutRoom(new ZIMRoomLeftCallback() {
+        zimService.logoutRoom(roomId, new ZIMRoomLeftCallback() {
             @Override
             public void onRoomLeft(String roomID, ZIMError errorInfo) {
                 mergeCallBack.setResult2(errorInfo);

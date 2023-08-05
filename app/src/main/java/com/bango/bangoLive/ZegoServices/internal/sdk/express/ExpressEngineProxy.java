@@ -117,8 +117,8 @@ class ExpressEngineProxy {
         ZegoExpressEngine.getEngine().loginRoom(roomID, user, config, callback);
     }
 
-    public void logoutRoom(IZegoRoomLogoutCallback callback) {
-        ZegoExpressEngine.getEngine().logoutRoom(callback);
+    public void logoutRoom(String roomID, IZegoRoomLogoutCallback callback) {
+        ZegoExpressEngine.getEngine().logoutRoom(roomID, callback);
     }
 
     public void enableCamera(boolean enable) {

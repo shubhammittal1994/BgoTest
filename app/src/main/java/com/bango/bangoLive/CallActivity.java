@@ -2743,13 +2743,28 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                     App.showLog("onRoomLoginResult: error: " + errorCode);
                     finish();
                 } else {
+                    int seatIndex = -1;
                     if (isHost) {
-                        ZEGOLiveAudioRoomManager.getInstance().setHostAndLockSeat();
-                        ZEGOLiveAudioRoomManager.getInstance().takeSeat(0, new ZIMRoomAttributesOperatedCallback() {
+                        ZEGOLiveAudioRoomManager.getInstance().setHostAndLockSeatStatus(false);
+                        seatIndex = 0;
+                        /*ZEGOLiveAudioRoomManager.getInstance().takeSeat(0, new ZIMRoomAttributesOperatedCallback() {
                             @Override
                             public void onRoomAttributesOperated(String roomID, ArrayList<String> errorKeys,
                                                                  ZIMError errorInfo) {
                                 App.showLog("isHost onRoomAttributesOperated called");
+                            }
+                        });*/
+                    } else {
+                        seatIndex = ZEGOLiveAudioRoomManager.getInstance().findFirstAvailableSeatIndex();
+                        App.showLog("seat index which one free:- " + seatIndex);
+
+                    }
+                    if (seatIndex != -1) {
+                        ZEGOLiveAudioRoomManager.getInstance().takeSeat(seatIndex, new ZIMRoomAttributesOperatedCallback() {
+                            @Override
+                            public void onRoomAttributesOperated(String roomID, ArrayList<String> errorKeys,
+                                                                 ZIMError errorInfo) {
+                                App.showLog("isHost = false onRoomAttributesOperated called");
                             }
                         });
                     }
@@ -2821,7 +2836,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         if (isFinishing()) {
             ZEGOLiveAudioRoomManager.getInstance().removeRoomData();
             ZEGOLiveAudioRoomManager.getInstance().removeRoomListeners();
-            ZEGOSDKManager.getInstance().logoutRoom(null);
+            ZEGOSDKManager.getInstance().logoutRoom(roomID, null);
         }
     }
 
