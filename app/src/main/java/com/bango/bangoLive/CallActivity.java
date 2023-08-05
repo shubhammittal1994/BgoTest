@@ -58,6 +58,7 @@ import com.bango.bangoLive.AudioRoom.MODEL.AdminFirebaseRoot;
 import com.bango.bangoLive.AudioRoom.MODEL.ChatMessageModel;
 import com.bango.bangoLive.AudioRoom.MODEL.OtherUserDataModel;
 import com.bango.bangoLive.ViewModel.ApiViewModel;
+import com.bango.bangoLive.ZegoServices.components.RoomRequestListDialog;
 import com.bango.bangoLive.ZegoServices.internal.ZEGOLiveAudioRoomManager;
 import com.bango.bangoLive.ZegoServices.internal.business.audioroom.LiveAudioRoomLayoutConfig;
 import com.bango.bangoLive.ZegoServices.internal.sdk.basic.ZEGOSDKCallBack;
@@ -1036,7 +1037,6 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                 binding.llOption.setVisibility(View.GONE);
                 binding.rlGiftHeart.setVisibility(View.VISIBLE);
                 binding.rlGift.setVisibility(View.GONE);
-                binding.rlMultiLiveRequest.setVisibility(View.VISIBLE);
                 //  getMultiLiveRequestStatus();
             }
         } else {
@@ -1062,6 +1062,12 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         if (liveStatus == "host") {
             //  exitLiveStream();
         }
+
+        if (am_i_host) {
+            binding.llOption.setVisibility(View.VISIBLE);
+            binding.rlMultiLiveRequest.setVisibility(View.VISIBLE);
+        }
+
         //sumit
         //       getViewerListFirebase();
 //        getHeart();
@@ -1123,6 +1129,8 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
         binding.rlMultiLiveRequest.setOnClickListener(view -> {
             //openRequestMultiLiveDialog();
+            RoomRequestListDialog dialog = new RoomRequestListDialog(CallActivity.this);
+            dialog.show();
         });
 
         binding.rlSendMessage.setOnClickListener(view -> {
