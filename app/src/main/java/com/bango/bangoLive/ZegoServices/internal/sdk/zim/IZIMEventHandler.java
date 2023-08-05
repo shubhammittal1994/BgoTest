@@ -1,6 +1,9 @@
 package com.bango.bangoLive.ZegoServices.internal.sdk.zim;
 
 import im.zego.zim.callback.ZIMEventHandler;
+import im.zego.zim.entity.ZIMMessage;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +66,10 @@ public abstract class IZIMEventHandler extends ZIMEventHandler {
     }
 
     public void onRoomCommandReceived(String senderID, String command) {
+
+    }
+
+    public void onRoomMessageReceived(ZIMMessage zimMessage) {
 
     }
 }

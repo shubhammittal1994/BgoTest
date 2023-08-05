@@ -2,6 +2,8 @@ package com.bango.bangoLive.ZegoServices.internal.sdk.zim;
 
 import android.app.Application;
 import com.bango.bangoLive.ZegoServices.internal.utils.LogUtil;
+import com.bango.bangoLive.application.App;
+
 import im.zego.zim.ZIM;
 import im.zego.zim.callback.ZIMCallAcceptanceSentCallback;
 import im.zego.zim.callback.ZIMCallCancelSentCallback;
@@ -31,6 +33,7 @@ import im.zego.zim.entity.ZIMError;
 import im.zego.zim.entity.ZIMErrorUserInfo;
 import im.zego.zim.entity.ZIMMessage;
 import im.zego.zim.entity.ZIMMessageSendConfig;
+import im.zego.zim.entity.ZIMPushConfig;
 import im.zego.zim.entity.ZIMRoomAdvancedConfig;
 import im.zego.zim.entity.ZIMRoomAttributesBatchOperationConfig;
 import im.zego.zim.entity.ZIMRoomAttributesDeleteConfig;
@@ -38,6 +41,7 @@ import im.zego.zim.entity.ZIMRoomAttributesSetConfig;
 import im.zego.zim.entity.ZIMRoomAttributesUpdateInfo;
 import im.zego.zim.entity.ZIMRoomFullInfo;
 import im.zego.zim.entity.ZIMRoomInfo;
+import im.zego.zim.entity.ZIMTextMessage;
 import im.zego.zim.entity.ZIMUserFullInfo;
 import im.zego.zim.entity.ZIMUserInfo;
 import im.zego.zim.entity.ZIMUsersInfoQueryConfig;
@@ -125,6 +129,13 @@ public class ZIMService {
                             for (IZIMEventHandler handler : handlerList) {
                                 handler.onRoomCommandReceived(zimMessage.getSenderUserID(), message);
                             }
+                        }
+                    } else if (zimMessage instanceof ZIMTextMessage) {
+                        for (IZIMEventHandler handler : autoDeleteHandlerList) {
+                            handler.onRoomMessageReceived(zimMessage);
+                        }
+                        for (IZIMEventHandler handler : handlerList) {
+                            handler.onRoomMessageReceived(zimMessage);
                         }
                     }
                 }
@@ -609,6 +620,28 @@ public class ZIMService {
                     }
                     for (IZIMEventHandler handler : handlerList) {
                         handler.onSendRoomRequest(errorInfo.code.value(), roomRequest);
+                    }
+                }
+            });
+    }
+
+    public void sendRoomMessage(ZIMTextMessage message, ZIMMessageSendConfig config) {
+        if (zimProxy.getZIM() == null || currentRoom == null || currentUser == null) {
+            return;
+        }
+        zimProxy.sendMessage(message, currentRoom.roomID, ZIMConversationType.ROOM, config,
+            new ZIMMessageSentCallback() {
+                @Override
+                public void onMessageAttached(ZIMMessage message) {
+
+                }
+
+                @Override
+                public void onMessageSent(ZIMMessage message, ZIMError errorInfo) {
+                    if (errorInfo.code == ZIMErrorCode.SUCCESS) {
+                        App.showToast("Message sent");
+                    } else {
+                        LogUtil.d(errorInfo.getMessage());
                     }
                 }
             });

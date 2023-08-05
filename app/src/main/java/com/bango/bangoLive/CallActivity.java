@@ -149,8 +149,10 @@ import im.zego.zegoexpress.constants.ZegoUpdateType;
 import im.zego.zegoexpress.entity.ZegoAudioEffectPlayConfig;
 import im.zego.zegoexpress.entity.ZegoPlayerConfig;
 import im.zego.zegoexpress.entity.ZegoStream;
+import im.zego.zim.ZIM;
 import im.zego.zim.callback.ZIMRoomAttributesOperatedCallback;
 import im.zego.zim.entity.ZIMError;
+import im.zego.zim.entity.ZIMMessage;
 import im.zego.zim.entity.ZIMMessageSendConfig;
 import im.zego.zim.entity.ZIMPushConfig;
 import im.zego.zim.entity.ZIMTextMessage;
@@ -919,7 +921,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
     private void sendMessage(ChatMessageModel chatMessageModel, String key) {
         //ref.child(otherUserId).child(liveType).child(otherUserId).child("chat comments").child(key).setValue(chatMessageModel);
 
-        ZIMTextMessage zimMessage = new ZIMCustomTextMessage();
+        ZIMTextMessage zimMessage = new ZIMTextMessage();
         zimMessage.message = chatMessageModel.getMessage() + "-->$$<--" + chatMessageModel.getUserId() + "-->$$<--" + chatMessageModel.getName();
 
         ZIMMessageSendConfig config = new ZIMMessageSendConfig();
@@ -934,6 +936,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
 
 
         ChatFunctions.sendMessage(roomID, zimMessage, pushConfig, config, ZIMConversationType.ROOM);
+        ZEGOSDKManager.getInstance().zimService.sendRoomMessage(zimMessage, config);
         chatMessages.add(chatMessageModel);
         binding.recyclerAllMessage.scrollToPosition(chatMessages.size() - 1);
         if (commentAdapter != null)
@@ -2807,6 +2810,18 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
                 super.onUserAvatarUpdated(userID, url);
                 App.showLog("onUserAvatarUpdated " + userID + " - " + url);
                 //binding.seatContainer.onUserAvatarUpdated(userID, url);
+            }
+
+            @Override
+            public void onRoomMessageReceived(ZIMMessage zimMessage) {
+                super.onRoomMessageReceived(zimMessage);
+                App.showLog("onRoomMessageReceived --------> ");
+                    if (zimMessage instanceof ZIMTextMessage)
+                    {
+                        ZIMTextMessage zimTextMessage = (ZIMTextMessage) zimMessage;
+                        EventBus.getDefault().post(new MessageModel(zimTextMessage.message));
+                        //   showLog("Received message:- " + zimTextMessage.toString());
+                }
             }
         });
     }
