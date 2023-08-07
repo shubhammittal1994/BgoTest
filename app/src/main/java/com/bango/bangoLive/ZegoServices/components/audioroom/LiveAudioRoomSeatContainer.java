@@ -131,7 +131,14 @@ public class LiveAudioRoomSeatContainer extends LinearLayout {
             addView(flexboxLayout, params);
             for (int columnIndex = 0; columnIndex < rowConfig.count; columnIndex++) {
                 ZEGOLiveAudioRoomSeatView seatView = new ZEGOLiveAudioRoomSeatView(getContext());
-                seatView.setOnClickListener(v -> {
+                seatView.binding.imgChair.setOnClickListener(v -> {
+                    if (System.currentTimeMillis() - lastClickTime < 500) {
+                        return;
+                    }
+                    onSeatViewClicked(seatView);
+                    lastClickTime = System.currentTimeMillis();
+                });
+                seatView.binding.rlMic.setOnClickListener(v -> {
                     if (System.currentTimeMillis() - lastClickTime < 500) {
                         return;
                     }

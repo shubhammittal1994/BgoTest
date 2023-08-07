@@ -27,11 +27,11 @@ import com.bango.bangoLive.ZegoServices.internal.utils.Utils;
 
 public class ZEGOLiveAudioRoomSeatView extends LinearLayout {
 
-    private ImageView seatIconBackground;
+    /*private ImageView seatIconBackground;
     private ImageView userCustomAvatarView;
     private LetterIconView letterIconView;
     private ImageView hostTagView;
-    private TextView userNameView;
+    private TextView userNameView;*/
     LayoutMultiUserLiveListBinding  binding;
 
     public ZEGOLiveAudioRoomSeatView(@NonNull Context context) {
@@ -62,17 +62,17 @@ public class ZEGOLiveAudioRoomSeatView extends LinearLayout {
         View view = binding.getRoot();
 
         FrameLayout contentLayout = new FrameLayout(getContext());
-        LinearLayout.LayoutParams contentLayoutParams = new LinearLayout.LayoutParams(Utils.dp2px(66, displayMetrics),
-            Utils.dp2px(66, displayMetrics));
+        LinearLayout.LayoutParams contentLayoutParams = new LinearLayout.LayoutParams(Utils.dp2px(96, displayMetrics),
+            Utils.dp2px(15, displayMetrics));
         addView(contentLayout, contentLayoutParams);
 
-        FrameLayout.LayoutParams avatarParams = new FrameLayout.LayoutParams(Utils.dp2px(54, displayMetrics),
+        /*FrameLayout.LayoutParams avatarParams = new FrameLayout.LayoutParams(Utils.dp2px(54, displayMetrics),
             Utils.dp2px(54, displayMetrics));
         seatIconBackground = new ImageView(getContext());
         seatIconBackground.setBackgroundResource(R.drawable.audioroom_icon_seat);
-        contentLayout.addView(seatIconBackground, avatarParams);
+        contentLayout.addView(seatIconBackground, avatarParams);*/
 
-        avatarParams.gravity = Gravity.CENTER;
+        /*avatarParams.gravity = Gravity.CENTER;
         letterIconView = new LetterIconView(getContext());
         letterIconView.setCircleBackgroundRadius(avatarParams.width / 2);
         letterIconView.setLetter("");
@@ -88,10 +88,10 @@ public class ZEGOLiveAudioRoomSeatView extends LinearLayout {
         FrameLayout.LayoutParams hostTagViewParams = new FrameLayout.LayoutParams(-2, -2);
         hostTagViewParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         hostTagViewParams.bottomMargin = Utils.dp2px(4, getResources().getDisplayMetrics());
-        contentLayout.addView(hostTagView, hostTagViewParams);
+        contentLayout.addView(hostTagView, hostTagViewParams);*/
 
         // username below
-        userNameView = new TextView(getContext());
+        /*userNameView = new TextView(getContext());
         userNameView.setEllipsize(TruncateAt.END);
         userNameView.setGravity(Gravity.CENTER);
         userNameView.setSingleLine();
@@ -100,7 +100,7 @@ public class ZEGOLiveAudioRoomSeatView extends LinearLayout {
         userNameView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
         LinearLayout.LayoutParams userNameParams = new LinearLayout.LayoutParams(Utils.dp2px(66, displayMetrics),
             Utils.dp2px(14, displayMetrics));
-        addView(userNameView, userNameParams);
+        addView(userNameView, userNameParams);*/
 
         addView(view);
     }
@@ -114,40 +114,40 @@ public class ZEGOLiveAudioRoomSeatView extends LinearLayout {
     }
 
     private void removeUserFromSeat() {
-        letterIconView.setLetter("");
-        userNameView.setText("");
-        userCustomAvatarView.setImageDrawable(null);
+        //letterIconView.setLetter("");
+        binding.txtUserName.setText("");
+        binding.imgUserProfile.setImageDrawable(null);
     }
 
     private void addUserToSeat(ZEGOSDKUser audioRoomUser) {
-        letterIconView.setLetter(audioRoomUser.userName.toUpperCase());
-        userNameView.setText(audioRoomUser.userName);
+        //letterIconView.setLetter(audioRoomUser.userName.toUpperCase());
+        binding.txtUserName.setText(audioRoomUser.userName);
         String userAvatarUrl = ZEGOLiveAudioRoomManager.getInstance().getUserAvatar(audioRoomUser.userID);
         onUserAvatarUpdated(userAvatarUrl);
     }
 
     public void onLockChanged(boolean lock) {
         if (lock) {
-            seatIconBackground.setBackgroundResource(R.drawable.audioroom_icon_lock_seat);
+            binding.imgChair.setBackgroundResource(R.drawable.chair);
         } else {
-            seatIconBackground.setBackgroundResource(R.drawable.audioroom_icon_seat);
+            binding.imgChair.setBackgroundResource(R.drawable.chair);
         }
     }
 
     public void onUserAvatarUpdated(String url) {
         if (TextUtils.isEmpty(url)) {
-            userCustomAvatarView.setImageDrawable(null);
+            binding.imgUserProfile.setImageDrawable(null);
         } else {
             RequestOptions requestOptions = new RequestOptions().circleCrop();
-            Glide.with(getContext()).load(url).apply(requestOptions).into(userCustomAvatarView);
+            Glide.with(getContext()).load(url).apply(requestOptions).into(binding.imgUserProfile);
         }
     }
 
     public void showHostTag() {
-        hostTagView.setVisibility(VISIBLE);
+        //hostTagView.setVisibility(VISIBLE);
     }
 
     public void hideHostTag() {
-        hostTagView.setVisibility(GONE);
+        //hostTagView.setVisibility(GONE);
     }
 }

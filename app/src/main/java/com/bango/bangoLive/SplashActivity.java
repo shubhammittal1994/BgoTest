@@ -17,6 +17,7 @@ import com.bango.bangoLive.ViewModel.ApiViewModel;
 import com.bango.bangoLive.ZegoServices.ZEGOSDKKeyCenter;
 import com.bango.bangoLive.ZegoServices.internal.sdk.basic.ZEGOSDKCallBack;
 import com.bango.bangoLive.ZegoServices.internal.sdk.zim.ZEGOSDKManager;
+import com.bango.bangoLive.application.App;
 import com.bango.bangoLive.databinding.ActivitySplashBinding;
 import com.bango.bangoLive.loginCredentials.activities.fragments.LoginActivity;
 import com.bumptech.glide.Glide;
@@ -57,7 +58,9 @@ public class SplashActivity extends AppCompatActivity {
 
     private void openHomeActivity() {
         String userID = sharedpreferences.getString("id", "");
-        String userName = sharedpreferences.getString("userUniqueId", "");
+        String userName = sharedpreferences.getString("name", "");
+
+        App.showLog("userId:- " + userID + ", userName:- " + userName);
 
         signInZEGOSDK(userID, userName, (errorCode, message) -> {
             if (errorCode == 0) {
