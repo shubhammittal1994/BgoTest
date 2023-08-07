@@ -7,12 +7,16 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.bango.bangoLive.databinding.LayoutMultiUserLiveListBinding;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bango.bangoLive.R;
@@ -28,29 +32,35 @@ public class ZEGOLiveAudioRoomSeatView extends LinearLayout {
     private LetterIconView letterIconView;
     private ImageView hostTagView;
     private TextView userNameView;
+    LayoutMultiUserLiveListBinding  binding;
 
     public ZEGOLiveAudioRoomSeatView(@NonNull Context context) {
         super(context);
-        initView();
+        initView(context);
     }
 
     public ZEGOLiveAudioRoomSeatView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initView();
+        initView(context);
     }
 
     public ZEGOLiveAudioRoomSeatView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView();
+        initView(context);
     }
 
-    private void initView() {
+    private void initView(Context context) {
         setOrientation(VERTICAL);
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
 
         // background: lock/unlock
         // letterIcon,customIcon
         // hostTag
+
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        binding = LayoutMultiUserLiveListBinding.inflate(layoutInflater);
+        View view = binding.getRoot();
+
         FrameLayout contentLayout = new FrameLayout(getContext());
         LinearLayout.LayoutParams contentLayoutParams = new LinearLayout.LayoutParams(Utils.dp2px(66, displayMetrics),
             Utils.dp2px(66, displayMetrics));
@@ -91,6 +101,8 @@ public class ZEGOLiveAudioRoomSeatView extends LinearLayout {
         LinearLayout.LayoutParams userNameParams = new LinearLayout.LayoutParams(Utils.dp2px(66, displayMetrics),
             Utils.dp2px(14, displayMetrics));
         addView(userNameView, userNameParams);
+
+        addView(view);
     }
 
     public void onUserUpdate(ZEGOSDKUser audioRoomUser) {

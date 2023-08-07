@@ -935,7 +935,7 @@ public class CallActivity extends AppCompatActivity implements GiftBottomSheetFr
         config.pushConfig = pushConfig;
 
 
-        ChatFunctions.sendMessage(roomID, zimMessage, pushConfig, config, ZIMConversationType.ROOM);
+        //ChatFunctions.sendMessage(roomID, zimMessage, pushConfig, config, ZIMConversationType.ROOM);
         ZEGOSDKManager.getInstance().zimService.sendRoomMessage(zimMessage, config);
         chatMessages.add(chatMessageModel);
         binding.recyclerAllMessage.scrollToPosition(chatMessages.size() - 1);

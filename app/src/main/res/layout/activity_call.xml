@@ -627,18 +627,6 @@
                     android:layout_height="wrap_content"
                     android:visibility="visible">
 
-                    <com.bango.bangoLive.ZegoServices.components.audioroom.LiveAudioRoomSeatContainer
-                        android:id="@+id/seat_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginTop="64dp"
-                        android:layout_marginRight="12dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:visibility="gone"/>
-
                     <RelativeLayout
                         android:id="@+id/luckybagLootedRL"
                         android:layout_width="match_parent"
@@ -733,12 +721,25 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_below="@id/rlHost">
+
+                        <com.bango.bangoLive.ZegoServices.components.audioroom.LiveAudioRoomSeatContainer
+                            android:id="@+id/seat_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="64dp"
+                            android:layout_marginHorizontal="12dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:visibility="visible"/>
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvMultiLiveAudios"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="4dp"
                             android:orientation="vertical"
+                            android:visibility="gone"
                             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             app:spanCount="4"
                             tools:listitem="@layout/layout_multi_user_live_list" />
